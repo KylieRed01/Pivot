@@ -1,0 +1,5 @@
+import test,{before,after}from'node:test';import assert from'node:assert/strict';import{createApp}from'../src/server.js';let app,base;before(async()=>{app=createApp();await new Promise(r=>app.listen(0,r));base=`http://127.0.0.1:${app.address().port}`});after(()=>app.close());
+test('store is non-indexed and contains no transactional fields',async()=>{const r=await fetch(base+'/api/store/phoenix');assert.equal(r.status,200);assert.equal(r.headers.get('x-robots-tag'),'noindex, nofollow');const text=await r.text();for(const forbidden of ['price','checkout','payment','orderUrl'])assert.equal(text.includes(`"${forbidden}"`),false)});
+test('admin endpoint requires identity',async()=>assert.equal((await fetch(base+'/api/admin')).status,401));
+test('Phoenix admin sees Phoenix only',async()=>{const r=await fetch(base+'/api/admin',{headers:{'x-demo-user':'admin@phoenix.test'}});const data=await r.json();assert.deepEqual(data.clubs.map(c=>c.id),['phoenix'])});
+test('disabled club store is unavailable',async()=>assert.equal((await fetch(base+'/api/store/future')).status,404));
