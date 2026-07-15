@@ -284,20 +284,76 @@ Open:
 http://localhost:3000/#admin
 ```
 
+## Latest checkpoint
+
+### Landing page
+
+- Uses the approved transparent Pivot logo artwork.
+- Uses the approved headline, subheading and CTA: **Built for action. Priced to play.**, **Quality custom teamwear that helps clubs and players get in the game.**, and **Game On.**
+- Phoenix-first landing content was removed.
+- Products, FAQs and Contact sections were added as pilot placeholders.
+- The CTA is rounded and has no shadow.
+- Messaging below the hero still requires a later product/brand decision about pilot, coming-soon and registration language.
+- Contact email confirmed as `hello@pivotteamwear.com`; a contact form is preferred over a chatbot for the pilot but is not implemented.
+
+### Design Studio changes
+
+- Left menu now contains Colours, Patterns, Text, Images and Help.
+- The colour palette was moved from the bottom dock into the Colours submenu.
+- Pivot colours are grouped as Midnight Blue, Cerulean Blue, Orange, White and Black.
+- Pattern rendering rules and thumbnails were added for all listed pattern families.
+- Pattern colour controls now expose four colour slots; the fourth defaults to white.
+- Dark and Light are modelled separately, with Midnight Blue and Cerulean Blue defaults.
+- Front and Back compositions are stored separately in local storage.
+- Side remains a CSS 3D preview, not an editable composition or real mesh.
+- Back numbers are made visually larger as an illustrative default only.
+- Direct artwork dragging and corner-handle resizing were added.
+- Images has upload, size, crop zoom, crop position, duplicate and delete controls.
+- Clicking empty canvas space deselects artwork.
+- Design name is editable and stored locally.
+- Help now opens an in-tool instruction panel.
+- Warning bar uses an orange warning treatment rather than blue.
+
+### Known issues requiring morning verification
+
+Do not assume these interactions are complete until manually checked in the browser:
+
+1. Verify Dark/Light and Front/Back/Side controls and their selected-state styling.
+2. Verify independent artwork and patterns persist across all four editable compositions.
+3. Verify clicking body, sleeves and neck trim selects the intended colour target.
+4. Implement supplier-backed upper/lower/side-panel hit zones; only coarse body, sleeve and neck targeting exists now.
+5. Verify pattern application across the whole garment and subsequent sleeve/trim overrides.
+6. Verify all four pattern colours affect patterns as expected; some patterns use fewer than four colours.
+7. Verify image upload, direct resize, crop zoom and crop positioning, including local-storage limits.
+8. Confirm Pivot penguin and PIVOT text remain present on all four default compositions.
+9. Remove any remaining visual shadows and standardise practical control corner radii.
+10. Reconsider moving design name and view controls into a dedicated right-side panel; this was requested but not implemented.
+11. Research current official number and uniform rules from Bendigo Basketball Association, Basketball Victoria, Basketball Australia and FIBA, recording URLs and document versions.
+12. Obtain supplier template geometry before claiming production readiness.
+
+### Important implementation limitations
+
+- Design state is currently browser-local and uses `localStorage`; it is not fully persisted by the server.
+- Uploaded image data URLs may exceed browser local-storage capacity for larger files.
+- Undo, redo and zoom controls remain visual placeholders.
+- The 3D preview is CSS perspective only.
+- Exact garment panels, seams, print areas and legal number dimensions are not yet authoritative.
+- Automated tests cover server/domain behaviour, not browser interactions.
+
 ## Current verification
 
-- JavaScript syntax check passed before the latest pattern edits.
-- Nine Node tests passed.
+- `node --check public/app.js` passes at this checkpoint.
+- All nine Node tests pass.
+- `git diff --check` passes apart from harmless LF/CRLF conversion warnings on Windows.
 - Playwright must not be reintroduced.
 
 ## Recommended next step
 
-First stabilise the editor before adding more features:
+Stabilise and manually verify the editor before adding more features:
 
-1. Finish the Pivot-branded home page.
-2. Correct every pattern category and rendering rule.
-3. Implement front/back plus dark/light design state.
-4. Add whole-garment and panel-area selection.
-5. Make pattern application default to the complete jersey.
-6. Separate text, number and uploaded-image workflows.
-7. Simplify and visually polish each submenu.
+1. Test every control at `http://localhost:3000/#admin` using a hard refresh.
+2. Fix runtime and interaction failures one behaviour at a time.
+3. Complete garment-area selection and state isolation.
+4. Finish the right-side design/view panel decision.
+5. Research and document governing uniform rules.
+6. Only then continue visual polish and production constraints.
