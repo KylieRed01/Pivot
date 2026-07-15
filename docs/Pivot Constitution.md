@@ -77,7 +77,7 @@ Pivot will operate according to these principles:
 
 - Phase 1 is a sponsor-funded batch pilot for Phoenix U10 jerseys and coach polos.
 - Its purpose is to validate product quality and delivery within the agreed window, while testing the club's design and store experience.
-- Batch sizing, ordering and supplier submission are manual in phase 1.
+- Batch sizing is manual.  ordering and supplier submission will be tested with apis in phase 1. supplier to be selected. 
 - Phase 1 includes no customer checkout, payment portal or individual customer ordering.
 - The Phoenix store shows approved products without prices and includes coach-polo sizing charts.
 - A supplier is selected only after sample evaluation. Supplier selection and quality assessment remain operational responsibilities.
