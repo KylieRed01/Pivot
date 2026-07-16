@@ -1,5 +1,7 @@
 # Pivot Grill-Me Handover — Production Output and Pilot Timeline
 
+> **Later session:** Continue with `specs/pivot-design-tool-baseline/grill-me-handover-editor-product.md`, which supersedes this file where decisions conflict.
+
 **Date:** 2026-07-16  
 **Status:** Session paused for a break. Resume in a new chat.  
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-production-output.md`
@@ -16,14 +18,18 @@
 
 ## Where the session stopped
 
-Production-output questioning is nearly complete. The last question was not answered:
+The production-output branch is complete. Resume with the remaining highest-risk editor/product decision that does not require missing supplier data: reconcile automatic club-colour extraction with direct colour entry.
 
-> Should successful completion of the full live Phoenix member-ordering cycle be required before Pivot moves from the Phoenix pilot into controlled growth with other clubs?
+The phase terminology is now explicit:
 
-The proposed full cycle was:
+- **Phoenix Pilot Phase 2 / Winter 2027 member ordering:** Phoenix families order jerseys and matching shorts through the club store. It remains Phoenix-only while Pivot validates the concept, operating model and viability.
+- **Phoenix Pilot Phase 3:** Pivot expands the Phoenix store/product range. If Phase 2 succeeds, selected additional clubs may also be onboarded at the Director's discretion and only within available business capacity; new-club onboarding is optional, not a mandatory Phase 3 deliverable.
+- **Business Plan Phase 2 — Controlled Growth:** broader controlled growth follows the successful validation gate and remains constrained by operational readiness.
+
+Phoenix Pilot Phase 2 must prove the complete live cycle:
 
 1. approved design and club store;
-2. member ordering, payment, sizing, names and numbers;
+2. family ordering, payment, sizing, names and numbers;
 3. club validation and order consolidation;
 4. supplier submission and acknowledgement;
 5. manufacturing status and exception handling;
@@ -31,9 +37,7 @@ The proposed full cycle was:
 7. customer communication, collection or delivery; and
 8. financial and order reconciliation.
 
-Rules-based work would be automated while approvals, quality decisions and exceptions retain human oversight.
-
-Before asking this again, clarify the phase terminology below. There may be a naming collision between **Phoenix Pilot Phase 2** and **Business Plan Phase 2 — Controlled Growth**.
+Rules-based work is automated while approvals, quality decisions and exceptions retain human oversight. Successful completion of this full cycle unlocks the option to onboard selected additional clubs. Whether and when to do so remains a Director decision based on capacity; Pivot does not promise a club count or compromise service, quality or fulfilment for growth.
 
 ## Locked production-output decisions
 
@@ -293,12 +297,16 @@ Locked:
 - Automation is not a Phase 1 launch blocker.
 - A complete end-to-end operating capability is intended as a blocker before the Winter 2027 member-ordering stage and later controlled growth.
 
-Not yet fully locked:
+Also locked:
 
-- The exact definition of the Winter 2027/full-cycle gate; the unanswered resume question covers it.
-- The phrase `Phase 2` is ambiguous. Distinguish:
-  - **Phoenix Pilot Phase 2 / Winter 2027 member ordering**; and
-  - **Business Plan Phase 2 — Controlled Growth** with selected additional clubs.
+- **Phoenix Pilot Phase 2 / Winter 2027 member ordering** is the live family-ordering test for jerseys and matching shorts through the Phoenix club store.
+- It must prove the complete operating model and business viability.
+- Pivot does not onboard other clubs until that live cycle succeeds.
+- After success, selected new-club onboarding is optional at the Director's discretion and constrained by available capacity.
+- Phoenix Pilot Phase 3 expands the Phoenix store/product range and may include selected new clubs, but onboarding them is not a required Phase 3 deliverable.
+
+Still external/provisional:
+
 - Exact supplier API/file fields, authentication, sandbox behaviour and automated status coverage remain external supplier inputs.
 
 ## Pilot timeline decisions
