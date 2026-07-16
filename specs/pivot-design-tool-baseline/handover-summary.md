@@ -357,3 +357,176 @@ Stabilise and manually verify the editor before adding more features:
 4. Finish the right-side design/view panel decision.
 5. Research and document governing uniform rules.
 6. Only then continue visual polish and production constraints.
+
+---
+
+## Latest continuation checkpoint
+
+### User direction
+
+- Do not use Crosby.
+- Follow the approved Pivot Brand Kit and Visual Design Guide exactly.
+- Do not invent slogans, claims, logo arrangements, competition rules or production dimensions.
+- Use the approved complete Pivot logo as supplied; do not separate or rearrange its elements.
+- Keep the visual language consistent: clean, practical rounded controls, no unnecessary shadows, and no arbitrary hard-edged cards.
+- Brand voice must remain clear, professional, approachable, practical and positive—not slang-heavy or exaggerated.
+
+### Pre-design selection scaffold
+
+A progressive setup flow now runs before entering the editor:
+
+1. Choose sport.
+2. Choose competition.
+3. Choose apparel item.
+4. Display the applicable rules profile and continue to the editor.
+
+Current pilot configuration:
+
+- Sport: Basketball
+- Competition: Bendigo Basketball Association
+- Apparel options:
+  - Basketball jersey
+  - Basketball shorts
+  - Men's coach polo
+  - Women's coach polo
+
+Only Basketball is enabled. Other Greater Bendigo sport categories are displayed alphabetically as unavailable pilot options:
+
+- Australian rules football
+- Baseball
+- Cricket
+- Gridiron
+- Hockey
+- Netball
+- Rugby league
+- Rugby union
+- Soccer
+- Volleyball
+
+The competition and apparel controls are progressively revealed only after the preceding choice is made. Entering from the home page resets the setup so it is not skipped due to browser-local state.
+
+Important limitation: only the basketball jersey currently has an editor template. Shorts and polo choices are scaffolded but do not yet have distinct editable garment templates.
+
+### Setup-screen visual fixes
+
+- A global header selector had been overriding the setup header; it is now scoped to the direct home-page header.
+- The approved full Pivot logo is placed on Midnight Blue so the white TEAMWEAR text remains visible.
+- The logo must remain separate from the page heading to avoid creating an unapproved logo lockup.
+- The setup panel, selection cards, dropdown and notice use consistent rounded corners without shadows.
+- Basketball currently uses temporary stock photography.
+- Image source notes are recorded in `docs/pilot-image-sources.md`.
+- Replace temporary imagery with approved Canva exports or Pivot-controlled photography before production.
+- Cache-version query strings were added to `public/index.html` during visual iteration.
+
+### Garment editor changes
+
+- The jersey placeholder is now sleeveless and proportioned more like a basketball jersey.
+- Neck trim and armhole trim are separate selectable colour targets.
+- Whole jersey excludes neck and armhole trim.
+- Dark/Light selection controls use black/white visual states for clarity; this does not set the garment itself to black/white.
+- Front/Back/Side active controls follow the selected Dark/Light visual state.
+- Text and image layers default to no selection when entering or changing surfaces.
+- Right-clicking a layer in 2D opens Edit, Duplicate and Delete actions.
+- Uploaded artwork belongs under Images; the Text section no longer says “Text and artwork”.
+- The current 3D view is still CSS perspective, not a true mesh.
+- Editing and direct layer movement are disabled in 3D preview.
+- A correct rear 3D texture is not implemented. Do not enable a mirrored 180-degree fake rear view.
+
+### Uniform-rules scaffold
+
+`src/uniform-rules.js` contains a partial, versioned FIBA 2024 baseline:
+
+- Front number minimum height: 10 cm
+- Back number minimum height: 20 cm
+- Minimum stroke width: 2 cm
+- Logo/advertising clearance: 5 cm
+- Contrasting colour required
+- Allowed values: 0, 00 and 1–99
+
+The profile is exposed through `/api/uniform-rules` and summarised in Help. Physical centimetres are deliberately not converted to pixels until a scaled supplier template exists.
+
+The user is collecting sport-governance documents and Canva imagery/licensing details. Do not repeatedly ask for those broad categories; ask only for a specific missing document or asset when needed.
+
+### Inputs still required
+
+#### Landing page
+
+- Final purpose and messaging below the hero: pilot registration, coming soon, enquiry or another approved outcome
+- Contact-form fields, recipient and confirmation message
+- Approved product descriptions
+- Approved FAQs
+- Final CTA destinations
+- Any approved pricing or quote language
+
+#### Phoenix pilot
+
+- Official Phoenix logos and brand assets
+- Approved Phoenix colours
+- Sponsor artwork, permissions and required positions
+- Required front/back garment content
+- Confirmation of reversible construction
+- Competition, age group and division
+- Player-name requirements
+- Club and Pivot approval contacts
+
+#### Supplier and garment production
+
+- Supplier and exact garment styles
+- Scaled AI/SVG/EPS/PDF templates for jersey, shorts and both polos
+- Physical dimensions and scale
+- Panel geometry, seams, bleed and safe zones
+- Trim construction and restrictions
+- Minimum printable detail
+- Supplier-approved number fonts and placement zones
+- Fabric/colour limitations
+- Reversible construction details
+- Required production handover format
+
+#### Product and interaction decisions
+
+- Mandatory/locked versus deletable elements
+- Number-editing behaviour
+- Layer ordering, opacity, flipping and background-removal requirements
+- Upload approval, file-type and file-size rules
+- Versioning and design naming
+- User roles and permissions
+- Undo/redo and zoom behaviour
+- Mobile editing versus preview-only scope
+- Final sport and competition catalogue
+- Garment display order and unavailable-option policy
+- Behaviour when changing sport or garment after design work begins
+
+#### 3D decision
+
+- Approval to use a generic visualisation-only basketball mesh for the pilot
+- Supplier geometry and UV maps if available
+- Front/back/side artwork wrapping expectations
+- Rotation and zoom requirements
+- Approved visualisation-only disclaimer
+
+#### Platform and launch
+
+- Authentication provider
+- Permanent database and uploaded-artwork storage
+- Production domain and hosting decisions
+- Email service and notification templates
+- Privacy, terms and artwork-permission requirements
+- Data retention, backup, analytics and monitoring requirements
+- Pilot acceptance criteria, testers and feedback method
+- Supported browsers/devices and accessibility target
+- Launch target and production approval owner
+- Supplier proof/sign-off and final enquiry/order handover process
+
+### Current verification
+
+- `node --check public/app.js` passes.
+- Eleven Node tests pass, including uniform-rule baseline tests.
+- Playwright remains removed and must not be reintroduced.
+
+### Recommended next step
+
+1. Manually verify the complete progressive setup flow after a hard refresh.
+2. Correct remaining setup-screen visual issues against a current screenshot.
+3. Decide whether non-jersey apparel options remain disabled until their templates exist or build their templates next.
+4. Replace placeholder sport symbols with properly licensed sport imagery.
+5. Continue browser-level verification of the four 2D jersey compositions.

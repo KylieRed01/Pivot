@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { canAccessClub, publicProducts, transition } from './domain.js';
+import { uniformRuleProfile } from './uniform-rules.js';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const stateFile = join(root, 'data/state.json');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'};
@@ -15,6 +16,7 @@ export function createApp(){return createServer(async(req,res)=>{try{
   const url=new URL(req.url,'http://local'); const state=await load();
   if(url.pathname.startsWith('/api/store/')){const result=publicProducts(state,url.pathname.split('/').pop());return result?send(res,200,result,{'x-robots-tag':'noindex, nofollow'}):send(res,404,{error:'Store not found'});}
   if(url.pathname==='/api/session'){const u=user(req,state);return send(res,u?200:401,u??{error:'Sign in required'});}
+  if(url.pathname==='/api/uniform-rules'){return send(res,200,uniformRuleProfile);}
   if(url.pathname==='/api/admin'){const u=user(req,state);if(!u)return send(res,401,{error:'Sign in required'});return send(res,200,{user:u,clubs:state.clubs.filter(c=>canAccessClub(u,c.id)),designs:state.designs.filter(d=>canAccessClub(u,d.clubId)),users: u.role==='pivot_admin'?state.users:state.users.filter(x=>x.clubId===u.clubId)});}
   const match=url.pathname.match(/^\/api\/designs\/([^/]+)\/(save|clubApprove|pivotApprove|return|publish)$/);
   if(match&&req.method==='POST'){const u=user(req,state);if(!u)return send(res,401,{error:'Sign in required'});const i=state.designs.findIndex(d=>d.id===match[1]);if(i<0)return send(res,404,{error:'Design not found'});const input=await body(req);if(match[2]==='save'){for(const key of ['colour','accent','artwork','uploadedArtwork'])if(input[key]!==undefined)state.designs[i][key]=input[key];}state.designs[i]=transition(state.designs[i],match[2],u);await save(state);console.log(JSON.stringify({event:'design_transition',design:match[1],action:match[2],actor:u.email}));return send(res,200,state.designs[i]);}
