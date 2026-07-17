@@ -5,12 +5,12 @@
 - Active branch: `phoenix-phase-1` (explicitly declared by `plan.md`)
 - Work type: development
 - Workflow: non-Linear
-- Intelligence: Medium for Window 5
-- Current window: 5 of 5
-- Current tasks: T013–T015
-- Status: Window 4 checkpoint passed; awaiting permission to proceed to Window 5
-- Completed windows: Window 1 (T001–T003), Window 2 (T004–T006), Window 3 (T007–T009), Window 4 (T010–T012)
-- Automated evidence: `npm run check`; 23 Node tests passing; 20 Chromium tests passing; axe serious/critical checks passing
+- Intelligence: Medium for final handoff
+- Current window: complete (5 of 5)
+- Current tasks: none
+- Status: implementation complete; ready for review
+- Completed windows: Window 1 (T001–T003), Window 2 (T004–T006), Window 3 (T007–T009), Window 4 (T010–T012), Window 5 (T013–T015)
+- Automated evidence: `npm run check`; 26 Node tests passing; 115 Playwright tests passing across five projects; npm audit clean
 - Scope exclusions: production infrastructure, supplier-dependent functionality, accurate 3D, manufacturing integration, final Phoenix artwork
 
 ## Window checkpoints
@@ -19,7 +19,7 @@
 - Window 2: complete
 - Window 3: complete
 - Window 4: complete
-- Window 5: ready
+- Window 5: complete
 
 ## Current working tree
 
@@ -27,4 +27,4 @@ The reconciled `spec.md` and website/help copy are intentionally uncommitted bas
 
 ## Resume instructions
 
-Read this file, `spec.md`, `plan.md`, `tasks.md`, `scope-lock.md`, and `task-ledger.md`. Windows 1–4 are complete. Resume Window 5 at T013 and enforce its checkpoint before final completion.
+Read this file, `spec.md`, `plan.md`, `tasks.md`, `scope-lock.md`, and `task-ledger.md`. All windows are complete. Read `IMPLEMENTATION_SUMMARY.md` and proceed to structured code review before merge.

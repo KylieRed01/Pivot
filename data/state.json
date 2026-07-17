@@ -3,7 +3,7 @@
   "users": [{"email":"admin@phoenix.test","role":"club_admin","clubId":"phoenix"},{"email":"approver@phoenix.test","role":"primary_approver","clubId":"phoenix"},{"email":"pivot@pivot.test","role":"pivot_admin","clubId":null}],
   "designs": [
     {"id":"jersey","clubId":"phoenix","name":"U10 Game Jersey","type":"jersey","status":"published","version":1,"colour":"#ef6c35","accent":"#14213d","artwork":"PHOENIX","uploadedArtwork":null,"audit":[{"action":"publish","actor":"pivot@pivot.test","version":1,"at":"2026-07-12T00:00:00.000Z"}]},
-    {"id":"polo","clubId":"phoenix","name":"Coach Polo","type":"polo","status":"published","version":1,"colour":"#14213d","accent":"#ef6c35","artwork":"PHOENIX","uploadedArtwork":null,"audit":[{"action":"publish","actor":"pivot@pivot.test","version":1,"at":"2026-07-12T00:00:00.000Z"}]},
+    {"id":"polo","clubId":"phoenix","name":"Club Polo","type":"polo","status":"published","version":1,"colour":"#14213d","accent":"#ef6c35","artwork":"PHOENIX","uploadedArtwork":null,"audit":[{"action":"publish","actor":"pivot@pivot.test","version":1,"at":"2026-07-12T00:00:00.000Z"}]},
     {"id":"concept","clubId":"phoenix","name":"New Jersey Concept","type":"jersey","status":"draft","version":1,"colour":"#ef6c35","accent":"#14213d","artwork":"PHOENIX","uploadedArtwork":null,"audit":[]}
   ]
 }

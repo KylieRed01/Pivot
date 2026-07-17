@@ -120,6 +120,31 @@ export function resetStudioState() {
 const PUBLIC_ARTWORK_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
 const MAX_PUBLIC_ARTWORK_BYTES = 5 * 1024 * 1024;
 
+export function runIndicativeChecks(candidate) {
+  const state = normalize(candidate);
+  const checks = [];
+  for (const [surfaceKey, surface] of Object.entries(state.surfaces)) {
+    if (!surface.layers.some(layer => layer.role === 'number' && layer.required)) {
+      checks.push({ code: 'REQUIRED_NUMBER', severity: 'error', blocking: true, surface: surfaceKey, message: `Required basketball number is missing from ${surfaceKey}.` });
+    }
+    for (const layer of surface.layers) {
+      if (layer.type === 'text' && !layer.text.trim()) {
+        checks.push({ code: 'EMPTY_TEXT', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'A text layer is empty. Add wording or remove the optional layer.' });
+      }
+      if (layer.x < 5 || layer.x > 95 || layer.y < 10 || layer.y > 92) {
+        checks.push({ code: 'INDICATIVE_BOUNDARY', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'An element sits outside the demonstrator boundary. Supplier geometry is still unresolved.' });
+      }
+      if (layer.type === 'image') {
+        const validation = validatePublicArtwork({ type: layer.mime, size: layer.size });
+        if (!validation.ok) checks.push({ code: validation.error.code, severity: 'error', blocking: true, surface: surfaceKey, layerId: layer.id, message: validation.error.message });
+      }
+    }
+  }
+  checks.push({ code: 'UNRESOLVED_DEPENDENCIES', severity: 'guidance', blocking: false, message: 'Supplier, final Phoenix artwork, production infrastructure, accurate 3D and manufacturing integration remain unresolved.' });
+  checks.push({ code: 'INDICATIVE_ONLY', severity: 'guidance', blocking: false, message: 'These checks use placeholder geometry and do not establish manufacturing readiness.' });
+  return checks;
+}
+
 export function validatePublicArtwork(file) {
   if (!file || !PUBLIC_ARTWORK_TYPES.has(file.type)) {
     return { ok: false, error: { code: 'UNSUPPORTED_UPLOAD', message: 'PNG, JPEG and WebP only in the public demonstrator. SVG, PDF, HEIC and specialist files need future reviewed handling or Pivot assistance.' } };

@@ -14,9 +14,9 @@
 | T010 Failing controls/upload/accessibility tests | 4 | Complete | Red observed: missing control APIs/UI, active-format acceptance, phone tool loss and serious axe violations |
 | T011 Text/raster-artwork/layer controls | 4 | Complete | Text/image transform, validation, duplication, ordering and browser-local upload tests pass |
 | T012 Zoom/pan/non-drag/responsive accessibility | 4 | Complete | Structured position/viewport controls, keyboard movement, mobile tools and axe checks pass |
-| T013 Failing checks/help/workflow-truth tests | 5 | Blocked by Window 4 | — |
-| T014 Indicative checks/help/simulation labels | 5 | Blocked by T013 | — |
-| T015 Cross-browser validation and quickstart | 5 | Blocked by T014 | — |
+| T013 Failing checks/help/workflow-truth tests | 5 | Complete | Red observed: missing check engine/dialog and incomplete workflow consequence notice |
+| T014 Indicative checks/help/simulation labels | 5 | Complete | Check engine/dialog and workflow truth tests pass; Club Polo fixture regression passes |
+| T015 Cross-browser validation and quickstart | 5 | Complete | 115 Playwright tests pass across desktop/mobile projects; quickstart and README updated |
 
 ## Checkpoint status
 
@@ -24,4 +24,6 @@
 - Window 2: Complete
 - Window 3: Complete
 - Window 4: Complete
-- Window 5: Ready
+- Window 5: Complete
+
+All 15 tasks and five execution-window checkpoints are complete.

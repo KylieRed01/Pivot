@@ -7,6 +7,7 @@ import {
   reduceStudioState,
   resetStudioState,
   restorePublicState,
+  runIndicativeChecks,
   serializePublicState,
   validatePublicArtwork
 } from '../public/studio-state.js';
@@ -225,6 +226,28 @@ test('viewport controls are bounded and persisted in public state', () => {
     { zoom: result.state.view.zoom, panX: result.state.view.panX, panY: result.state.view.panY },
     { zoom: 1, panX: 0, panY: 0 }
   );
+});
+
+test('indicative checks distinguish blocking errors, warnings and unresolved guidance', () => {
+  const state = createInitialStudioState();
+  state.surfaces['dark.front'].layers = state.surfaces['dark.front'].layers.filter(layer => layer.role !== 'number');
+  state.surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark').text = '';
+  state.surfaces['light.front'].layers.find(layer => layer.role === 'wordmark').x = 101;
+
+  const checks = runIndicativeChecks(state);
+
+  assert.ok(checks.some(check => check.code === 'REQUIRED_NUMBER' && check.severity === 'error' && check.blocking));
+  assert.ok(checks.some(check => check.code === 'EMPTY_TEXT' && check.severity === 'warning' && !check.blocking));
+  assert.ok(checks.some(check => check.code === 'INDICATIVE_BOUNDARY' && check.severity === 'warning'));
+  assert.ok(checks.some(check => check.code === 'UNRESOLVED_DEPENDENCIES' && check.severity === 'guidance'));
+  assert.equal(JSON.stringify(checks).toLowerCase().includes('production ready'), false);
+});
+
+test('clean placeholder still reports unresolved production dependencies', () => {
+  const checks = runIndicativeChecks(createInitialStudioState());
+  assert.equal(checks.some(check => check.severity === 'error'), false);
+  assert.equal(checks.some(check => check.code === 'UNRESOLVED_DEPENDENCIES'), true);
+  assert.equal(checks.some(check => check.code === 'INDICATIVE_ONLY'), true);
 });
 
 test('restore and reset never carry production or Phoenix artwork claims', () => {

@@ -1,26 +1,45 @@
-# Pivot Phoenix Phase 1
+# Pivot Website and Design Studio Demonstrator
 
-Dependency-free Node.js pilot for the Phoenix club store, guided design, approvals and publication.
+Dependency-free Node.js demonstrator for the public Pivot website, browser-local Pivot Design Studio and isolated Phoenix workflow simulation.
 
 ## Run locally
 
 1. Install Node.js 20 or newer.
-2. In this directory run `npm test`.
-3. Run `npm start`.
-4. Open <http://localhost:3000>.
-5. Select **Design studio** to exercise role-based workflows using the demo identity selector.
+2. Run `npm install`.
+3. Run `npm test`.
+4. Run `npm start`.
+5. Open <http://localhost:3000>.
 
-Data is stored in `data/state.json`. To reset the demo, restore that file from Git. Authentication controls are demonstrators: production passwordless email and MFA require a deployment identity provider.
+Routes:
 
-## Manual test path
+- Public website: <http://localhost:3000/>
+- Public browser-local Studio: <http://localhost:3000/#studio>
+- Phoenix workflow simulation: <http://localhost:3000/#workflow-demo>
 
-- Store: verify two approved products, no prices/order controls, polo sizing table.
-- Studio as Phoenix administrator: change colours/artwork and save a version; approval should be denied.
-- Switch to Phoenix primary approver and club-approve.
-- Switch to Pivot administrator, Pivot-approve, then publish.
-- Return to the store and verify the newly published design appears.
-- Try actions out of sequence and verify they are rejected.
+## Verification
 
-## Known blockers
+```bash
+npm run check
+npm test
+npm run test:e2e
+```
 
-Supplier task 6 is HITL and unresolved. Therefore task 7's supplier-exact 2D template and 3D garment model, and task 8 final readiness verification, are not represented as production-ready. Current preview is explicitly labelled a placeholder.
+Full manual verification is documented in [`specs/pivot-design-tool-baseline/quickstart.md`](specs/pivot-design-tool-baseline/quickstart.md).
+
+## Demonstrator boundaries
+
+- Public Studio work remains in the browser session and is not a saved club design.
+- `data/state.json` supports the workflow simulation only. It is not production storage.
+- Demo identities and actions are not production authentication or approval.
+- Current garment geometry, boundaries, artwork and side/3D effects are placeholders.
+- No production proof, manufacture release or supplier acknowledgement is created.
+
+## Unresolved
+
+- Supplier and authoritative templates
+- Final Phoenix artwork
+- Production infrastructure
+- Accurate 3D
+- Manufacturing integration
+
+Do not use the demonstrator as production or manufacturing authority.

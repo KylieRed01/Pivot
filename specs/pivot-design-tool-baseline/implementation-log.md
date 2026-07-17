@@ -136,3 +136,34 @@
 - Website, entry, editor and phone accessibility tests report no serious/critical axe violations.
 - `git diff --check`: pass (line-ending notices only).
 - Scope check: no production upload pipeline, supplier constraints, accurate 3D or infrastructure added.
+
+## 2026-07-17 — Window 5 complete
+
+### T013 — Checks, help and workflow-truth tests
+
+- Added deterministic indicative-check unit tests and Help/workflow browser journeys.
+- Observed the required red state for the missing check engine/dialog and incomplete workflow consequence notice.
+
+### T014 — Indicative checks and simulation containment
+
+- Added error, warning and guidance results for required numbers, empty text, indicative boundaries, upload validity and unresolved dependencies.
+- Added an accessible design-check dialog that never establishes manufacturing readiness.
+- Expanded persistent workflow notices to exclude production authentication, proof, manufacture release and supplier acknowledgement.
+- Updated seeded customer-facing Coach Polo wording to Club Polo while retaining stable IDs.
+
+### T015 — Cross-browser verification and documentation
+
+- Added desktop Chromium, Firefox and WebKit projects plus representative Android and iPhone projects.
+- Added `quickstart.md` with public, keyboard, workflow, accessibility, device and volunteer-usability checklists.
+- Updated `README.md` for the public Studio and workflow simulation routes.
+- Corrected mobile contrast findings and reduced cross-browser test concurrency for reliable execution.
+
+### Window 5 and final checkpoint evidence
+
+- `npm run check`: pass.
+- `npm test`: 26/26 pass.
+- `npm run test:e2e`: 115/115 pass across Chromium, Firefox, WebKit, mobile Chrome and mobile Safari projects.
+- `npm audit`: zero vulnerabilities.
+- `git diff --check`: pass (line-ending notices only).
+- Scope check: no production infrastructure, supplier-dependent functionality, accurate 3D, final Phoenix artwork or manufacturing integration added.
+- Manual checks on actual devices and the 5–8 person Phoenix usability exercise remain documented pilot-readiness activities.
