@@ -1,7 +1,7 @@
 # Pivot Grill-Me Handover — Proportionate Cloud Selection
 
 **Date:** 2026-07-17  
-**Status:** Paused at Kylie's request to continue in a fresh chat. The Phase 1 monthly production-technology budget question is unanswered.  
+**Status:** Paused pending the supplier evaluation and Phoenix committee meeting expected next week. Cloud-provider selection is deferred.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-cloud-provider-selection.md`
 
 ## Resume instructions
@@ -13,27 +13,47 @@
 3. Follow the linked handover/document-reading instructions in `grill-me-handover-security-infrastructure.md`.
 4. This file records the latest decisions and supersedes earlier handovers where they conflict.
 5. Continue one genuinely unresolved question at a time and include a recommendation.
-6. Keep intelligence at **Max** for the current infrastructure/security branch. Explicitly cue **High** only when moving to lower-risk product behaviour, editor workflow, reconciliation, register preparation, or summaries; cue **Max** again before returning to security, privacy, authentication, storage, supplier integration, production export, or detailed 2D-to-3D architecture.
-7. `Max` means careful reasoning and proportionality—not maximum controls. Pivot is a small, controlled pilot, not an enterprise platform.
+6. Use **Medium** by default. Use **High** only for genuinely technical architecture, security, privacy, authentication, or production-export decisions. Do not use **Max** unless a specific issue proves unusually complex and Kylie explicitly approves escalation.
+7. Reason proportionately. Pivot is a small, controlled pilot, not an enterprise platform.
 8. Do not ask Kylie to approve ordinary safeguards when there is one responsible baseline. Ask only about material scope/cost/experience choices, meaningful risk acceptance, business facts only Kylie knows, or genuine Director decisions.
 9. Do not update implementation code yet. Complete the grill and then reconcile governing/specification documents together.
 
 ## Exact resume point
 
-The current unanswered question is:
+Pause the supplier/artwork branch until both external inputs expected next week are available:
 
-> Is a Phase 1 production-technology target of up to **AUD 250 per month excluding GST**, with Director review before forecast recurring spend exceeds **AUD 300 per month**, an acceptable planning boundary?
+1. supplier Stage 2 responses have been evaluated and a Phase 1 supplier decision can be made; and
+2. the Phoenix committee has met to decide its official club-wide palette and nominate an independent club administrator plus a separate workflow-test user.
 
-Recommended answer:
+When resuming, first ask for the outcomes of those two events. Do not repeat settled backup, public-trial, provider-selection, budget, session, or role questions.
 
-- Yes.
-- Treat AUD 250/month as the target and AUD 300/month as a review threshold, not an automatic entitlement to spend.
-- Include primary hosting, Australian recovery capacity, independent encrypted backup, ordinary logs/monitoring, minimal transactional email, and low pilot usage.
-- Exclude one-off development, domain registration paid elsewhere, and temporary test resources that are shut down when not needed.
-- Validate with a bounded proof of concept, provider calculators, budget alerts, and actual first-month billing.
-- If the evidenced design cannot fit, identify the exact requirement driving cost and return with a simpler alternative rather than silently introducing enterprise services.
+## Decisions locked in the latest continuation — lean Phase 1 reset
 
-Ask this one question first.
+These decisions supersede earlier infrastructure assumptions where they conflict:
+
+- Phase 1 recurring production technology has a target of **AUD 120/year excluding GST**, with Director review before exceeding **AUD 180/year**.
+- Restore expectations are **next business day**, not four support-hours.
+- Up to 24 hours of saved draft work may be lost after a major failure.
+- Unsaved work receives no server-side persistence or recovery.
+- Only authenticated Phoenix pilot users may save. Public visitors can play without an account, but their artwork and design state remain browser-local and are never uploaded, saved, retained, or recoverable by Pivot.
+- Saved Phoenix designs receive proportionate backups; completed approvals and production releases remain protected as settled previously.
+- No cloud provider is selected or preferred. Selection is deferred until the lean architecture is defined; only a bounded affordability and Australian-hosting check is required before production.
+- The earlier managed multi-region AWS design is rejected as disproportionate to the pilot and budget.
+- Detailed 3D architecture is deferred until the selected supplier provides authoritative patterns or models. Supplier-specific integration and export architecture is also deferred; controlled manual handover remains the fallback.
+- Routine operational alerts go only to Kylie. Cameron remains emergency-recovery assistance only and receives no routine alerts.
+- Phoenix sessions have a 24-hour absolute maximum, expire after two hours of inactivity, and require fresh passwordless authentication before approvals or access changes. Sign-in links remain short-lived and single-use.
+
+### Supplier and Phoenix external inputs
+
+- No Phase 1 supplier has been selected. Stage 2 questions have been sent, with evaluation and a likely decision expected next week.
+- Phoenix has not yet nominated its club administrator. Kylie and Cameron cannot hold the role because of their Pivot connections.
+- The Phoenix uniform coordinator is the natural candidate. The committee will decide at next Thursday's meeting and will also nominate a separate volunteer to perform a scripted club-user-to-administrator workflow test.
+- The uniform coordinator may perform both ordinary design preparation and approval after that distinct workflow test.
+- Phoenix will consider three colour directions and formally establish its official club-wide palette at the meeting, not merely a pilot garment colour.
+- Phoenix recently had its logo redrawn and expects the designer to update the vector master after the palette decision. Obtain SVG/vector PDF, high-resolution transparent PNG, and exact colour references.
+- Phoenix may approve a separate club-name wordmark/text treatment so its identity does not compete with the jersey design.
+- Phase 1 is a new design journey. Existing jersey artwork is unavailable and is not needed or to be reconstructed; existing colours are also not authoritative.
+- Pivot Teamwear is the Phase 1 sponsor. Use only the approved Pivot wordmark, with an appropriate light/dark version; do not use the penguin icon.
 
 ## Latest Director direction — proportionality
 
