@@ -26,6 +26,9 @@ function safeLayer(layer) {
   if (layer.required) safe.required = true;
   if (layer.type === 'image') {
     safe.name = String(layer.name ?? 'Browser-local artwork');
+    safe.mime = String(layer.mime ?? '');
+    safe.size = Number.isFinite(layer.size) ? layer.size : 0;
+    if (typeof layer.src === 'string') safe.src = layer.src;
     safe.cropZoom = Number.isFinite(layer.cropZoom) ? layer.cropZoom : 1;
     safe.cropX = Number.isFinite(layer.cropX) ? layer.cropX : 50;
     safe.cropY = Number.isFinite(layer.cropY) ? layer.cropY : 50;
@@ -35,6 +38,9 @@ function safeLayer(layer) {
   } else {
     safe.text = String(layer.text ?? '');
     safe.colour = String(layer.colour ?? '#FFFFFF');
+    safe.alignment = ['left', 'center', 'right'].includes(layer.alignment) ? layer.alignment : 'center';
+    safe.letterSpacing = Number.isFinite(layer.letterSpacing) ? layer.letterSpacing : 0;
+    safe.lineSpacing = Number.isFinite(layer.lineSpacing) ? layer.lineSpacing : 1;
   }
   return safe;
 }
@@ -70,6 +76,14 @@ function normalize(candidate) {
       base: String(source.base ?? initial.surfaces[key].base),
       accent: String(source.accent ?? initial.surfaces[key].accent),
       pattern: String(source.pattern ?? initial.surfaces[key].pattern),
+      scale: Number.isFinite(source.scale) ? source.scale : initial.surfaces[key].scale,
+      angle: Number.isFinite(source.angle) ? source.angle : initial.surfaces[key].angle,
+      density: Number.isFinite(source.density) ? source.density : initial.surfaces[key].density,
+      neck: String(source.neck ?? initial.surfaces[key].neck),
+      armTrim: String(source.armTrim ?? initial.surfaces[key].armTrim),
+      gradient: Boolean(source.gradient),
+      gradientColour: String(source.gradientColour ?? initial.surfaces[key].accent),
+      gradientAngle: Number.isFinite(source.gradientAngle) ? source.gradientAngle : 135,
       layers: Array.isArray(source.layers) ? source.layers.map(safeLayer) : initial.surfaces[key].layers
     };
   }
@@ -80,7 +94,15 @@ function normalize(candidate) {
 }
 
 export function serializePublicState(state) {
-  return JSON.stringify(normalize(state));
+  const safe = normalize(state);
+  for (const surface of Object.values(safe.surfaces)) {
+    for (const layer of surface.layers) {
+      delete layer.src;
+      delete layer.file;
+      delete layer.objectUrl;
+    }
+  }
+  return JSON.stringify(safe);
 }
 
 export function restorePublicState(serialized) {
@@ -95,6 +117,19 @@ export function resetStudioState() {
   return createInitialStudioState();
 }
 
+const PUBLIC_ARTWORK_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
+const MAX_PUBLIC_ARTWORK_BYTES = 5 * 1024 * 1024;
+
+export function validatePublicArtwork(file) {
+  if (!file || !PUBLIC_ARTWORK_TYPES.has(file.type)) {
+    return { ok: false, error: { code: 'UNSUPPORTED_UPLOAD', message: 'PNG, JPEG and WebP only in the public demonstrator. SVG, PDF, HEIC and specialist files need future reviewed handling or Pivot assistance.' } };
+  }
+  if (!Number.isFinite(file.size) || file.size > MAX_PUBLIC_ARTWORK_BYTES) {
+    return { ok: false, error: { code: 'UPLOAD_TOO_LARGE', message: 'Choose a raster image no larger than 5 MB.' } };
+  }
+  return { ok: true };
+}
+
 const failed = (state, code, message) => ({
   ok: false,
   state: clone(state),
@@ -104,6 +139,13 @@ const failed = (state, code, message) => ({
 export function reduceStudioState(current, action) {
   const state = normalize(current);
   if (!action || typeof action !== 'object') return failed(state, 'INVALID_ACTION', 'A Studio action is required.');
+
+  if (action.type === 'setPalette') {
+    const next = clone(state);
+    const allowed = new Set(['primary', 'secondary', 'accent', 'light']);
+    for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key)) next.palette[key] = String(value);
+    return { ok: true, state: next };
+  }
 
   if (action.type === 'setDesignName') {
     const next = clone(state);
@@ -127,12 +169,39 @@ export function reduceStudioState(current, action) {
     return { ok: true, state: next };
   }
 
+  if (action.type === 'setViewport') {
+    const next = clone(state);
+    const patch = action.patch ?? {};
+    if (Number.isFinite(patch.zoom)) next.view.zoom = Math.max(0.5, Math.min(2, patch.zoom));
+    if (Number.isFinite(patch.panX)) next.view.panX = Math.max(-100, Math.min(100, patch.panX));
+    if (Number.isFinite(patch.panY)) next.view.panY = Math.max(-100, Math.min(100, patch.panY));
+    return { ok: true, state: next };
+  }
+
+  if (action.type === 'resetViewport') {
+    const next = clone(state);
+    next.view.zoom = 1;
+    next.view.panX = 0;
+    next.view.panY = 0;
+    return { ok: true, state: next };
+  }
+
   if (action.type === 'selectLayer') {
     const surface = state.surfaces[action.surface ?? state.view.surface];
     if (!surface?.layers.some(layer => layer.id === action.layerId)) return failed(state, 'LAYER_NOT_FOUND', 'The selected layer is no longer available.');
     const next = clone(state);
     next.view.surface = surface.key;
     next.view.selectedLayerId = action.layerId;
+    return { ok: true, state: next };
+  }
+
+  if (action.type === 'updateSurface') {
+    const surfaceKey = action.surface ?? state.view.surface;
+    const next = clone(state);
+    const surface = next.surfaces[surfaceKey];
+    if (!surface) return failed(state, 'INVALID_SURFACE', 'Choose an available 2D surface.');
+    const allowed = new Set(['base', 'accent', 'pattern', 'scale', 'angle', 'density', 'neck', 'armTrim', 'gradient', 'gradientColour', 'gradientAngle']);
+    for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key)) surface[key] = value;
     return { ok: true, state: next };
   }
 
@@ -147,6 +216,49 @@ export function reduceStudioState(current, action) {
     }
     next.view.surface = surfaceKey;
     next.view.selectedLayerId = layer.id;
+    return { ok: true, state: next };
+  }
+
+  if (action.type === 'addLayer') {
+    const surfaceKey = action.surface ?? state.view.surface;
+    const next = clone(state);
+    const surface = next.surfaces[surfaceKey];
+    if (!surface) return failed(state, 'INVALID_SURFACE', 'Choose an available 2D surface.');
+    if (action.layer?.type === 'image') {
+      const validation = validatePublicArtwork({ type: action.layer.mime, size: action.layer.size });
+      if (!validation.ok) return { ...validation, state: clone(state) };
+    }
+    const layer = safeLayer(action.layer ?? {});
+    if (!layer.id) return failed(state, 'INVALID_LAYER', 'The new layer needs an identifier.');
+    surface.layers.push(layer);
+    next.view.surface = surfaceKey;
+    next.view.selectedLayerId = layer.id;
+    return { ok: true, state: next };
+  }
+
+  if (action.type === 'duplicateLayer') {
+    const surfaceKey = action.surface ?? state.view.surface;
+    const next = clone(state);
+    const surface = next.surfaces[surfaceKey];
+    const source = surface?.layers.find(candidate => candidate.id === action.layerId);
+    if (!source) return failed(state, 'LAYER_NOT_FOUND', 'The selected layer is no longer available.');
+    if (source.controlLevel !== 'flexible') return failed(state, 'PROTECTED_LAYER', 'This required layer cannot be duplicated.');
+    const copy = safeLayer({ ...source, id: action.newLayerId, x: Math.min(95, source.x + 5), y: Math.min(95, source.y + 5) });
+    if (!copy.id) return failed(state, 'INVALID_LAYER', 'The duplicate layer needs an identifier.');
+    surface.layers.push(copy);
+    next.view.selectedLayerId = copy.id;
+    return { ok: true, state: next };
+  }
+
+  if (action.type === 'reorderLayer') {
+    const surfaceKey = action.surface ?? state.view.surface;
+    const next = clone(state);
+    const layers = next.surfaces[surfaceKey]?.layers;
+    const index = layers?.findIndex(candidate => candidate.id === action.layerId) ?? -1;
+    if (index < 0) return failed(state, 'LAYER_NOT_FOUND', 'The selected layer is no longer available.');
+    const target = Math.max(0, Math.min(layers.length - 1, index + Math.sign(action.direction || 0)));
+    if (target !== index) [layers[index], layers[target]] = [layers[target], layers[index]];
+    next.view.selectedLayerId = action.layerId;
     return { ok: true, state: next };
   }
 
@@ -173,7 +285,7 @@ export function createStudioHistory(initialState = createInitialStudioState(), o
   let state = normalize(initialState);
   let past = [];
   let future = [];
-  const historyActions = new Set(['updateLayer', 'deleteLayer']);
+  const historyActions = new Set(['updateSurface', 'updateLayer', 'addLayer', 'duplicateLayer', 'reorderLayer', 'deleteLayer']);
   const persist = () => store?.save?.(state);
 
   return {

@@ -7,7 +7,8 @@ import {
   reduceStudioState,
   resetStudioState,
   restorePublicState,
-  serializePublicState
+  serializePublicState,
+  validatePublicArtwork
 } from '../public/studio-state.js';
 
 const surfaceKeys = state => Object.keys(state.surfaces).sort();
@@ -142,6 +143,88 @@ test('accepted history changes persist through the session store', () => {
   history.dispatch({ type: 'updateLayer', surface: 'dark.front', layerId: wordmark.id, patch: { text: 'RESTORED' } });
 
   assert.equal(store.load().surfaces['dark.front'].layers.find(layer => layer.id === wordmark.id).text, 'RESTORED');
+});
+
+test('text controls preserve supplier-independent properties through history', () => {
+  const history = createStudioHistory(createInitialStudioState());
+  const layer = history.getState().surfaces['dark.front'].layers.find(candidate => candidate.role === 'wordmark');
+
+  history.dispatch({
+    type: 'updateLayer',
+    surface: 'dark.front',
+    layerId: layer.id,
+    patch: {
+      text: 'TEAM', colour: '#F4951D', scale: 1.4, x: 35, y: 44,
+      rotation: 12, alignment: 'left', letterSpacing: 2, lineSpacing: 1.2
+    }
+  });
+  history.dispatch({ type: 'selectSurface', surface: 'light.front' });
+  history.dispatch({ type: 'selectSurface', surface: 'dark.front' });
+
+  const updated = history.getState().surfaces['dark.front'].layers.find(candidate => candidate.id === layer.id);
+  assert.deepEqual(
+    {
+      text: updated.text, colour: updated.colour, scale: updated.scale, x: updated.x,
+      y: updated.y, rotation: updated.rotation, alignment: updated.alignment,
+      letterSpacing: updated.letterSpacing, lineSpacing: updated.lineSpacing
+    },
+    {
+      text: 'TEAM', colour: '#F4951D', scale: 1.4, x: 35,
+      y: 44, rotation: 12, alignment: 'left', letterSpacing: 2, lineSpacing: 1.2
+    }
+  );
+});
+
+test('public artwork validation permits raster formats and rejects active or oversized files', () => {
+  assert.deepEqual(validatePublicArtwork({ name: 'logo.png', type: 'image/png', size: 1024 }), { ok: true });
+  assert.deepEqual(validatePublicArtwork({ name: 'photo.webp', type: 'image/webp', size: 2048 }), { ok: true });
+  assert.equal(validatePublicArtwork({ name: 'logo.svg', type: 'image/svg+xml', size: 500 }).error.code, 'UNSUPPORTED_UPLOAD');
+  assert.equal(validatePublicArtwork({ name: 'proof.pdf', type: 'application/pdf', size: 500 }).error.code, 'UNSUPPORTED_UPLOAD');
+  assert.equal(validatePublicArtwork({ name: 'huge.jpg', type: 'image/jpeg', size: 6 * 1024 * 1024 }).error.code, 'UPLOAD_TOO_LARGE');
+});
+
+test('flexible image layers can be added, transformed, duplicated and reordered', () => {
+  const history = createStudioHistory(createInitialStudioState());
+  const added = history.dispatch({
+    type: 'addLayer',
+    surface: 'dark.front',
+    layer: {
+      id: 'image-test', type: 'image', role: 'artwork', controlLevel: 'flexible',
+      name: 'logo.png', mime: 'image/png', size: 1024, src: 'blob:browser-only',
+      x: 50, y: 45, scale: 1, rotation: 0, cropZoom: 1, cropX: 50, cropY: 50,
+      opacity: 1, flipX: false, flipY: false
+    }
+  });
+  assert.equal(added.ok, true);
+
+  history.dispatch({
+    type: 'updateLayer', surface: 'dark.front', layerId: 'image-test',
+    patch: { x: 30, y: 35, scale: 1.5, rotation: 20, cropZoom: 1.4, cropX: 40, cropY: 60, opacity: 0.7, flipX: true, flipY: true }
+  });
+  const duplicated = history.dispatch({ type: 'duplicateLayer', surface: 'dark.front', layerId: 'image-test', newLayerId: 'image-copy' });
+  assert.equal(duplicated.ok, true);
+  assert.equal(history.dispatch({ type: 'reorderLayer', surface: 'dark.front', layerId: 'image-copy', direction: -1 }).ok, true);
+
+  const image = history.getState().surfaces['dark.front'].layers.find(layer => layer.id === 'image-test');
+  assert.equal(image.opacity, 0.7);
+  assert.equal(image.flipX, true);
+  assert.equal(image.flipY, true);
+  assert.equal(history.getState().surfaces['dark.front'].layers.some(layer => layer.id === 'image-copy'), true);
+  assert.equal(serializePublicState(history.getState()).includes('blob:browser-only'), false);
+});
+
+test('viewport controls are bounded and persisted in public state', () => {
+  let result = reduceStudioState(createInitialStudioState(), { type: 'setViewport', patch: { zoom: 9, panX: 500, panY: -500 } });
+  assert.equal(result.ok, true);
+  assert.deepEqual(
+    { zoom: result.state.view.zoom, panX: result.state.view.panX, panY: result.state.view.panY },
+    { zoom: 2, panX: 100, panY: -100 }
+  );
+  result = reduceStudioState(result.state, { type: 'resetViewport' });
+  assert.deepEqual(
+    { zoom: result.state.view.zoom, panX: result.state.view.panX, panY: result.state.view.panY },
+    { zoom: 1, panX: 0, panY: 0 }
+  );
 });
 
 test('restore and reset never carry production or Phoenix artwork claims', () => {

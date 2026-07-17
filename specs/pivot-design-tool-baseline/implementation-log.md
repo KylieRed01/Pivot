@@ -105,3 +105,34 @@
 - `npm run test:e2e`: 14/14 pass in Chromium.
 - `git diff --check`: pass (line-ending notices only).
 - Scope check: no supplier geometry, accurate 3D, production proof or infrastructure added.
+
+## 2026-07-17 — Window 4 complete
+
+### T010 — Controls, uploads and accessibility tests
+
+- Added supplier-independent text/image/viewport state tests and browser journeys.
+- Added automated axe scans for website, entry and editor states plus phone tool-access coverage.
+- Observed the required red state for missing controls, unsafe public format acceptance, hidden phone tools and contrast/ARIA failures.
+
+### T011 — Text and raster artwork controls
+
+- Added structured text position, rotation, alignment, letter-spacing and line-spacing controls.
+- Added browser-local PNG/JPEG/WebP validation with a 5 MB limit and clear rejection guidance for active/specialist formats.
+- Added image crop, opacity, horizontal/vertical flip, duplication, deletion and layer ordering.
+- Routed public layer and surface changes through the tested state/history boundary.
+
+### T012 — Accessible alternatives and responsive editor
+
+- Added zoom, fit/reset and bounded pan controls.
+- Added structured position inputs and keyboard arrow movement as alternatives to drag.
+- Retained all required tool controls at phone width and added reduced-motion handling.
+- Corrected serious colour-contrast and ARIA findings identified by axe.
+
+### Window 4 checkpoint evidence
+
+- `npm run check`: pass.
+- `npm test`: 23/23 pass.
+- `npm run test:e2e`: 20/20 pass in Chromium.
+- Website, entry, editor and phone accessibility tests report no serious/critical axe violations.
+- `git diff --check`: pass (line-ending notices only).
+- Scope check: no production upload pipeline, supplier constraints, accurate 3D or infrastructure added.

@@ -15,6 +15,9 @@ const surface = (key, background, foreground) => ({
   scale: 48,
   angle: key.endsWith('front') ? -28 : 0,
   density: 32,
+  gradient: false,
+  gradientColour: key.startsWith('dark') ? '#0096D6' : '#092C71',
+  gradientAngle: 135,
   neck: key.startsWith('dark') ? '#FFFFFF' : '#092C71',
   armTrim: '#0096D6',
   layers: [
@@ -28,7 +31,10 @@ const surface = (key, background, foreground) => ({
       x: 50,
       y: 38,
       scale: 1,
-      rotation: 0
+      rotation: 0,
+      alignment: 'center',
+      letterSpacing: 0,
+      lineSpacing: 1
     },
     {
       id: `${key}-number`,
@@ -41,7 +47,10 @@ const surface = (key, background, foreground) => ({
       x: 50,
       y: key.endsWith('back') ? 58 : 62,
       scale: key.endsWith('back') ? 3 : 2.4,
-      rotation: 0
+      rotation: 0,
+      alignment: 'center',
+      letterSpacing: 0,
+      lineSpacing: 1
     }
   ]
 });
