@@ -46,3 +46,33 @@
 - `npm run test:e2e -- studio-public-boundary.spec.js`: 2/2 pass in Chromium.
 - `git diff --check`: pass (line-ending notices only).
 - Scope check: no production infrastructure or supplier-dependent functionality added.
+
+## 2026-07-17 — Window 2 complete
+
+### T004 — Website and entry tests
+
+- Added website and Studio-entry Playwright suites.
+- Observed five expected red failures covering the missing mail contact, hidden phone navigation, selectable unsupported garments, hidden unresolved notice and missing acknowledgement gate.
+
+### T005 — Website presentation
+
+- Added visible pilot/service notices and a mail contact fallback without adding a registration form.
+- Preserved reconciled product/FAQ copy and added accessible focus presentation.
+- Kept public section navigation available at phone width.
+
+### T006 — Truthful entry
+
+- Basketball jersey remains the only enabled editor product.
+- Men's/women's club polos are visible but disabled pending valid templates.
+- Shorts are disabled and marked provisional pending cost.
+- All five unresolved dependency classes and non-supplier-approved placeholders are disclosed before editing.
+- Public visitors must acknowledge the browser-local demonstrator boundary before entry.
+
+### Window 2 checkpoint evidence
+
+- `npm run check`: pass.
+- `npm test`: 15/15 pass.
+- `npm run test:e2e -- website.spec.js studio-entry.spec.js`: 7/7 pass in Chromium.
+- Public boundary regression suite also passed after acknowledgement flow update.
+- `git diff --check`: pass (line-ending notices only).
+- Scope check: no registration backend, production infrastructure or supplier functionality added.

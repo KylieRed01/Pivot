@@ -17,6 +17,7 @@ test('public Studio is browser-local and never calls protected design APIs', asy
   await page.getByRole('radio', { name: /Basketball Available/ }).check({ force: true });
   await page.getByLabel('Competition').selectOption('bendigo-basketball-association');
   await page.getByRole('radio', { name: /Basketball jersey/ }).check({ force: true });
+  await page.getByRole('checkbox', { name: /I understand this is a browser-local demonstrator/i }).check();
   await page.getByRole('button', { name: /Game On/ }).click();
 
   await expect(page.getByRole('heading', { name: 'Pivot Design Studio', exact: true })).toBeVisible();
