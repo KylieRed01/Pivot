@@ -16,7 +16,7 @@
 | T012 Zoom/pan/non-drag/responsive accessibility | 4 | Complete | Structured position/viewport controls, keyboard movement, mobile tools and axe checks pass |
 | T013 Failing checks/help/workflow-truth tests | 5 | Complete | Red observed: missing check engine/dialog and incomplete workflow consequence notice |
 | T014 Indicative checks/help/simulation labels | 5 | Complete | Check engine/dialog and workflow truth tests pass; Club Polo fixture regression passes |
-| T015 Cross-browser validation and quickstart | 5 | Complete | 115 Playwright tests pass across desktop/mobile projects; quickstart and README updated |
+| T015 Cross-browser validation and quickstart | 5 | Complete | Post-remediation validation: 33 Node tests and 180 Playwright tests pass across desktop/mobile projects; quickstart includes the public-session reset procedure |
 
 ## Checkpoint status
 
@@ -26,4 +26,4 @@
 - Window 4: Complete
 - Window 5: Complete
 
-All 15 tasks and five execution-window checkpoints are complete.
+All 15 implementation tasks and five execution-window checkpoints are complete. All 34 checkpoint boxes in `tasks.md` are checked against post-remediation evidence. Findings F01–F11 were resolved. The fresh structured review opened F12 for the advertised artwork-size/session-restoration boundary, so merge acceptance remains blocked pending remediation and re-review.

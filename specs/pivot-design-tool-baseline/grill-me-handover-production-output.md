@@ -2,8 +2,8 @@
 
 > **Later session:** Continue with `specs/pivot-design-tool-baseline/grill-me-handover-editor-product.md`, which supersedes this file where decisions conflict.
 
-**Date:** 2026-07-16  
-**Status:** Session paused for a break. Resume in a new chat.  
+**Date:** 2026-07-16
+**Status:** Session paused for a break. Resume in a new chat.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-production-output.md`
 
 ## Resume instructions

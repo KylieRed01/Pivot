@@ -10,13 +10,14 @@
 
 **Tasks:** [`tasks.md`](./tasks.md)
 
-**Status:** Implementation complete; ready for structured review
+**Status:** CHANGES REQUIRED — F12–F14 and warning F15 open
 
 ## Delivered
 
 ### Public website
 
-- Reconciled pilot availability, Greater Bendigo service boundary, product, FAQ and contact copy.
+- Reconciled pilot availability, Greater Bendigo service boundary, product, contact and approved categorized help copy.
+- Restored the distinct **FAQs**, **Pivot Design Studio Help**, and **Club Help Centre** groups from the approved handover, with later truthfulness corrections.
 - Added a direct `hello@pivotteamwear.com` fallback without exposing a non-functional registration form.
 - Kept section navigation available at phone width.
 - Corrected serious automated contrast findings.
@@ -65,24 +66,22 @@
 - Added axe scans for website, setup and editor states.
 - Added desktop and mobile browser projects.
 
+## Review remediation
+
+Findings F01–F11 from the blocked review were addressed without expanding scope. Remediation added required-number validation, reducer-backed context menus, inert 3D editing controls, session-restored artwork, atomic colour/pattern history, a working simulated submission, public reset, complete FAQ copy, unauthenticated public resource requests, storage-failure messaging, reconciled planning records and complete-diff whitespace cleanup.
+
+The fresh review confirmed F01–F11 but opened F12 for the artwork/session-storage boundary. A subsequent provenance audit opened F13–F15 for help-copy authority, the superseded garment penguin asset, and Text/Images menu naming. See `CODE_REVIEW.md`; do not merge until the open findings are resolved and re-reviewed.
+
 ## Automated evidence
 
 ```text
 npm run check     PASS
-npm test          26/26 PASS
-npm run test:e2e  115/115 PASS
+npm test          PASS
 npm audit         0 vulnerabilities
+git diff --check  PASS (origin/phoenix-phase-1 through working tree)
 ```
 
-Playwright projects:
-
-- Desktop Chromium
-- Desktop Firefox
-- Desktop WebKit
-- Representative mobile Chrome viewport
-- Representative mobile Safari viewport
-
-Automated axe checks report no serious/critical violations in covered states.
+Browser, device and accessibility journeys require manual verification as documented in `quickstart.md`.
 
 ## Manual evidence still required
 

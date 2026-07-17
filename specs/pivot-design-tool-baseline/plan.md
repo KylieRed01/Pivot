@@ -1,5 +1,7 @@
 # Implementation Plan: Website and Pivot Design Studio Demonstrator Update
 
+> **Superseded tooling note:** Browser-automation instructions in this historical plan are no longer authorised. Playwright and its axe integration must not be installed, used or reintroduced. Follow `AGENTS.md` and `handover-summary.md`; use Node tests and manual browser verification.
+
 **Branch**: `phoenix-phase-1`
 **Date**: 2026-07-17
 **Spec**: [`spec.md`](./spec.md)

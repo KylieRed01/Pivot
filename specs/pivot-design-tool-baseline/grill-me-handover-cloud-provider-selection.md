@@ -1,6 +1,6 @@
 # Pivot Grill-Me Handover — Proportionate Cloud Selection
 
-**Date:** 2026-07-17  
+**Date:** 2026-07-17
 **Status:** Paused pending the supplier evaluation and Phoenix committee meeting expected next week. Cloud-provider selection is deferred.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-cloud-provider-selection.md`
 

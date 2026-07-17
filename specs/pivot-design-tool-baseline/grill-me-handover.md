@@ -2,8 +2,8 @@
 
 > **Later session:** Continue with `specs/pivot-design-tool-baseline/grill-me-handover-production-output.md`, which supersedes this file where decisions conflict.
 
-**Date:** 2026-07-16  
-**Status:** Session paused for a break. Resume the grill before architecture-sensitive implementation.  
+**Date:** 2026-07-16
+**Status:** Session paused for a break. Resume the grill before architecture-sensitive implementation.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover.md`
 
 ## Resume instructions
@@ -44,7 +44,8 @@ This session resolved brand, landing-page, FAQ, public trial, club-store setup, 
 
 ### Approved registration section
 
-> **Be part of what comes next.**  
+> **Be part of what comes next.**
+>
 > A modern teamwear experience is coming to Greater Bendigo. Explore your club’s ideas from every angle with interactive design tools, quality custom apparel, club-branded stores, fair pricing and reliable local support. Register your club’s interest and get in the game.
 
 CTA: **Register Your Club’s Interest**
@@ -76,7 +77,8 @@ Behaviour:
 
 ### Registration confirmation
 
-> **You’re in the game.**  
+> **You’re in the game.**
+>
 > Thanks for registering your club’s interest. We’ve got your details and will be in touch when it’s time for the next play.
 
 ### Contact and launch decisions
@@ -90,13 +92,16 @@ Behaviour:
 
 ### Public product categories and approved descriptions
 
-**Playing uniforms**  
+**Playing uniforms**
+
 Quality custom uniforms designed around your club’s identity, sport and competition requirements.
 
-**Club apparel**  
+**Club apparel**
+
 Coordinated apparel for players, coaches, volunteers and supporters, all in one club range.
 
-**Club stores**  
+**Club stores**
+
 A modern, club-branded place for your community to explore and access approved teamwear.
 
 ### Customer-facing writing standard

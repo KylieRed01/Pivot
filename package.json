@@ -8,14 +8,9 @@
     "start": "node src/server.js",
     "test": "node --test test/*.test.js",
     "test:unit": "node --test test/*.test.js",
-    "test:e2e": "playwright test",
     "check": "node --check src/server.js && node --check src/domain.js && node --check public/app.js && node --check public/studio-config.js && node --check public/studio-state.js"
   },
   "engines": {
     "node": ">=20"
-  },
-  "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
-    "@playwright/test": "1.61.1"
   }
 }

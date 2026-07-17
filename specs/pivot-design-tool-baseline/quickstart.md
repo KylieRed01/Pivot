@@ -22,10 +22,9 @@ Open:
 ```bash
 npm run check
 npm test
-npm run test:e2e
 ```
 
-Playwright runs desktop Chromium, Firefox and WebKit plus representative Android and iPhone viewports. Automated browser emulation supplements but does not replace checks on actual devices.
+Browser and device behaviour must be verified manually using the journeys below.
 
 ## Public website journey
 
@@ -60,6 +59,14 @@ Verify:
 - [ ] Undo/redo, zoom, fit/reset and pan work.
 - [ ] Help opens without losing design state.
 - [ ] Design checks are explicitly indicative and never claim manufacturing readiness.
+
+### Reset the public session
+
+1. In the public editor, select **Reset design** (accessible name: **Reset browser session**).
+2. Confirm that the product setup screen returns.
+3. Enter the Studio again and confirm the untitled placeholder design is restored with no prior edits or uploaded artwork.
+
+This clears the current tab's public Studio state. **Fit** resets only zoom and pan; it does not clear the design.
 
 ## Keyboard-only journey
 

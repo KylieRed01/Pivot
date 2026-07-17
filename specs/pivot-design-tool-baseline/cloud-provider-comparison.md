@@ -1,7 +1,7 @@
 # Pivot Phase 1 Cloud Provider Comparison
 
-**Status:** Research for the security/infrastructure grill; no provider selected  
-**Scope:** Small, controlled Phoenix Phase 1 production pilot—not an enterprise platform  
+**Status:** Research for the security/infrastructure grill; no provider selected
+**Scope:** Small, controlled Phoenix Phase 1 production pilot—not an enterprise platform
 **Decision context:** Australian handling, low operational effort, four-support-hour regional recovery, five-minute draft recovery, no loss of acknowledged critical records, and a 24-support-hour provider-wide recovery target
 
 ## Executive finding

@@ -1,5 +1,5 @@
 export const ROLES = Object.freeze({ CLUB_ADMIN: 'club_admin', PRIMARY: 'primary_approver', PIVOT: 'pivot_admin' });
-export const STATUSES = Object.freeze({ DRAFT:'draft', CLUB:'club_approved', PIVOT:'pivot_approved', REVISION:'revision_requested', PUBLISHED:'published' });
+export const STATUSES = Object.freeze({ DRAFT:'draft', SUBMITTED:'submitted', CLUB:'club_approved', PIVOT:'pivot_approved', REVISION:'revision_requested', PUBLISHED:'published' });
 
 export function canAccessClub(user, clubId) {
   return Boolean(user && (user.role === ROLES.PIVOT || user.clubId === clubId));
@@ -9,7 +9,8 @@ export function transition(design, action, user, now = new Date().toISOString())
   const next = structuredClone(design);
   const rules = {
     save: { from:[STATUSES.DRAFT, STATUSES.REVISION], roles:[ROLES.CLUB_ADMIN, ROLES.PRIMARY], to:STATUSES.DRAFT },
-    clubApprove: { from:[STATUSES.DRAFT, STATUSES.REVISION], roles:[ROLES.PRIMARY], to:STATUSES.CLUB },
+    submit: { from:[STATUSES.DRAFT, STATUSES.REVISION], roles:[ROLES.CLUB_ADMIN, ROLES.PRIMARY], to:STATUSES.SUBMITTED },
+    clubApprove: { from:[STATUSES.DRAFT, STATUSES.SUBMITTED, STATUSES.REVISION], roles:[ROLES.PRIMARY], to:STATUSES.CLUB },
     pivotApprove: { from:[STATUSES.CLUB], roles:[ROLES.PIVOT], to:STATUSES.PIVOT },
     return: { from:[STATUSES.CLUB], roles:[ROLES.PIVOT], to:STATUSES.REVISION },
     publish: { from:[STATUSES.PIVOT], roles:[ROLES.PIVOT], to:STATUSES.PUBLISHED }

@@ -115,6 +115,16 @@ Before entry, explain that:
 
 Copy must be clear, professional, approachable, practical, positive and volunteer-focused. Help copy should be simpler and sharper than marketing copy. Avoid unnecessary jargon, exaggerated claims, stacked sporting metaphors, corporate language, em dashes and conspicuous AI-style punctuation.
 
+## Help content structure
+
+Keep the three approved customer-facing help areas distinct rather than flattening them into one undifferentiated FAQ list:
+
+1. **FAQs** for public availability, products, service area, interest and non-commitment;
+2. **Pivot Design Studio Help** for public-trial and editor guidance; and
+3. **Club Help Centre** for intended account, approval and club-store workflows.
+
+Later handovers supersede the older wording in `grill-me-handover.md` where it overpromises live stores, completed-design conversion, accurate 3D, production persistence or manufacturing readiness. The category names and question groupings remain approved.
+
 ## Public FAQ copy requirements
 
 The website should answer, consistently and without production promises:
@@ -154,6 +164,28 @@ When the secure registration form is available, answer a few quick questions. Pi
 ### Does trying the Design Studio or registering commit our club to anything?
 
 No. Trying the demonstrator does not submit a design, join the pilot, open a club store or commit a club to purchase. Registration consent is governed by the approved wording above.
+
+## Pivot Design Studio Help copy requirements
+
+### Can I try the Design Studio without joining Pivot?
+
+Yes. Visitors may choose an available sport, competition and teamwear item and enter the public demonstrator without joining Pivot. Public work remains on the visitor's device for the current visit and is not uploaded, saved or recoverable by Pivot.
+
+### How do club colours and artwork work?
+
+Visitors may choose colours directly and add ordinary PNG, JPEG or WebP artwork for browser-local experimentation. Exact colour codes are optional while drafting. Public colours and artwork remain temporary and never become approved club assets. Existing completed garment designs require future authenticated onboarding and may need Pivot assistance.
+
+### What can I change?
+
+Visitors may explore supported colours and patterns, add text and ordinary artwork, and use structured controls to move, resize, rotate and order flexible elements within the indicative boundary. Required basketball numbers remain constrained and cannot be removed.
+
+### How do the 2D and 3D views work?
+
+Front and back 2D surfaces are the authoritative demonstrator design views. The side and 3D effect is an indicative preview only and is not accurate garment geometry, production mapping or approval evidence.
+
+### Can I save my design?
+
+Public trial work is available only in the current browser session. Visitors cannot permanently save, share, submit or approve it, and Pivot cannot recover it. Invited Phoenix users may explore a separate workflow simulation, but production authentication and server persistence are not live.
 
 ## Club Help Centre copy requirements
 

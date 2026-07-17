@@ -21,7 +21,6 @@ Routes:
 ```bash
 npm run check
 npm test
-npm run test:e2e
 ```
 
 Full manual verification is documented in [`specs/pivot-design-tool-baseline/quickstart.md`](specs/pivot-design-tool-baseline/quickstart.md).

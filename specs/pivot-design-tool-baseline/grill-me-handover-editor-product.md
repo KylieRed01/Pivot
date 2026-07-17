@@ -1,7 +1,7 @@
 # Pivot Grill-Me Handover — Editor and Product Decisions
 
-**Date:** 2026-07-16  
-**Status:** Session paused at approximately 45% context. Resume in a new chat.  
+**Date:** 2026-07-16
+**Status:** Session paused at approximately 45% context. Resume in a new chat.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-editor-product.md`
 
 ## Resume instructions

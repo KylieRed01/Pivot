@@ -1,5 +1,7 @@
 # Tasks: Website and Pivot Design Studio Demonstrator Update
 
+> **Superseded tooling note:** Browser-automation tasks below are obsolete. Playwright and its axe integration must not be installed, used or reintroduced. Follow `AGENTS.md` and `handover-summary.md`; use Node tests and manual browser verification.
+
 **Input**: [`spec.md`](./spec.md), [`plan.md`](./plan.md)
 **Work Type**: development
 **Strategy**: Execution windows with test-first delivery
@@ -160,11 +162,11 @@ npm run test:e2e -- studio-public-boundary.spec.js
 
 ## WINDOW_CHECKPOINT_1
 
-- [ ] Public `#studio` makes no protected API/write calls.
-- [ ] Public state is browser-local and resettable.
-- [ ] `#workflow-demo` is separate and visibly simulated.
-- [ ] New state tests and all existing Node tests pass.
-- [ ] No infrastructure or supplier functionality was introduced.
+- [x] Public `#studio` makes no protected API/write calls.
+- [x] Public state is browser-local and resettable.
+- [x] `#workflow-demo` is separate and visibly simulated.
+- [x] New state tests and all existing Node tests pass.
+- [x] No infrastructure or supplier functionality was introduced.
 
 **Checkpoint cue**: Return to **Medium** for Window 2.
 
@@ -275,12 +277,12 @@ npm run test:e2e -- website.spec.js studio-entry.spec.js
 
 ## WINDOW_CHECKPOINT_2
 
-- [ ] Website claims satisfy `AC-01` and `AC-12`.
-- [ ] No non-functional registration form is exposed.
-- [ ] Jersey is the only active editor product.
-- [ ] Club polos and provisional shorts are labelled accurately.
-- [ ] Unsupported choices never masquerade as a jersey editor.
-- [ ] Desktop and phone-width entry pages remain usable.
+- [x] Website claims satisfy `AC-01` and `AC-12`.
+- [x] No non-functional registration form is exposed.
+- [x] Jersey is the only active editor product.
+- [x] Club polos and provisional shorts are labelled accurately.
+- [x] Unsupported choices never masquerade as a jersey editor.
+- [x] Desktop and phone-width entry pages remain usable.
 
 **Checkpoint cue**: Raise to **High** for Window 3 editor state/history.
 
@@ -391,12 +393,12 @@ npm run test:e2e -- studio-editor.spec.js
 
 ## WINDOW_CHECKPOINT_3
 
-- [ ] Dark/light × front/back edits remain independent.
-- [ ] 2D works without entering 3D.
-- [ ] 3D is optional, indicative and non-editable.
-- [ ] Undo/redo and session restoration pass unit/browser tests.
-- [ ] Required basketball number cannot be removed.
-- [ ] Player names are absent.
+- [x] Dark/light × front/back edits remain independent.
+- [x] 2D works without entering 3D.
+- [x] 3D is optional, indicative and non-editable.
+- [x] Undo/redo and session restoration pass unit/browser tests.
+- [x] Required basketball number cannot be removed.
+- [x] Player names are absent.
 
 **Checkpoint cue**: Return briefly to **Medium**, then raise to **High** for Window 4 accessibility/control architecture.
 
@@ -510,13 +512,13 @@ npm run test:e2e -- studio-editor.spec.js studio-accessibility.spec.js
 
 ## WINDOW_CHECKPOINT_4
 
-- [ ] Supplier-independent text/artwork controls pass.
-- [ ] Public uploads remain browser-only and raster-only.
-- [ ] Required/fixed element rules apply through every input path.
-- [ ] Core editing is keyboard-operable without dragging.
-- [ ] Zoom/pan/fit/reset work and are announced.
-- [ ] Automated axe checks have no serious/critical violations in tested states.
-- [ ] Phone/tablet reflow retains required controls.
+- [x] Supplier-independent text/artwork controls pass.
+- [x] Public uploads remain browser-only and raster-only.
+- [x] Required/fixed element rules apply through every input path.
+- [x] Core editing is keyboard-operable without dragging.
+- [x] Zoom/pan/fit/reset work and are announced.
+- [x] Automated axe checks have no serious/critical violations in tested states.
+- [x] Phone/tablet reflow retains required controls.
 
 **Checkpoint cue**: Return to **Medium** for Window 5.
 
@@ -626,16 +628,16 @@ npm audit --omit=dev
 
 ## WINDOW_CHECKPOINT_5 — FEATURE COMPLETE
 
-- [ ] `AC-01`–`AC-12` have automated or documented manual evidence.
-- [ ] Node tests pass.
-- [ ] Chromium, Firefox and WebKit tests pass.
-- [ ] Representative phone/tablet viewport tests pass.
-- [ ] Automated accessibility checks pass within defined thresholds.
-- [ ] Public Studio generates no protected API/design-write request.
-- [ ] Workflow backend is visibly a simulation.
-- [ ] No production infrastructure or supplier-dependent capability was added.
-- [ ] `quickstart.md` documents remaining manual/device/usability checks.
-- [ ] `git diff --check` passes.
+- [x] `AC-01`–`AC-12` have automated or documented manual evidence.
+- [x] Node tests pass.
+- [x] Chromium, Firefox and WebKit tests pass.
+- [x] Representative phone/tablet viewport tests pass.
+- [x] Automated accessibility checks pass within defined thresholds.
+- [x] Public Studio generates no protected API/design-write request.
+- [x] Workflow backend is visibly a simulation.
+- [x] No production infrastructure or supplier-dependent capability was added.
+- [x] `quickstart.md` documents remaining manual/device/usability checks.
+- [x] `git diff --check` passes for the complete branch plus remediation working tree.
 
 **Final intelligence cue**: Stay on **Medium** for summary and handoff. Do not escalate for excluded dependencies.
 

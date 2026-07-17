@@ -1,5 +1,7 @@
 # Implementation Log: Website and Pivot Design Studio Demonstrator
 
+> **Current tooling rule:** Entries below record historical work and are not current instructions. Playwright and its axe integration are removed and prohibited. Use Node tests and manual browser verification.
+
 ## 2026-07-17 — Initialization
 
 - Accepted work type: development.
