@@ -1,7 +1,7 @@
 # Pivot Grill-Me Handover — Security and Infrastructure
 
-**Date:** 2026-07-16  
-**Status:** Session paused after the requested 30-minute continuation.  
+**Date:** 2026-07-17
+**Status:** Session paused at Kylie's request to continue in a fresh chat. The latest hosting-policy question is unanswered.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-security-infrastructure.md`
 
 ## Resume instructions
@@ -11,7 +11,7 @@
 3. Follow the linked-document reading instructions in the earliest handover.
 4. This file contains the latest decisions and supersedes earlier handovers where they conflict.
 5. Continue one genuinely unresolved question at a time and include a recommendation.
-6. Current reasoning level is `max`; keep it at `max` for security, authentication, privacy, storage, infrastructure, supplier integration, production export, and detailed 2D-to-3D architecture.
+6. Current intelligence/reasoning level is `max`; keep it at `max` for security, authentication, privacy, storage, infrastructure, supplier integration, production export, and detailed 2D-to-3D architecture. Kylie asked for explicit cues before changing intelligence: cue `Max` for those high-risk branches and `High` for lower-risk product behaviour, editor workflow, document reconciliation, register preparation, and summaries.
 7. Do not ask Kylie to approve standard or mandatory technical safeguards when there is only one responsible baseline. Decide and record those requirements. Ask only where:
    - multiple valid options materially affect product scope, cost, risk, or user experience;
    - Pivot must consciously accept a meaningful risk;
@@ -21,23 +21,27 @@
 
 ## Exact resume point
 
-The latest recovery expectations were accepted:
+Keep intelligence at `max`. The current unanswered question is:
 
-- no acknowledged approval, release, or audit event may be lost;
-- recoverable draft work may lose no more than five minutes;
-- the core service should be restorable within four hours during the pilot;
-- Pivot must maintain a documented manual contingency for urgent work.
+> Must Pivot's cloud provider be **Australian-owned**, or may an overseas-owned provider qualify when all relevant services demonstrably satisfy Australian storage, processing, and access requirements?
 
-Resume the `max` branch with the next unresolved storage/infrastructure decision. Recommended sequence:
+Recommended answer:
 
-1. establish data classification and prohibited/sensitive data boundaries;
-2. define the production storage and backup architecture requirements;
+- Do not mandate Australian ownership.
+- Treat Australian ownership and sovereign operation as favourable evidence, not a substitute for service-level validation.
+- Permit an overseas-owned provider only where every service used demonstrably meets Pivot's residency, processing, access, backup, recovery, security, exportability, operational-effort, and cost requirements.
+- Exclude a provider that cannot prove the complete boundary.
+
+This hosting decision does **not** prescribe or constrain the overseas supplier's manufacturing workflow. Ask this one question first, then continue the `max` branch in this order:
+
+1. complete production storage, backup, restore-testing, and manual-contingency requirements that follow from the locked recovery targets;
+2. research and compare candidate providers using official evidence before asking Kylie to select one;
 3. define vendor-selection and Australian-data-residency evidence requirements;
 4. cover logging, monitoring, incident response, privacy requests, and breach response;
-5. close remaining authentication/session/recovery details that require product decisions;
+5. close remaining authentication/session/recovery details that genuinely require product decisions; and
 6. then continue into detailed 2D-to-3D architecture, supplier integration, and production-export architecture as time/context permits.
 
-Do not ask Kylie to choose technical vendors without first researching and comparing their documented residency, backup, subprocessor, security, export, cost, and operational characteristics.
+Do not ask Kylie to choose a technical vendor without first comparing documented residency, processing locations, human access, backups, subprocessors, security, export, cost, and operational characteristics. Preliminary web exploration occurred in the paused chat, but no provider comparison was completed and no provider was selected.
 
 ## Meta-instruction from Kylie
 
@@ -236,25 +240,95 @@ Reassess and likely strengthen club-administrator MFA before Phoenix Pilot Phase
 - Removing a person from a club does not delete club-owned drafts.
 - Submitted/approved records remain governed by their separate immutable long-term retention requirements.
 
+## Data classification and prohibited-data decisions
+
+The mandatory Phase 1 classification baseline is:
+
+- **Public:** approved website content and static public assets.
+- **Club-confidential:** club contacts, branding, uploaded artwork, drafts, proofs, and club support records.
+- **Pivot-restricted:** supplier identity, internal templates and production mappings, costs, internal notes, credentials, security information, and operational evidence not intended for clubs.
+- **Critical/immutable:** formal approvals, attestations, releases, holds and stop outcomes, audit events, proof artifacts, production manifests, and the exact supplier packages and acknowledgements.
+
+Phase 1 does not require and must prohibit collection through ordinary workflows of:
+
+- payment-card or bank information;
+- account passwords;
+- government identifiers or identity documents;
+- health or biometric data;
+- dates of birth;
+- player rosters;
+- children's contact details; or
+- unrelated sensitive personal information.
+
+Ordinary uploads must also prohibit identifiable photographs of people, including players, and files containing embedded personal information. A future use case involving personal imagery requires a separately designed and reviewed authority, consent, child-safety, rights, retention, and privacy process.
+
+Do not ask Kylie to approve ordinary safeguards arising from this classification. Apply data minimisation, purpose limitation, least privilege, club isolation, encryption, secure deletion, and redaction from logs and notifications as mandatory requirements. Where Australian legal applicability requires professional interpretation, establish the conservative baseline and create a legal/privacy-review action rather than asking Kylie to act as legal counsel.
+
 ## Infrastructure facts and decisions
 
 - Pivot currently has no preferred cloud provider, hosting account, or target monthly technology budget.
 - Provider selection remains external/provisional and must operate within the constitutional rules.
-- Production customer data, uploaded artwork, database backups, and audit records must be held in Australia.
+- Production customer data, uploaded artwork, database backups, and audit records under Pivot's control must be stored and processed in Australia.
 - Global delivery is allowed only for static public assets.
-- Selecting an `Australia` compute region is not enough: database replicas, object storage, backups, logs, authentication data, email payloads, support access, subprocessors, analytics, malware scanning, and disaster-recovery copies all require validation.
-- Optimise for a low-maintenance managed platform, but do not choose solely on price. Require evidence of Australian residency, secure operation, exportability, and a viable exit path.
+- Selecting an `Australia` compute region is not enough: database replicas, object storage, backups, logs, authentication data, email-service payloads, support access, subprocessors, analytics, malware scanning, and disaster-recovery copies all require validation.
+- Optimise for a low-maintenance managed platform, but do not choose solely on price. Require evidence of Australian residency and processing, secure operation, controlled human access, exportability, and a viable exit path.
 
-### Recovery targets
+### Australian access and controlled cross-border exceptions
 
-Accepted business targets:
+- Pivot and vendor administrative/support personnel must not access production customer content from outside Australia.
+- Production administration by Pivot personnel while overseas is prohibited during the pilot.
+- Overseas support personnel may use non-sensitive service telemetry but may not access customer content.
+- Third-party authentication, malware scanning, logging, analytics, monitoring, backup, and similar services must store and process customer data in Australia.
+- Delivery of a minimal email to a user's chosen email provider is an unavoidable recipient-controlled exception. Transactional emails should contain secure links and minimal context, not artwork, proofs, or sensitive details.
+- An authorised overseas manufacturer is a separate, narrow exception: after formal release, it may receive only the exact minimum immutable package needed for manufacture.
+- The supplier must not receive access to Pivot's live platform, database, club libraries, drafts, unrelated proofs, audit history, or other customer records.
+- Pivot retains the exact exported package and checksum in Australia and records its destination, transmission, and acknowledgement.
+- Supplier terms must address authorised access, security, reuse, subprocessors, retention, deletion, incident notification, and breach handling.
+- Phase 1 supplier packages contain no player personal information. Future names, individual orders, or other personalisation require separate cross-border privacy and legal review.
+- The Constitution's Australian-residency wording needs clarification during final reconciliation so that it protects Pivot's authoritative platform while expressly recognising this controlled manufacturing-export exception.
+
+### Supplier integration and production-line guardrail
+
+- Pivot hopes to automate supplier handover through APIs, while retaining the previously agreed controlled manual Phase 1 fallback.
+- `Release-scoped outbound submission` describes Pivot's authorisation and data boundary; it does not lock a network protocol.
+- API push is preferred where supported, but a one-job scoped pull, secure portal/SFTP transfer, or controlled manual handover may be used depending on verified supplier capabilities.
+- Status may return by authenticated webhook, polling, portal evidence, or manual acknowledgement. The exact mechanism remains provisional.
+- Credentials and package access must be limited to the released job; no mechanism may grant broad access to Pivot's platform.
+- Do not lock supplier API schemas, authentication protocols, file formats, job states, artwork-preparation steps, machine workflows, or status coverage before supplier requirements are known.
+- Security decisions govern Pivot's platform, release, audit, and transfer boundary only. Any decision affecting the supplier's manufacturing or production line remains an external/provisional input until validated with the selected supplier.
+
+### Recovery and service-hours decisions
+
+Accepted business targets and interpretations are:
 
 - no acknowledged approval, release, or audit event may be lost;
 - recoverable draft work may lose no more than five minutes;
-- restore the core service within four hours during the pilot;
-- maintain a documented manual contingency for urgent work.
+- there is no customer-facing promise of 24/7 availability or staffed support;
+- the internal core-service recovery target is four **support-hours**;
+- recovery support-hours are 7:00 am–7:00 pm Melbourne local time, every day;
+- the recovery clock pauses outside that window—for example, an outage at 6:00 pm has a 10:00 am next-day target;
+- automated monitoring and alerting continue outside support-hours, without creating a general 24/7 staffed-response promise;
+- pre-declared critical approval or production windows may receive temporary extended/on-call coverage; and
+- Pivot must maintain a documented manual contingency for urgent work.
 
-Translate these into explicit backup, replication, point-in-time recovery, restore-testing, and incident procedures during planning. `No acknowledged event loss` requires durable transactional acknowledgement and cannot rely on periodic backups alone.
+The four-support-hour target applies to the authenticated core service:
+
+- sign-in and authorised club/Pivot access;
+- club designs, assets, and recoverable drafts;
+- authoritative 2D editing and records;
+- proofs and approval records;
+- holds, stop requests/outcomes, production releases, and audit history; and
+- the administration needed to operate those capabilities safely.
+
+Public trials, 3D visualisation, videos, analytics, and optional automation may remain degraded or recover later.
+
+During an outage:
+
+- Pivot may communicate urgent holds and stop requests and prepare approval or production evidence;
+- Pivot must not issue a new release to manufacture until the authoritative system can durably record it; and
+- delaying manufacture is preferable to making an unauditable commitment.
+
+Mandatory architecture consequences—not Director choice questions—include private Australian storage, durable transactional acknowledgement for critical events, multi-zone persistence, point-in-time recovery, private versioned/immutable artifact storage, separate encrypted Australian backups, and tested restoration. Periodic backups alone cannot satisfy `no acknowledged event loss`. The detailed backup retention, replication, restoration, and continuity procedures still need to be specified and validated.
 
 ## Documents read during this continuation
 
@@ -296,5 +370,5 @@ Known conflicts remain in old documents, including coach/club-polo terminology, 
 
 ## Files changed in this continuation
 
-- Added this handover file.
+- Updated this handover with the latest data-classification, residency, cross-border manufacturing, supplier-boundary, recovery-hours, and production-line-guardrail decisions.
 - No implementation code or baseline/governing specification was changed.
