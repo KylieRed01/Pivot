@@ -76,3 +76,32 @@
 - Public boundary regression suite also passed after acknowledgement flow update.
 - `git diff --check`: pass (line-ending notices only).
 - Scope check: no registration backend, production infrastructure or supplier functionality added.
+
+## 2026-07-17 — Window 3 complete
+
+### T007 — 2D/history/number tests
+
+- Added reducer/history unit coverage and complete public-editor browser journeys.
+- Observed the required red state: missing state exports, non-functional undo/redo, hidden 3D disclaimer and enabled number deletion.
+
+### T008 — State, history and session restoration
+
+- Added intent-based surface/view/layer actions with structured rejection errors.
+- Added bounded undo/redo history and session-store persistence.
+- Required/fixed layer deletion fails closed at the state boundary.
+
+### T009 — 2D editor integration
+
+- Wired dark/light and front/back controls to four independent 2D surfaces.
+- Added functional undo/redo and browser-session design-name restoration.
+- Kept the side/3D effect optional, non-editable and visibly non-authoritative.
+- Protected the required number through the text controls and context menu.
+- Kept player names unavailable.
+
+### Window 3 checkpoint evidence
+
+- `npm run check`: pass.
+- `npm test`: 19/19 pass.
+- `npm run test:e2e`: 14/14 pass in Chromium.
+- `git diff --check`: pass (line-ending notices only).
+- Scope check: no supplier geometry, accurate 3D, production proof or infrastructure added.

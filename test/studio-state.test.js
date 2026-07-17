@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {
   createInitialStudioState,
   createSessionStore,
+  createStudioHistory,
+  reduceStudioState,
   resetStudioState,
   restorePublicState,
   serializePublicState
@@ -70,6 +72,76 @@ test('session store restores valid state and fails closed to a clean placeholder
 
   store.clear();
   assert.deepEqual(store.load(), createInitialStudioState());
+});
+
+test('surface and view selection do not mutate independent 2D surfaces', () => {
+  const initial = createInitialStudioState();
+  const darkBefore = structuredClone(initial.surfaces['dark.front']);
+  const lightBefore = structuredClone(initial.surfaces['light.front']);
+
+  const selected = reduceStudioState(initial, { type: 'selectSurface', surface: 'light.back' });
+  const previewed = reduceStudioState(selected.state, { type: 'setViewMode', mode: '3d' });
+
+  assert.equal(selected.ok, true);
+  assert.equal(selected.state.view.surface, 'light.back');
+  assert.equal(previewed.state.view.mode, '3d');
+  assert.deepEqual(previewed.state.surfaces['dark.front'], darkBefore);
+  assert.deepEqual(previewed.state.surfaces['light.front'], lightBefore);
+});
+
+test('history updates one surface and provides deterministic undo and redo', () => {
+  const history = createStudioHistory(createInitialStudioState(), { limit: 10 });
+  const darkWordmark = history.getState().surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark');
+  const lightWordmarkBefore = structuredClone(history.getState().surfaces['light.front'].layers.find(layer => layer.role === 'wordmark'));
+
+  const changed = history.dispatch({
+    type: 'updateLayer',
+    surface: 'dark.front',
+    layerId: darkWordmark.id,
+    patch: { text: 'DARK ONLY' }
+  });
+
+  assert.equal(changed.ok, true);
+  assert.equal(history.canUndo(), true);
+  assert.equal(history.getState().surfaces['dark.front'].layers.find(layer => layer.id === darkWordmark.id).text, 'DARK ONLY');
+  assert.deepEqual(history.getState().surfaces['light.front'].layers.find(layer => layer.role === 'wordmark'), lightWordmarkBefore);
+
+  assert.equal(history.undo().ok, true);
+  assert.equal(history.getState().surfaces['dark.front'].layers.find(layer => layer.id === darkWordmark.id).text, 'PIVOT');
+  assert.equal(history.canRedo(), true);
+
+  assert.equal(history.redo().ok, true);
+  assert.equal(history.getState().surfaces['dark.front'].layers.find(layer => layer.id === darkWordmark.id).text, 'DARK ONLY');
+});
+
+test('required number deletion is rejected through the state boundary', () => {
+  const initial = createInitialStudioState();
+  const number = initial.surfaces['dark.front'].layers.find(layer => layer.role === 'number');
+  const result = reduceStudioState(initial, {
+    type: 'deleteLayer',
+    surface: 'dark.front',
+    layerId: number.id
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.error.code, 'REQUIRED_LAYER');
+  assert.match(result.error.message, /required basketball number/i);
+  assert.deepEqual(result.state, initial);
+});
+
+test('accepted history changes persist through the session store', () => {
+  const values = new Map();
+  const store = createSessionStore({
+    getItem: key => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+    removeItem: key => values.delete(key)
+  }, 'history-store');
+  const history = createStudioHistory(createInitialStudioState(), { store });
+  const wordmark = history.getState().surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark');
+
+  history.dispatch({ type: 'updateLayer', surface: 'dark.front', layerId: wordmark.id, patch: { text: 'RESTORED' } });
+
+  assert.equal(store.load().surfaces['dark.front'].layers.find(layer => layer.id === wordmark.id).text, 'RESTORED');
 });
 
 test('restore and reset never carry production or Phoenix artwork claims', () => {
