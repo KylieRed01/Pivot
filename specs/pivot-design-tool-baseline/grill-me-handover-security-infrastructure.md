@@ -1,7 +1,9 @@
 # Pivot Grill-Me Handover — Security and Infrastructure
 
+> **Later session:** Continue with `specs/pivot-design-tool-baseline/grill-me-handover-cloud-provider-selection.md`, which supersedes this file where decisions conflict.
+
 **Date:** 2026-07-17
-**Status:** Session paused at Kylie's request to continue in a fresh chat. The latest hosting-policy question is unanswered.
+**Status:** Continued in a fresh chat. Candidate-provider research and the vendor evidence gate are complete. No provider is selected; the Phase 1 monthly production-technology budget is the current business question.
 **Resume command:** `grill-me Continue from specs/pivot-design-tool-baseline/grill-me-handover-security-infrastructure.md`
 
 ## Resume instructions
@@ -21,27 +23,31 @@
 
 ## Exact resume point
 
-Keep intelligence at `max`. The current unanswered question is:
+Keep intelligence at `max`. Cloud-provider ownership has been resolved as described under **Cloud-provider ownership and compliance** below.
 
-> Must Pivot's cloud provider be **Australian-owned**, or may an overseas-owned provider qualify when all relevant services demonstrably satisfy Australian storage, processing, and access requirements?
+Official-evidence research is recorded in `specs/pivot-design-tool-baseline/cloud-provider-comparison.md`. AWS is the strongest provisional primary-platform candidate, but no provider has been selected.
+
+The current unanswered question is:
+
+> Is a Phase 1 production-technology target of up to AUD 250 per month excluding GST, with Director review before forecast recurring spend exceeds AUD 300 per month, an acceptable planning boundary?
 
 Recommended answer:
 
-- Do not mandate Australian ownership.
-- Treat Australian ownership and sovereign operation as favourable evidence, not a substitute for service-level validation.
-- Permit an overseas-owned provider only where every service used demonstrably meets Pivot's residency, processing, access, backup, recovery, security, exportability, operational-effort, and cost requirements.
-- Exclude a provider that cannot prove the complete boundary.
+- Yes. Use AUD 250/month as the target and AUD 300/month as a review threshold, not an automatic entitlement to spend.
+- Include primary hosting, Australian recovery capacity, independent encrypted backup, ordinary logs/monitoring, minimal transactional email, and low pilot usage.
+- Exclude one-off development work, domain registration already paid elsewhere, and temporary test resources that are shut down when unused.
+- Validate the estimate with a small proof of concept and actual first-month billing before production approval.
+- If the evidenced design cannot stay within this boundary, return with the exact requirement driving the cost and a simpler alternative; do not silently buy enterprise services.
 
-This hosting decision does **not** prescribe or constrain the overseas supplier's manufacturing workflow. Ask this one question first, then continue the `max` branch in this order:
+After resolving the budget, continue the `max` branch in this order:
 
-1. complete production storage, backup, restore-testing, and manual-contingency requirements that follow from the locked recovery targets;
-2. research and compare candidate providers using official evidence before asking Kylie to select one;
-3. define vendor-selection and Australian-data-residency evidence requirements;
-4. cover logging, monitoring, incident response, privacy requests, and breach response;
-5. close remaining authentication/session/recovery details that genuinely require product decisions; and
-6. then continue into detailed 2D-to-3D architecture, supplier integration, and production-export architecture as time/context permits.
+1. decide whether to accept AWS as the provisional provider for a bounded proof of concept, not final production approval;
+2. close any remaining provider/data-residency evidence gaps exposed by that proof of concept;
+3. cover logging, monitoring, incident response, privacy requests, and breach response;
+4. close remaining authentication/session/recovery details that genuinely require product decisions; and
+5. then continue into detailed 2D-to-3D architecture, supplier integration, and production-export architecture as time/context permits.
 
-Do not ask Kylie to choose a technical vendor without first comparing documented residency, processing locations, human access, backups, subprocessors, security, export, cost, and operational characteristics. Preliminary web exploration occurred in the paused chat, but no provider comparison was completed and no provider was selected.
+Do not ask Kylie to make a final technical-vendor selection until the proof of concept and evidence closure validate residency, processing locations, human access, backups, subprocessors, security, export, cost, and operational characteristics.
 
 ## Meta-instruction from Kylie
 
@@ -266,7 +272,40 @@ Do not ask Kylie to approve ordinary safeguards arising from this classification
 
 ## Infrastructure facts and decisions
 
-- Pivot currently has no preferred cloud provider, hosting account, or target monthly technology budget.
+### Phase 1 proportionality boundary
+
+- Pivot is building a small, controlled Phoenix Phase 1 pilot with known invitation-only users, no member ordering or payments, prohibited sensitive-data categories, low expected traffic, and manual production fallbacks. It is not an enterprise platform.
+- `Max` reasoning means careful risk analysis and proportionality, not maximal controls or enterprise architecture.
+- Prefer the fewest low-maintenance managed components that can satisfy the accepted requirements.
+- Do not introduce Kubernetes, microservices, active-active multi-cloud runtime, a 24/7 security operations centre, enterprise SIEM, a retained MSP, broad compliance certification programmes, or similar machinery unless a later requirement and evidence genuinely justify it.
+- Keep safeguards that directly protect customer data, club isolation, formal approvals, exact production records, Australian handling, and the accepted recovery targets; defer scale-oriented machinery until Phase 2 or demonstrated need.
+- If a safeguard would materially increase cost or ongoing work, quantify the risk, simpler alternative, and residual risk before treating it as mandatory.
+- Reassess the boundary before Phase 2 ordering/payment, broader club onboarding, sensitive personalisation, or a material increase in data or operational dependence.
+
+### Cloud-provider ownership and compliance
+
+- Australian ownership is not mandatory for Pivot's cloud provider.
+- Australian ownership and sovereign operation are favourable evidence, not substitutes for service-level validation.
+- An overseas-owned provider may qualify only when every service used demonstrably satisfies Pivot's Australian storage, processing, human-access, backup, recovery, security, exportability, operational-effort, and cost requirements.
+- Exclude any provider that cannot prove the complete boundary, including subprocessors and support paths.
+- This is consistent with the current Constitution, which requires relevant production records to be held in Australia but does not require Australian provider ownership.
+- Provider nationality alone is not determinative under the Australian Privacy Principles. Overseas access or disclosure may engage APP 8, while APP 11 requires reasonable technical and organisational safeguards and oversight of cloud providers.
+- The preferred provider, service boundary, subprocessors, and contractual terms require Australian privacy/legal review before commitment or production use, including review of any customer, insurer, supplier, or future regulated-data obligations.
+- This decision does not prescribe or constrain an authorised overseas manufacturer's production workflow.
+
+### Candidate-provider research
+
+- The official-evidence comparison is recorded in `specs/pivot-design-tool-baseline/cloud-provider-comparison.md`.
+- AWS Sydney plus Melbourne is the strongest provisional primary-platform candidate because it provides the required Australian regions and managed recovery features at the lowest evidenced small managed-HA database cost among the hyperscalers compared.
+- Google Cloud is a viable secondary candidate and a strong independent encrypted-backup option, but its small managed database baseline is higher, it has no native transactional email equivalent, its identity service was not in the reviewed configurable data-residency list, and its Australian support package permits personnel in five countries rather than Australia only.
+- Azure is technically capable but currently disproportionate: zone-redundant PostgreSQL excludes the inexpensive Burstable tier, cross-region recovery adds another server, and reviewed Azure email documentation specifies United States data location.
+- AUCyber has the strongest public sovereign-data claim and useful S3-compatible immutable backup, but is sales-led, quote-only, and oriented toward government/critical-industry IaaS; assess it only as a narrowly scoped recovery target unless evidence changes.
+- Binary Lane is inexpensive and Australian-hosted but is excluded under current public terms and service evidence: no comparable managed database/recovery boundary, non-binding service levels, no provider backup obligation, immediate termination exposure, and disproportionate self-management.
+- AWS still requires a proof of concept and evidence closure for SES regional fallback, identity recovery, overseas support-content controls, malware-scanning processing/opt-out, critical-event durability, actual cost, and independent Australian recovery storage.
+- The vendor-selection evidence gate covers contracts/subprocessors, complete data flows, Australian configuration proof, human access, security/recovery, export, deletion, commercial terms, cost and change monitoring.
+- Pivot currently has no hosting account or approved monthly technology budget.
+
+
 - Provider selection remains external/provisional and must operate within the constitutional rules.
 - Production customer data, uploaded artwork, database backups, and audit records under Pivot's control must be stored and processed in Australia.
 - Global delivery is allowed only for static public assets.
@@ -330,6 +369,64 @@ During an outage:
 
 Mandatory architecture consequences—not Director choice questions—include private Australian storage, durable transactional acknowledgement for critical events, multi-zone persistence, point-in-time recovery, private versioned/immutable artifact storage, separate encrypted Australian backups, and tested restoration. Periodic backups alone cannot satisfy `no acknowledged event loss`. The detailed backup retention, replication, restoration, and continuity procedures still need to be specified and validated.
 
+### Complete primary-region recovery
+
+- Complete loss or unavailability of Pivot's primary Australian cloud region remains inside the four-support-hour core-service recovery target.
+- Maintain a recoverable deployment boundary in a second Australian region; active-active operation is not required by default.
+- Every acknowledged critical approval, release, hold/stop outcome, and audit event must already be durably preserved outside the primary region before success is reported.
+- Recoverable draft replication must remain within the five-minute loss limit.
+- Validate second-region residency, processing, access, replication, recovery timing, and cost during provider selection and through timed exercises.
+- Two regions from one provider do not by themselves address a catastrophic provider-wide failure.
+
+### Provider-wide catastrophe
+
+- A catastrophic outage affecting all usable Australian regions of the primary provider may exceed the ordinary four-support-hour target.
+- The provisional Phase 1 provider-wide core recovery target is 24 support-hours.
+- Active multi-cloud operation is not required for Phoenix Phase 1 solely to meet the ordinary target during this rare event.
+- The no-loss requirement for acknowledged approvals, releases, hold/stop outcomes, audit events, and their referenced immutable artifacts still applies.
+- Before acknowledging a critical action, preserve its immutable event receipt, exact referenced artifact or package, and checksum in an independently controlled Australian recovery store outside the primary provider's failure boundary.
+- Maintain provider-independent encrypted Australian backups, portable data/artifact exports, reproducible infrastructure/configuration records, independently recoverable encryption keys, and a tested alternate-provider rebuild path.
+- Use the manual contingency until the authoritative service is restored; no new manufacturing release may occur outside it.
+- Reassess the provider-wide exception before Phase 2 ordering/payment and before pre-declared critical production windows.
+
+### Production backup and restoration baseline
+
+These are mandatory technical controls rather than Director-choice questions:
+
+- Use synchronous multi-zone persistence for the primary transactional database and continuous transaction logging with at least 35 days of point-in-time recovery.
+- Replicate recoverable drafts to the second Australian region with no more than five minutes of lag.
+- Treat a consequential action as acknowledged only after its authoritative transaction/audit event and every required immutable artifact are durable across the required failure boundaries. Use unique event IDs and idempotent recovery so an uncertain response cannot create duplicate approvals or releases.
+- Keep production artifacts private, checksummed, versioned, and immutable where they form part of an approval or production record. Replicate them to the second Australian region and preserve critical copies outside the primary provider.
+- Create encrypted provider-independent Australian recovery backups under credentials and deletion authority separate from production. Production roles must not be able to alter or delete those copies.
+- Retain ordinary full-system recovery points for no longer than necessary: daily recovery copies for 35 days and weekly recovery points for 13 weeks. Use the authoritative immutable archive—not indefinite generic backups—to meet the life-of-product/order-plus-seven-years record rule.
+- Keep deleted personal information in expired backups beyond ordinary use, prevent restoration except for genuine recovery, reapply the deletion ledger after restoration, and allow those copies to age out within the 13-week maximum unless law or an active hold requires otherwise.
+- Store recovery keys and sealed break-glass material separately from the primary provider, with access logging and at least two recoverable custodial paths. Losing a primary-provider key service must not make independent backups unusable.
+- Monitor backup, replication, immutability, and checksum status automatically. A failed or stale protection job must alert the responsible person and cannot silently reduce the recovery boundary.
+- Run automated integrity checks for every backup; a monthly isolated database/object sample restore; a quarterly isolated full-core restore and reconciliation; a timed second-region exercise at least every six months; and a provider-independent alternate rebuild before production, annually thereafter, after material recovery changes, and before Phase 2.
+- Time exercises against the four- and 24-support-hour targets and retain evidence, issues, remediation owner, and completion date. An unresolved failed restore is a production-readiness blocker for affected critical work.
+- Back up and test all dependencies needed for safe operation, including database schema, private artifacts, audit receipts, approved configuration, infrastructure definitions, dependency/version manifests, access policy, identity recovery configuration, and documented secret rotation—not only customer rows.
+
+### Phase 1 recovery ownership
+
+- Kylie is the primary recovery owner.
+- Cameron, Kylie's husband and a Caylios co-founder/shareholder, is the named Phase 1 emergency recovery alternate.
+- Cameron's role is exceptional continuity assistance, not routine administration, rostered support, or an employment role prescribed by this architecture.
+- Use a written emergency delegation from the correct legal entity, an individual break-glass account with strong MFA, least privilege, access logging, confidentiality/privacy acknowledgement, and brief recovery familiarisation/testing.
+- Cameron receives no automatic club-approval, Pivot technical-approval, or production-release authority from this recovery role.
+- A retained MSP is not required by default. Obtain on-demand specialist or provider support only if an incident or later evidence requires it.
+- Product/security documentation must not attempt to determine Cameron's employment or tax status; seek accounting/legal advice only if the proposed business arrangement creates a genuine question outside this architecture.
+
+### Manual outage contingency baseline
+
+- Maintain a minimal encrypted Australian-hosted continuity register independent of the primary failure boundary, plus a sealed offline recovery pack physically held in Australia.
+- Keep current verified contacts and escalation paths for Pivot, club administrators, the supplier, hosting/authentication services, and legal/privacy response.
+- Accept any credible urgent hold or stop report and issue a precautionary hold/stop request without waiting for perfect verification; independently verify identity and authority before resolving or lifting it.
+- Record a unique incident/reference ID, request source, verification, exact Melbourne and UTC times, affected design/job, reason, communications, evidence, supplier response, status, and responsible Pivot actor.
+- Formal approvals may be prepared as pending evidence during an outage but do not become an acknowledged platform approval or justify manufacture until durably recorded and reconciled in the authoritative service.
+- Do not create a new production release, lift a hold, or claim supplier cancellation solely through the contingency process. Delaying manufacture remains the safe default.
+- Reconcile every manual event into the restored authoritative history without overwriting original evidence; obtain independent review where another authorised person is available.
+- Test the manual process with each six-month regional recovery exercise and before any pre-declared critical production window.
+
 ## Documents read during this continuation
 
 Completely read or extracted and reviewed:
@@ -370,5 +467,6 @@ Known conflicts remain in old documents, including coach/club-polo terminology, 
 
 ## Files changed in this continuation
 
-- Updated this handover with the latest data-classification, residency, cross-border manufacturing, supplier-boundary, recovery-hours, and production-line-guardrail decisions.
+- Updated this handover with cloud ownership, recovery targets and controls, Phase 1 proportionality, recovery ownership, and provider-research outcomes.
+- Added `specs/pivot-design-tool-baseline/cloud-provider-comparison.md` with official-source evidence, indicative costs, exclusions, evidence gaps, and the vendor-selection gate.
 - No implementation code or baseline/governing specification was changed.
