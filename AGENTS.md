@@ -4,12 +4,11 @@
 
 Before changing product, brand, website or Studio behaviour, read:
 
-1. `specs/pivot-design-tool-baseline/handover-summary.md`
-2. `docs/Pivot Constitution.md`
-3. `docs/Business Plan_V1.00.pdf`
-4. `docs/Operating Model_V1.00.pdf`
-5. `docs/brand/Brand Kit_V1.00.pdf`
-6. `docs/brand/Visual Design Guide_V1.00.pdf`
+1. `docs/Pivot Constitution.md`
+2. `docs/Business Plan_V1.00.pdf`
+3. `docs/Operating Model_V1.00.pdf`
+4. `docs/brand/Brand Kit_V1.00.pdf`
+5. `docs/brand/Visual Design Guide_V1.00.pdf`
 
 Apply the governing-document precedence recorded in the Constitution.
 

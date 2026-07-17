@@ -23,7 +23,7 @@ npm run check
 npm test
 ```
 
-Full manual verification is documented in [`specs/pivot-design-tool-baseline/quickstart.md`](specs/pivot-design-tool-baseline/quickstart.md).
+Browser and device behaviour requires manual verification.
 
 ## Demonstrator boundaries
 

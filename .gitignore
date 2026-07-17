@@ -1,2 +1,4 @@
 node_modules/
 .tmp/
+.planning/pivot-design-tool-baseline/
+specs/pivot-design-tool-baseline/
