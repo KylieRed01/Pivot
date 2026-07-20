@@ -1,6 +1,6 @@
 # Pivot Constitution
 
-**Version:** 1.01
+**Version:** 1.02
 
 **Status:** Approved
 
@@ -14,6 +14,7 @@
 |---|---|---|---|---|
 | 1.00 | Approved | 12 July 2026 | Kylie Stewart, Director | Initial approved Constitution. |
 | 1.01 | Approved | 18 July 2026 | Kylie Stewart, Director | Clarify the boundary between controlled physical garment construction and fully customisable visual design. |
+| 1.02 | Approved | 18 July 2026 | Kylie Stewart, Director | Remove pilot-specific Phase 1 requirements that belong in the Phoenix PRD and canonical specifications. |
 
 ## 1. Purpose
 
@@ -83,17 +84,7 @@ Pivot will operate according to these principles:
 - Pivot will grow through controlled expansion, operational readiness and continuous improvement, not rapid scaling.
 - Product-range expansion, additional clubs and new operating models must not compromise quality, fulfilment control or the customer experience.
 
-## 8. Phase 1 Pilot Rules
-
-- Phase 1 is a sponsor-funded batch pilot for Phoenix U10 jerseys and coach polos.
-- Its purpose is to validate product quality and delivery within the agreed window, while testing the club's design and store experience.
-- Batch sizing is manual.  ordering and supplier submission will be tested with apis in phase 1. supplier to be selected. 
-- Phase 1 includes no customer checkout, payment portal or individual customer ordering.
-- The Phoenix store shows approved products without prices and includes coach-polo sizing charts.
-- A supplier is selected only after sample evaluation. Supplier selection and quality assessment remain operational responsibilities.
-- Pivot may build the design-tool framework before supplier selection. Final production templates and 3D garment models must use the selected supplier's approved assets.
-
-## 9. Technology Principles
+## 8. Technology Principles
 
 - Technology is an enabler of Pivot's operating model, not a substitute for operational discipline.
 - Technology must simplify customer interactions, reduce manual administration and improve reliability, consistency and scalability.
@@ -105,18 +96,18 @@ Pivot will operate according to these principles:
 - Pivot must retain an audit record of design changes, store publication and approvals, including actor, version and timestamp.
 - Approval records must be retained for the life of the related product and order, plus seven years.
 
-## 10. Brand and Communications
+## 9. Brand and Communications
 
 - All Pivot communications and touchpoints must follow the Brand Kit.
 - Communications must be clear, professional, approachable, practical and positive.
 - Pivot must avoid jargon, exaggerated claims, ambiguous language, unnecessary technical language and unprofessional slang.
 - Pivot must present itself consistently across stores, documents, products, digital channels and customer service.
 
-## 11. Review
+## 10. Review
 
 The Director will review this Constitution when Pivot's operating model materially changes, at the conclusion of the Phoenix pilot, and before broader expansion.
 
-## 12. Related Documents
+## 11. Related Documents
 
 - `docs/Business Plan_V1.00.pdf`
 - `docs/Operating Model_V1.00.pdf`
