@@ -1,6 +1,6 @@
 # Pivot Constitution
 
-**Version:** 1.02
+**Version:** 1.03
 
 **Status:** Approved
 
@@ -15,6 +15,7 @@
 | 1.00 | Approved | 12 July 2026 | Kylie Stewart, Director | Initial approved Constitution. |
 | 1.01 | Approved | 18 July 2026 | Kylie Stewart, Director | Clarify the boundary between controlled physical garment construction and fully customisable visual design. |
 | 1.02 | Approved | 18 July 2026 | Kylie Stewart, Director | Remove pilot-specific Phase 1 requirements that belong in the Phoenix PRD and canonical specifications. |
+| 1.03 | Approved | 18 July 2026 | Kylie Stewart, Director | Move the Phoenix deadline and white-label delivery contingency to pilot planning while retaining Pivot's enduring ownership and records controls. |
 
 ## 1. Purpose
 
@@ -90,7 +91,6 @@ Pivot will operate according to these principles:
 - Technology must simplify customer interactions, reduce manual administration and improve reliability, consistency and scalability.
 - Pivot will build a multi-club foundation while restricting production pilot access to Phoenix.
 - The design experience is a Pivot-owned capability. Established components may be used where they reduce delivery risk without surrendering Pivot's customer, design or approval records.
-- If Pivot's design tool cannot meet the Phoenix pilot deadline, a white-label customiser may be used temporarily, provided Pivot retains its club, design and approval records and can replace the tool.
 - Customer data, uploaded artwork, database backups and audit records must be held in Australia in production. Global delivery may be used only for static public assets.
 - Club administrator access will use passwordless email sign-in. Pivot administrator access requires multi-factor authentication.
 - Pivot must retain an audit record of design changes, store publication and approvals, including actor, version and timestamp.
