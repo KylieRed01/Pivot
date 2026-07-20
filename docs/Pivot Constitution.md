@@ -1,9 +1,19 @@
 # Pivot Constitution
 
-**Version:** 1.00  
-**Status:** Approved  
-**Date:** 12 July 2026  
+**Version:** 1.01
+
+**Status:** Approved
+
+**Date:** 18 July 2026
+
 **Authority:** Kylie Stewart, Director
+
+## Version Control
+
+| Version | Status | Date | Owner | Reason |
+|---|---|---|---|---|
+| 1.00 | Approved | 12 July 2026 | Kylie Stewart, Director | Initial approved Constitution. |
+| 1.01 | Approved | 18 July 2026 | Kylie Stewart, Director | Clarify the boundary between controlled physical garment construction and fully customisable visual design. |
 
 ## 1. Purpose
 
@@ -55,8 +65,8 @@ Pivot will operate according to these principles:
 
 ## 6. Product and Customer Controls
 
-- Pivot will use approved product templates rather than unrestricted bespoke design work.
-- Customers may customise permitted template options; Pivot retains product, artwork and quality control.
+- Pivot will use approved garment products and supplier-validated production geometry rather than unrestricted bespoke garment construction.
+- Customers may create fully customisable visual designs within that controlled physical framework, without predefined designs or fixed artwork slots. Designs remain subject to applicable manufacturing, product, sport, competition, brand, legal and approval requirements, and Pivot retains product, artwork and quality control.
 - A club must approve its final design before Pivot review.
 - Pivot approval is required before a design is published or submitted for manufacture.
 - Pivot is responsible for the customer fulfilment experience, including quality assurance before products are provided to customers.
