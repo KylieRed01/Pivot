@@ -1,6 +1,6 @@
 # Pivot Constitution
 
-**Version:** 1.04
+**Version:** 1.05
 
 **Status:** Approved
 
@@ -17,6 +17,7 @@
 | 1.02 | Approved | 18 July 2026 | Kylie Stewart, Director | Remove pilot-specific Phase 1 requirements that belong in the Phoenix PRD and canonical specifications. |
 | 1.03 | Approved | 18 July 2026 | Kylie Stewart, Director | Move the Phoenix deadline and white-label delivery contingency to pilot planning while retaining Pivot's enduring ownership and records controls. |
 | 1.04 | Approved | 18 July 2026 | Kylie Stewart, Director | Clarify Australian production-data control and the narrow authorised manufacturing-package exception. |
+| 1.05 | Approved | 18 July 2026 | Kylie Stewart, Director | Clarify independent club and Pivot authority and confirm that club approval alone cannot release work to manufacture. |
 
 ## 1. Purpose
 
@@ -70,8 +71,9 @@ Pivot will operate according to these principles:
 
 - Pivot will use approved garment products and supplier-validated production geometry rather than unrestricted bespoke garment construction.
 - Customers may create fully customisable visual designs within that controlled physical framework, without predefined designs or fixed artwork slots. Designs remain subject to applicable manufacturing, product, sport, competition, brand, legal and approval requirements, and Pivot retains product, artwork and quality control.
-- A club must approve its final design before Pivot review.
-- Pivot approval is required before a design is published or submitted for manufacture.
+- A club must approve its club decisions through its authorised administrator.
+- Pivot independently reviews designs and controls publication and release to manufacture; club approval alone does not release work to manufacture.
+- A manufacturer may produce only from information authorised by Pivot.
 - Pivot is responsible for the customer fulfilment experience, including quality assurance before products are provided to customers.
 - Club administrators may access only their own club's administration and data.
 - Pivot retains oversight and override access across all clubs.
