@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pivot Version 2 — Local Review</title>
+  <link rel="stylesheet" href="/version-2-review.css">
+  <script type="module" src="/version-2-review.js"></script>
+</head>
+<body>
+  <aside class="review-banner" role="note">
+    <strong>Local review only — nothing is submitted, stored or sent</strong>
+    <span>This isolated page does not change the release website.</span>
+  </aside>
+
+  <header class="site-header">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <img src="/brand/Pivot_Logo_Transparent.svg" alt="Pivot Teamwear">
+    <nav aria-label="Review sections">
+      <a href="#products">Products</a>
+      <a href="#interest">Club interest</a>
+      <a href="#help">Help</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="review-title">
+      <img class="hero-logo" src="/brand/Pivot_Logo_Transparent.svg" alt="Pivot Teamwear">
+      <p class="eyebrow">Version 2 local review</p>
+      <h1 id="review-title">Built for action. <em>Priced to play.</em></h1>
+      <p>Quality custom teamwear that helps clubs and players get in the game.</p>
+      <a class="primary-action" href="/index.html#studio" aria-label="Start designing with the Pivot Design Studio">Game On. Start Designing</a>
+    </section>
+
+    <section id="products" class="section" aria-labelledby="products-title">
+      <p class="eyebrow">Pivot Teamwear</p>
+      <h2 id="products-title">Explore the experience</h2>
+      <div class="card-grid">
+        <article>
+          <h3>Playing uniforms</h3>
+          <p>Quality custom uniforms designed around your club’s identity, sport and competition requirements.</p>
+        </article>
+        <article>
+          <h3>Club apparel</h3>
+          <p>Coordinated apparel for players, coaches, volunteers and supporters, all in one club range.</p>
+        </article>
+        <article>
+          <h3>Club stores</h3>
+          <p>A modern, club-branded place for your community to explore and access approved teamwear.</p>
+          <a class="review-link" href="/version-2-club-store-review.html">Review local club-store concept</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="interest" class="section interest-section" aria-labelledby="interest-title">
+      <div class="section-copy">
+        <p class="eyebrow">Club interest</p>
+        <h2 id="interest-title">Be part of what comes next.</h2>
+        <p>A modern teamwear experience is coming to Greater Bendigo. Explore your club’s ideas from every angle with interactive design tools, quality custom apparel, club-branded stores, fair pricing and reliable local support. Register your club’s interest and get in the game.</p>
+        <p class="review-note"><strong>Review state:</strong> this form checks local interaction only. It has no storage, notification or hosting connection.</p>
+      </div>
+
+      <form id="interest-review-form" data-local-only>
+        <div class="field-grid">
+          <label>
+            <span>Contact name</span>
+            <input name="contactName" autocomplete="name" required>
+          </label>
+          <label>
+            <span>Club name</span>
+            <input name="clubName" autocomplete="organization" required>
+          </label>
+          <label class="wide">
+            <span>Email address</span>
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+          <label>
+            <span>Sport</span>
+            <select name="sport" required>
+              <option value="">Choose a sport</option>
+              <option value="basketball">Basketball</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label>
+            <span>League or association</span>
+            <select name="competition" required>
+              <option value="">Choose a league or association</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label class="wide">
+            <span>Club suburb or postcode</span>
+            <input name="location" inputmode="text" autocomplete="postal-code" required>
+          </label>
+        </div>
+
+        <label class="consent-row">
+          <input name="consent" type="checkbox" required>
+          <span>No. Registering your interest does not commit your club to purchase anything, join a pilot or open a club store. It gives us permission to contact you with relevant updates about sports and products becoming available and launch news. You can opt out at any time.</span>
+        </label>
+
+        <button type="button" id="preview-interest-flow">Register Your Club’s Interest</button>
+        <output id="review-form-status" role="status" aria-live="polite"></output>
+      </form>
+    </section>
+
+    <section id="help" class="section help-section" aria-labelledby="help-title">
+      <p class="eyebrow">Help review</p>
+      <h2 id="help-title">Find the right help</h2>
+
+      <section class="help-group" aria-labelledby="faqs-title">
+        <h3 id="faqs-title">FAQs</h3>
+        <details>
+          <summary>What is currently available?</summary>
+          <p>Pivot is currently in pilot. The Pivot Design Studio is open to try, while teamwear and club stores are not yet available to other clubs.</p>
+        </details>
+        <details>
+          <summary>Where does Pivot operate?</summary>
+          <p>Pivot supplies and delivers teamwear only within the Greater Bendigo area.</p>
+        </details>
+        <details>
+          <summary>What sports will Pivot support?</summary>
+          <p class="review-note">Approved answer is release-gated on secure club-interest handling.</p>
+        </details>
+        <details>
+          <summary>How can our club customise its teamwear?</summary>
+          <p class="review-note">Answer is held for the post-implementation behaviour review.</p>
+        </details>
+        <details>
+          <summary>Can our club have its own branded store?</summary>
+          <p class="review-note">Answer is held for the post-implementation availability review.</p>
+        </details>
+      </section>
+
+      <section class="help-group" aria-labelledby="studio-help-title">
+        <h3 id="studio-help-title">Pivot Design Studio Help</h3>
+        <ul>
+          <li>Can I try the Design Studio without joining Pivot?</li>
+          <li>How do club colours and artwork work?</li>
+          <li>What can I change?</li>
+          <li>How do the 2D and 3D views work?</li>
+          <li>Can I save my design?</li>
+        </ul>
+        <p class="review-note">Product-behaviour answers remain release-gated until Version 2 implementation review.</p>
+      </section>
+
+      <section class="help-group" aria-labelledby="club-help-title">
+        <h3 id="club-help-title">Club Help Centre</h3>
+        <ul>
+          <li>Who can access our club account?</li>
+          <li>How are club designs approved?</li>
+          <li>How is our club store set up?</li>
+          <li>How do we get help?</li>
+        </ul>
+        <p>If you cannot find the answer here, contact us at <a href="mailto:hello@pivotteamwear.com">hello@pivotteamwear.com</a> and we will help you get back in the game.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <img src="/brand/Pivot_Wordmark.svg" alt="Pivot Teamwear">
+    <p>Local Version 2 review page</p>
+  </footer>
+</body>
+</html>
