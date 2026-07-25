@@ -1,10 +1,10 @@
 # Pivot Constitution
 
-**Version:** 1.07
+**Version:** 1.08
 
 **Status:** Approved
 
-**Date:** 18 July 2026
+**Date:** 25 July 2026
 
 **Authority:** Kylie Stewart, Director
 
@@ -20,6 +20,7 @@
 | 1.05 | Approved | 18 July 2026 | Kylie Stewart, Director | Clarify independent club and Pivot authority and confirm that club approval alone cannot release work to manufacture. |
 | 1.06 | Approved | 18 July 2026 | Kylie Stewart, Director | Retain enduring role-appropriate authentication controls without prescribing the Phoenix club sign-in mechanism. |
 | 1.07 | Approved | 18 July 2026 | Kylie Stewart, Director | Correct the repository path to the approved Brand Kit. |
+| 1.08 | Approved | 25 July 2026 | Kylie Stewart, Director | Update related-document references to the approved replacement governing versions. |
 
 ## 1. Purpose
 
@@ -114,7 +115,7 @@ The Director will review this Constitution when Pivot's operating model material
 
 ## 11. Related Documents
 
-- `docs/Business Plan_V1.00.pdf`
-- `docs/Operating Model_V1.00.pdf`
-- `docs/brand/Brand Kit_V1.00.pdf`
+- `docs/Business Plan_V1.01.pdf`
+- `docs/Operating Model_V1.02.pdf`
+- `docs/brand/Brand Kit_V1.01.pdf`
 - `docs/Phoenix Phase 1 PRD.md`
