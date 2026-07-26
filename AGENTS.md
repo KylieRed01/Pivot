@@ -5,10 +5,10 @@
 Before changing product, brand, website or Studio behaviour, read:
 
 1. `docs/Pivot Constitution.md`
-2. `docs/Business Plan_V1.00.pdf`
-3. `docs/Operating Model_V1.00.pdf`
-4. `docs/brand/Brand Kit_V1.00.pdf`
-5. `docs/brand/Visual Design Guide_V1.00.pdf`
+2. `docs/Business Plan_V1.01.pdf`
+3. `docs/Operating Model_V1.02.pdf`
+4. `docs/brand/Brand Kit_V1.01.pdf`
+5. `docs/brand/Visual Design Guide_V1.01.pdf`
 
 Apply the governing-document precedence recorded in the Constitution.
 
