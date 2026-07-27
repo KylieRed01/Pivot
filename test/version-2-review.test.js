@@ -15,21 +15,23 @@ before(async () => {
 after(() => app.close());
 
 test('serves an isolated Version 2 local review page', async () => {
-  const response = await fetch(`${base}/version-2-review.html`);
+  const response = await fetch(`${base}/website/version-2-review.html`);
   const html = await response.text();
 
   assert.equal(response.status, 200);
   assert.match(html, /<title>Pivot Version 2 — Local Review<\/title>/);
   assert.match(html, /Local review only — nothing is submitted, stored or sent/);
+  assert.match(html, /href="\/website\/version-2-review\.css"/);
+  assert.match(html, /src="\/website\/version-2-review\.js"/);
 });
 
 test('presents the approved interest journey and separate help areas for review', async () => {
-  const response = await fetch(`${base}/version-2-review.html`);
+  const response = await fetch(`${base}/website/version-2-review.html`);
   const html = await response.text();
 
   assert.match(html, /Be part of what comes next\./);
   assert.match(html, /Register Your Club’s Interest/);
-  assert.match(html, /href="\/version-2-club-store-review\.html"/);
+  assert.match(html, /href="\/club-store\/version-2-club-store-review\.html"/);
   assert.match(html, /class="hero-logo" src="\/brand\/Pivot_Logo_Transparent\.svg"/);
   for (const name of ['contactName', 'clubName', 'email', 'sport', 'competition', 'location', 'consent']) {
     assert.match(html, new RegExp(`name="${name}"`));
@@ -43,7 +45,7 @@ test('presents the approved interest journey and separate help areas for review'
 });
 
 test('keeps the form flow local while previewing the approved confirmation', async () => {
-  const { getReviewOutcome } = await import('../public/version-2-review.js');
+  const { getReviewOutcome } = await import('../public/website/version-2-review.js');
   const outcome = getReviewOutcome(true);
 
   assert.equal(outcome.networkRequest, false);
@@ -52,7 +54,7 @@ test('keeps the form flow local while previewing the approved confirmation', asy
 });
 
 test('cannot fall back to a browser form submission when scripts are unavailable', async () => {
-  const response = await fetch(`${base}/version-2-review.html`);
+  const response = await fetch(`${base}/website/version-2-review.html`);
   const html = await response.text();
 
   assert.match(html, /<form id="interest-review-form" data-local-only>/);
@@ -61,7 +63,7 @@ test('cannot fall back to a browser form submission when scripts are unavailable
 });
 
 test('serves responsive brand styling with visible keyboard focus', async () => {
-  const response = await fetch(`${base}/version-2-review.css`);
+  const response = await fetch(`${base}/website/version-2-review.css`);
   const css = await response.text();
 
   assert.equal(response.status, 200);
@@ -72,12 +74,15 @@ test('serves responsive brand styling with visible keyboard focus', async () => 
 });
 
 test('serves an isolated non-transactional club-store concept', async () => {
-  const response = await fetch(`${base}/version-2-club-store-review.html`);
+  const response = await fetch(`${base}/club-store/version-2-club-store-review.html`);
   const html = await response.text();
 
   assert.equal(response.status, 200);
   assert.match(html, /Club Store — Local Review/);
   assert.match(html, /Local concept only — no live store, ordering or checkout/);
+  assert.match(html, /href="\/website\/version-2-review\.html"/);
+  assert.match(html, /href="\/club-store\/version-2-club-store-review\.css"/);
+  assert.match(html, /src="\/club-store\/version-2-club-store-review\.js"/);
   assert.match(html, /Light theme/);
   assert.match(html, /Dark theme/);
   assert.match(html, /Local review palette/);
@@ -95,7 +100,7 @@ test('serves an isolated non-transactional club-store concept', async () => {
 });
 
 test('switches only between the two controlled local store themes', async () => {
-  const { getStoreTheme, getReviewPalette } = await import('../public/version-2-club-store-review.js');
+  const { getStoreTheme, getReviewPalette } = await import('../public/club-store/version-2-club-store-review.js');
 
   assert.deepEqual(getStoreTheme('light'), { theme: 'light', lightPressed: true, darkPressed: false });
   assert.deepEqual(getStoreTheme('dark'), { theme: 'dark', lightPressed: false, darkPressed: true });
@@ -105,7 +110,7 @@ test('switches only between the two controlled local store themes', async () => 
 });
 
 test('uses theme-responsive high-contrast colours for the internal store review panel', async () => {
-  const response = await fetch(`${base}/version-2-club-store-review.css`);
+  const response = await fetch(`${base}/club-store/version-2-club-store-review.css`);
   const css = await response.text();
 
   assert.equal(response.status, 200);
