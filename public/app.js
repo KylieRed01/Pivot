@@ -1,7 +1,7 @@
 import { renderHomePage } from './home-page.js';
-import { renderJerseyPreview } from './jersey-preview.js';
-import { renderStudioSetup } from './studio-setup.js';
-import { createSessionStore, createStudioHistory, runIndicativeChecks, validatePublicArtwork } from './studio-state.js';
+import { renderJerseyPreview } from './studio/jersey-preview.js';
+import { renderStudioSetup } from './studio/studio-setup.js';
+import { createSessionStore, createStudioHistory, runIndicativeChecks, validatePublicArtwork } from './studio/studio-state.js';
 
 const app = document.querySelector('#app');
 

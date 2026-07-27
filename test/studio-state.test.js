@@ -10,7 +10,7 @@ import {
   runIndicativeChecks,
   serializePublicState,
   validatePublicArtwork
-} from '../public/studio-state.js';
+} from '../public/studio/studio-state.js';
 
 const surfaceKeys = state => Object.keys(state.surfaces).sort();
 

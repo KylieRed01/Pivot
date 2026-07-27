@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderStudioSetup } from '../public/studio-setup.js';
+import { renderStudioSetup } from '../public/studio/studio-setup.js';
 
 function createSetupHarness({ acknowledged = true } = {}) {
   const acknowledgement = {
