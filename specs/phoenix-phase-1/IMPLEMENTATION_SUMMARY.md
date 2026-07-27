@@ -12,4 +12,4 @@ In this local agent environment these roles were executed as separate focused pa
 
 ## Safety and limitations
 
-Production authentication, Australian hosting/data residency, durable database storage, email delivery and MFA integration require deployment decisions. Demo headers and JSON persistence must not be deployed publicly.
+Production authentication, Australian hosting/data residency, durable database storage, email delivery and MFA integration require deployment decisions. Test-only headers and JSON persistence must not be deployed publicly.

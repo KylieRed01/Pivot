@@ -13,4 +13,5 @@ test('public home page renders the approved website experience', () => {
   assert.match(root.innerHTML, /data-help-category="faqs"/);
   assert.match(root.innerHTML, /data-help-category="studio"/);
   assert.match(root.innerHTML, /data-help-category="club"/);
+  assert.doesNotMatch(root.innerHTML, /demonstrator/i);
 });

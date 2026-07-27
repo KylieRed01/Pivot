@@ -1,6 +1,6 @@
-# Pivot Website and Design Studio Demonstrator
+# Pivot Website and Design Studio Trial
 
-Dependency-free Node.js demonstrator for the public Pivot website, browser-local Pivot Design Studio and isolated Phoenix workflow simulation.
+Dependency-free Node.js application for the public Pivot website, browser-local Pivot Design Studio trial and isolated Phoenix workflow simulation.
 
 ## Run locally
 
@@ -25,11 +25,11 @@ npm test
 
 Browser and device behaviour requires manual verification.
 
-## Demonstrator boundaries
+## Trial boundaries
 
 - Public Studio work remains in the browser session and is not a saved club design.
 - `data/state.json` supports the workflow simulation only. It is not production storage.
-- Demo identities and actions are not production authentication or approval.
+- Test identities and simulated actions are not production authentication or approval.
 - Current garment geometry, boundaries, artwork and side/3D effects are placeholders.
 - No production proof, manufacture release or supplier acknowledgement is created.
 
@@ -41,4 +41,4 @@ Browser and device behaviour requires manual verification.
 - Accurate 3D
 - Manufacturing integration
 
-Do not use the demonstrator as production or manufacturing authority.
+Do not use the Design Studio trial or workflow simulation as production or manufacturing authority.

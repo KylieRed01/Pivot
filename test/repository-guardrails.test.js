@@ -18,3 +18,17 @@ test('Playwright remains prohibited from the repository toolchain', async () => 
   assert.equal(await exists('playwright.config.ts'), false);
   assert.equal(await exists('test/e2e'), false);
 });
+
+test('customer-facing copy consistently names the Pivot Design Studio', async () => {
+  const customerFacingFiles = [
+    'public/home-page.js',
+    'public/app.js',
+    'public/studio/studio-setup.js',
+    'public/studio/studio-state.js'
+  ];
+
+  for (const path of customerFacingFiles) {
+    const source = await readFile(path, 'utf8');
+    assert.doesNotMatch(source, /\bdemonstrator\b/i, path);
+  }
+});

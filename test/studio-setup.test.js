@@ -44,11 +44,12 @@ test('Studio setup returns the selected setup through one completion boundary', 
     garment: 'basketball-jersey',
     ruleProfile: 'basketball-rules'
   });
-  assert.match(root.innerHTML, /Browser-local demonstrator/);
+  assert.match(root.innerHTML, /Browser-local Design Studio trial/);
   assert.match(root.innerHTML, /id="demo-acknowledgement"/);
+  assert.doesNotMatch(root.innerHTML, /demonstrator/i);
 });
 
-test('public Studio setup requires its demonstrator acknowledgement', () => {
+test('public Studio setup requires acknowledgement of the browser-local trial', () => {
   const { acknowledgement, form, root } = createSetupHarness({ acknowledged: false });
   let submissions = 0;
 

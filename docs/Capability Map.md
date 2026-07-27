@@ -27,4 +27,5 @@ Pivot is one capability-oriented modular monolith. Capabilities are separated by
 - The club record owns club logos, colours and approved sponsor assets once. User records contain identity, role and club membership only.
 - Design Studio and Club Store consume approved club assets; they do not duplicate ownership into designs, stores or users.
 - General and product FAQs belong to Main Website. Studio, administration, shopping and checkout help stay with their respective capabilities.
+- The public product name is **Pivot Design Studio**. Describe its current browser-local mode as the **public Design Studio trial**, not as a separate product or a “demonstrator”.
 - Important decisions and invariants have one owner. Hide product, club, payment and supplier details behind small capability interfaces, push complexity downward and avoid shallow forwarding layers.

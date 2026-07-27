@@ -141,7 +141,7 @@ export function runIndicativeChecks(candidate) {
         checks.push({ code: 'EMPTY_TEXT', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'A text layer is empty. Add wording or remove the optional layer.' });
       }
       if (layer.x < 5 || layer.x > 95 || layer.y < 10 || layer.y > 92) {
-        checks.push({ code: 'INDICATIVE_BOUNDARY', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'An element sits outside the demonstrator boundary. Supplier geometry is still unresolved.' });
+        checks.push({ code: 'INDICATIVE_BOUNDARY', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'An element sits outside the Design Studio trial boundary. Supplier geometry is still unresolved.' });
       }
       if (layer.type === 'image') {
         const validation = validatePublicArtwork({ type: layer.mime, size: layer.size });
@@ -156,7 +156,7 @@ export function runIndicativeChecks(candidate) {
 
 export function validatePublicArtwork(file, existingArtworkBytes = 0) {
   if (!file || !PUBLIC_ARTWORK_TYPES.has(file.type)) {
-    return { ok: false, error: { code: 'UNSUPPORTED_UPLOAD', message: 'PNG, JPEG and WebP only in the public demonstrator. SVG, PDF, HEIC and specialist files need future reviewed handling or Pivot assistance.' } };
+    return { ok: false, error: { code: 'UNSUPPORTED_UPLOAD', message: 'PNG, JPEG and WebP only in the public Design Studio trial. SVG, PDF, HEIC and specialist files need future reviewed handling or Pivot assistance.' } };
   }
   if (!Number.isFinite(file.size) || file.size > MAX_PUBLIC_ARTWORK_BYTES) {
     return { ok: false, error: { code: 'UPLOAD_TOO_LARGE', message: 'Choose a raster image no larger than 1 MB.' } };
