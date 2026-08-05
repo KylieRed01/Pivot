@@ -30,6 +30,17 @@ test('future website navigation links to Club Stores between Products and FAQs',
   assert.ok(faqs > clubStores);
 });
 
+test('future website footer uses a left-aligned copyright notice without repeating homepage messaging', async () => {
+  const [html, css] = await Promise.all([
+    readFile('public/index.html', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(html, /<footer>© 2026 Pivot Teamwear<\/footer>/);
+  assert.doesNotMatch(html, /<footer>[^<]*Quality teamwear/);
+  assert.match(css, /footer\{text-align:left;padding:25px 7vw;/);
+});
+
 test('customer-facing copy consistently names the Pivot Design Studio', async () => {
   const customerFacingFiles = [
     'public/website/home-page.js',
