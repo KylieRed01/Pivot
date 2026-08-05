@@ -13,6 +13,17 @@ Before changing product, brand, website or Studio behaviour, read:
 
 Apply the governing-document precedence recorded in the Constitution.
 
+## Architecture and project scale
+
+Before changing repository structure, module ownership or dependency direction, read:
+
+- `docs/Capability Map.md`
+- `docs/architecture/README.md`
+
+Keep Pivot as a capability-oriented modular monolith proportionate to its current scale. Do not create speculative directories, empty architectural containers or shallow forwarding modules. Extract a boundary only when it hides meaningful complexity, establishes one owner for a decision or invariant, or has a demonstrated independent change driver or consumer.
+
+Preserve existing deep modules unless a simpler interface results, and update the architecture catalogue when module responsibility, public interface or dependency direction changes.
+
 ## Non-negotiable tooling rule
 
 **Do not install, use or reintroduce Playwright or axe-core Playwright.**
