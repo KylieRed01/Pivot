@@ -97,47 +97,58 @@ test('serves the Club Stores landing page from its navigation URL', async () => 
   const html = await response.text();
 
   assert.equal(response.status, 200);
-  assert.match(html, /<title>Example Club Store \| Pivot Teamwear<\/title>/);
+  assert.match(html, /<title>Club Stores \| Pivot Teamwear<\/title>/);
   assert.match(html, /Pivot Club Store/);
 });
 
-test('serves a clearly labelled non-transactional example club store', async () => {
+test('serves a separate non-transactional Pivot customer store', async () => {
+  const response = await fetch(`${base}/club-store/pivot/index.html`);
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /<title>Pivot Club Store<\/title>/);
+  assert.match(html, /Preview only — ordering and checkout are not available/);
+  assert.match(html, /<h1>Pivot Club Store<\/h1>/);
+  assert.match(html, /Explore the club range\./);
+  assert.match(html, /Light theme/);
+  assert.match(html, /Dark theme/);
+  assert.match(html, />Dark basketball jersey</);
+  assert.match(html, />Light basketball jersey</);
+  assert.equal((html.match(/>Product placeholder</g) ?? []).length, 3);
+  assert.match(html, /href="\/club-store\/pivot\/pivot-store\.css"/);
+  assert.match(html, /src="\/club-store\/pivot\/pivot-store\.js"/);
+  assert.doesNotMatch(html, /type="color"|palette-controls|administration|approval control/i);
+  assert.doesNotMatch(html, /<form|buy now|add to cart|class="price"|\$\d/i);
+});
+
+test('relabels the controlled store concept as an administrator preview', async () => {
   const response = await fetch(`${base}/club-store/version-2-club-store-review.html`);
   const html = await response.text();
 
   assert.equal(response.status, 200);
-  assert.match(html, /Pivot Club Store — Example/);
-  assert.match(html, /Example store only — no ordering or checkout/);
-  assert.match(html, /Example identity/);
-  assert.match(html, /Example colour palette/);
-  assert.match(html, /What this example demonstrates/);
-  assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
-  assert.match(html, /href="\/club-store\/index\.html"/);
-  assert.match(html, /href="\/club-store\/version-2-club-store-review\.css"/);
-  assert.match(html, /src="\/club-store\/version-2-club-store-review\.js"/);
+  assert.match(html, /<title>Club Administration Preview \| Pivot Teamwear<\/title>/);
+  assert.match(html, /Local administration preview — authentication, saving and approvals are not connected/);
+  assert.match(html, /<h1>Club administration preview<\/h1>/);
+  assert.match(html, /Club colour preview/);
+  assert.match(html, /Preview generated themes/);
   assert.match(html, /Light theme/);
   assert.match(html, /Dark theme/);
-  assert.match(html, /Example colour palette/);
-  assert.doesNotMatch(html, /local concept|local review|internal review aid|decision workspace/i);
-  assert.match(html, /class="club-logo-preview" src="\/brand\/Pivot_Logo_Transparent\.svg"/);
-  assert.doesNotMatch(html, /Club logo placeholder/);
   assert.equal((html.match(/type="color"/g) ?? []).length, 2);
+  assert.match(html, /Changes remain browser-local and are not approved or saved\./);
+  assert.match(html, /Formal administrator approvals/);
   assert.doesNotMatch(html, /type="range"|opacity slider|club opacity/i);
-  assert.match(html, />Jersey preview</);
-  assert.match(html, />Dark basketball jersey</);
-  assert.match(html, />Light basketball jersey</);
-  assert.equal((html.match(/>Product placeholder</g) ?? []).length, 3);
-  assert.match(html, />Club range preview</);
-  assert.doesNotMatch(html, />Approved club range<|>Approved products only<|>Uniform preview<|>Playing uniform<|>Alternate uniform face<|FOR TESTING ONLY/i);
-  assert.doesNotMatch(html, /<form|buy now|add to cart|class="price"|\$\d/i);
+  assert.doesNotMatch(html, /<button[^>]*>Approve|<button[^>]*>Save/i);
 });
 
 test('switches only between the two controlled local store themes', async () => {
   const { getStoreTheme, getReviewPalette } = await import('../public/club-store/version-2-club-store-review.js');
+  const { getCustomerStoreTheme } = await import('../public/club-store/pivot/pivot-store.js');
 
   assert.deepEqual(getStoreTheme('light'), { theme: 'light', lightPressed: true, darkPressed: false });
   assert.deepEqual(getStoreTheme('dark'), { theme: 'dark', lightPressed: false, darkPressed: true });
   assert.deepEqual(getStoreTheme('custom'), { theme: 'light', lightPressed: true, darkPressed: false });
+  assert.equal(getCustomerStoreTheme('dark'), 'dark');
+  assert.equal(getCustomerStoreTheme('custom'), 'light');
   assert.deepEqual(getReviewPalette('#123456', '#ABCDEF'), { primary: '#123456', accent: '#ABCDEF' });
   assert.deepEqual(getReviewPalette('invalid', ''), { primary: '#092C71', accent: '#0096D6' });
 });

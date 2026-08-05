@@ -21,7 +21,7 @@ File length alone is not a reason to extract a module.
 | M06 | Studio state engine | `public/studio/studio-state.js` | Deep | Hides normalisation, commands, history, persistence and checks |
 | M07 | Studio/workflow browser application | `public/app.js` | Watch point | Large composition module with two design representations |
 | M08 | Main Website | `public/website/*` | Developing | Cohesive rendering, enhancement and form modules |
-| M09 | Club Store presentation | `public/club-store/*` | Adequate at current scale | Capability is clearly grouped and intentionally reuses the website shell |
+| M09 | Club Store presentation | `public/club-store/*` | Developing | Landing, customer-store preview and administration preview have distinct routes and responsibilities |
 | M10 | Presentation styles | `public/website/home.css`, `public/style.css` | Adequate at current scale | Homepage and Studio bundles are separated |
 | M11 | Temporary landing page | `public/temporary-landing.*` | Isolated | Correctly separate from release-page work |
 | M12 | Automated tests | `test/*.test.js` | Developing | Strong behavioural coverage with some deliberate governance checks |
@@ -83,9 +83,9 @@ These boundaries are proportionate. The server's use of pure markup from `home-p
 
 ## M09 — Club Store presentation
 
-The Club Store landing and review pages are grouped under `public/club-store/`. The landing page reuses `public/website/home.css` for the common shell and adds capability-specific rules in `club-stores.css`.
+The Club Store landing, customer preview and administration preview are grouped under `public/club-store/`. The landing page reuses `public/website/home.css` for the common shell and adds capability-specific rules in `club-stores.css`. `public/club-store/pivot/` owns the non-transactional customer-store preview and its browser-local theme preference. The existing Version 2 review page owns the separate administration preview, including unsaved theme and colour controls.
 
-This dependency is acceptable while the shell remains stable and small. A shared shell module is warranted only if several pages need to evolve it independently.
+The split prevents customer presentation from exposing administration controls while retaining one capability owner. Neither preview provides production authentication, durable saving, approval, ordering or checkout. A shared store-template module is warranted only when another real club store would otherwise duplicate meaningful presentation or behaviour.
 
 ## M10 — Presentation styles
 

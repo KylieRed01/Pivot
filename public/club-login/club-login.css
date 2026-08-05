@@ -1,0 +1,147 @@
+:root {
+  font-family: Calibri, Arial, sans-serif;
+  color: #000000;
+  background: #092C71;
+  line-height: 1.45;
+  --pivot-midnight: #092C71;
+  --pivot-cerulean: #0096D6;
+  --pivot-orange: #F4951D;
+  --pivot-white: #FFFFFF;
+  --pivot-midnight-tint: color-mix(in srgb, var(--pivot-midnight) 6%, var(--pivot-white));
+}
+
+* { box-sizing: border-box; }
+body { min-height: 100vh; margin: 0; background: #092C71; }
+button,
+input { font: inherit; }
+a { color: inherit; }
+
+.skip-link {
+  position: absolute;
+  z-index: 10;
+  top: -80px;
+  left: 20px;
+  padding: 12px 16px;
+  background: #F4951D;
+  color: #092C71;
+  font-weight: 700;
+}
+
+.skip-link:focus { top: 12px; }
+
+.login-header {
+  min-height: 150px;
+  padding: 20px 7vw 0;
+  display: flex;
+  justify-content: center;
+  background: #092C71;
+}
+
+.login-header a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.login-header img {
+  display: block;
+  width: min(330px, 72vw);
+  height: auto;
+}
+
+main {
+  min-height: calc(100vh - 225px);
+  padding: 36px 7vw 64px;
+  display: grid;
+  place-items: start center;
+  background: #092C71;
+}
+
+.login-panel {
+  width: min(520px, 100%);
+  padding: clamp(28px, 5vw, 48px);
+  border-top: 7px solid #0096D6;
+  background: #FFFFFF;
+}
+
+h1 {
+  margin: 0;
+  color: #092C71;
+  font: 700 clamp(2.25rem, 7vw, 3.5rem)/1 "Century Gothic", Arial, sans-serif;
+}
+
+.login-intro {
+  margin: 16px 0 30px;
+  font-size: 1.1rem;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  color: #092C71;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 2px solid #092C71;
+  border-radius: 8px;
+  background: var(--pivot-midnight-tint);
+  color: #000000;
+}
+
+button {
+  min-height: 48px;
+  margin-top: 10px;
+  padding: 13px 20px;
+  border: 2px solid #F4951D;
+  border-radius: 999px;
+  background: #F4951D;
+  color: #092C71;
+  font-weight: 900;
+}
+
+input:disabled,
+button:disabled {
+  cursor: not-allowed;
+}
+
+.login-status {
+  margin: 24px 0 0;
+  padding: 16px;
+  border-left: 5px solid #F4951D;
+  background: var(--pivot-midnight-tint);
+}
+
+.login-header a:focus-visible,
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid #F4951D;
+  outline-offset: 4px;
+}
+
+footer {
+  min-height: 75px;
+  padding: 25px 7vw;
+  background: #FFFFFF;
+  color: #000000;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .login-header { min-height: 130px; }
+  main { padding: 24px 5vw 48px; }
+  .login-panel { padding: 28px 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -13,57 +13,67 @@ nav a.studio-nav-link:focus-visible {
   text-decoration: none;
 }
 
-.club-login-link {
+nav a.club-login-link {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #000000;
   font-size: .9rem;
   font-weight: 700;
 }
 
+nav a.club-login-link:hover,
+nav a.club-login-link:focus-visible {
+  background: transparent;
+  color: #092C71;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .club-stores-page {
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - 145px);
+  display: grid;
+  grid-template-rows: auto 1fr;
   color: #000000;
   background: var(--pivot-midnight-tint);
 }
 
-.club-stores-intro {
-  min-height: 430px;
-  background: #FFFFFF;
+.club-stores-masthead {
+  min-height: 190px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 4vw, 54px);
+  background: #092C71;
+  color: #FFFFFF;
 }
 
-.club-stores-intro h1 {
-  max-width: 760px;
-  margin: 8px 0 18px;
-  color: #092C71;
-  font: 700 clamp(2.7rem, 6vw, 5.6rem)/.98 "Century Gothic", Arial, sans-serif;
+.club-stores-logo {
+  display: block;
+  width: min(150px, 30vw);
+  height: auto;
+  flex: 0 0 auto;
 }
 
-.club-stores-intro > div > p {
-  max-width: 620px;
-  font-size: 1.15rem;
+.club-stores-masthead h1 {
+  margin: 0;
+  color: #FFFFFF;
+  font: 700 clamp(2.25rem, 5vw, 4.4rem)/1 "Century Gothic", Arial, sans-serif;
 }
 
 .pivot-store-section {
+  padding-top: 28px;
+  padding-bottom: 28px;
+  display: grid;
+  align-items: start;
   background: var(--pivot-midnight-tint);
 }
 
-.pivot-store-section .section-heading {
-  gap: 32px;
-  margin-bottom: 26px;
-}
-
-.pivot-store-section .section-heading h2 {
-  margin: 8px 0 0;
-  color: #092C71;
-  font: 700 clamp(2rem, 4vw, 3.3rem) "Century Gothic", Arial, sans-serif;
-}
-
-.pivot-store-section .section-heading > p {
-  max-width: 430px;
-}
-
 .pivot-store-card {
-  max-width: 920px;
+  width: min(820px, 100%);
   display: grid;
-  grid-template-columns: minmax(300px, .9fr) minmax(320px, 1.1fr);
+  grid-template-columns: minmax(220px, .75fr) minmax(300px, 1.25fr);
   background: #092C71;
   color: #FFFFFF;
   text-decoration: none;
@@ -81,34 +91,45 @@ nav a.studio-nav-link:focus-visible {
 }
 
 .pivot-store-identity {
-  min-height: 330px;
+  min-height: 230px;
   display: grid;
   place-items: center;
-  padding: 34px;
+  padding: 20px;
 }
 
 .sample-store-logo {
   display: block;
-  width: min(330px, 100%);
+  width: min(220px, 100%);
   height: auto;
 }
 
 .pivot-store-copy {
   display: grid;
   align-content: center;
-  padding: clamp(32px, 5vw, 64px);
+  padding: clamp(28px, 4vw, 44px);
   background: #FFFFFF;
   color: #000000;
 }
 
-.pivot-store-copy h3 {
-  margin: 8px 0 0;
+.store-status {
+  width: max-content;
+  padding: 5px 9px;
+  border-left: 4px solid #F4951D;
+  background: var(--pivot-orange-tint);
   color: #092C71;
-  font: 700 clamp(1.8rem, 3vw, 2.6rem) "Century Gothic", Arial, sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.pivot-store-copy h2 {
+  margin: 12px 0 8px;
+  color: #092C71;
+  font: 700 clamp(1.65rem, 3vw, 2.4rem) "Century Gothic", Arial, sans-serif;
 }
 
 .pivot-store-copy p {
-  margin: 12px 0 28px;
+  max-width: 46ch;
+  margin: 0 0 24px;
 }
 
 .pivot-store-copy strong {
@@ -121,21 +142,25 @@ nav a.studio-nav-link:focus-visible {
   font-size: 1.25rem;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 680px) {
+  .club-stores-page {
+    min-height: 0;
+  }
+
+  .club-stores-masthead {
+    min-height: 0;
+  }
+
   .pivot-store-card {
     grid-template-columns: 1fr;
   }
 
-  .club-stores-intro {
-    min-height: 0;
-  }
-
-  .pivot-store-section .section-heading {
-    display: block;
-  }
-
   .pivot-store-identity {
-    min-height: 280px;
+    min-height: 190px;
+  }
+
+  .sample-store-logo {
+    width: min(180px, 60vw);
   }
 }
 
@@ -144,6 +169,12 @@ nav a.studio-nav-link:focus-visible {
     flex-basis: 100%;
     min-height: 48px;
     padding: 10px 14px;
+  }
+
+  nav a.club-login-link {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 10px 8px;
   }
 }
 

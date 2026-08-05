@@ -7,7 +7,7 @@ Pivot is a dependency-free Node.js modular monolith serving four small experienc
 1. The public Pivot website.
 2. The browser-local Pivot Design Studio trial.
 3. An isolated fixture-backed workflow simulation.
-4. Static Club Store and local review pages.
+4. Static Club Store landing, customer preview, administration preview and local review pages.
 
 It is not the production platform. Production identity, durable storage, supplier templates, manufacturing integration, ordering and payments are not implemented.
 
@@ -19,7 +19,7 @@ It is not the production platform. Production identity, durable storage, supplie
 | Design Studio | Browser-local four-surface trial, setup, preview, history and checks | `public/studio/*`, composed by `public/app.js` |
 | Workflow simulation | Fixture identities, design transitions and simulated administration | `public/app.js`, `src/domain.js`, `src/server.js`, `data/state.json` |
 | Uniform rules | Partial basketball baseline and server profile | `src/uniform-rules.js`, with browser checks in `public/studio/studio-state.js` |
-| Club Store | Static landing and local review presentation plus fixture-backed store projection API | `public/club-store/*`, `src/domain.js`, `src/server.js` |
+| Club Store | Static landing, separate non-transactional customer and administration previews, plus fixture-backed store projection API | `public/club-store/*`, `src/domain.js`, `src/server.js` |
 | Temporary Website | Isolated temporary landing page | `public/temporary-landing.html`, `public/temporary-landing.css` |
 
 Capabilities that are not implemented remain documented in `docs/Capability Map.md`; no empty code containers represent them.
@@ -85,7 +85,7 @@ The public Studio and workflow simulation still use different design representat
 - `src/server.js` serves static assets, injects initial homepage markup, applies security/cache headers and compression, and exposes the fixture API.
 - `public/website/home.css` owns the website shell and homepage styling and is reused by the Club Store landing page.
 - `public/style.css` contains Studio/workflow presentation and is loaded only when a Studio route is selected.
-- Capability-specific Club Store styling remains under `public/club-store/`.
+- Capability-specific Club Store styling remains under `public/club-store/`; the customer preview stores only its light/dark display preference in browser `localStorage`, while administration colour/theme controls remain unsaved.
 
 Shared website-shell CSS does not yet justify another directory or stylesheet. Extract it only if independent consumers or conflicting change patterns make `home.css` difficult to use safely.
 

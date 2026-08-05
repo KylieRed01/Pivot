@@ -41,6 +41,8 @@ test('website implementation guidance is required and records approved page patt
 test('local and testing pages apply the approved document and accessibility baseline', async () => {
   const paths = [
     'public/club-store/index.html',
+    'public/club-store/pivot/index.html',
+    'public/club-login/index.html',
     'public/website/version-2-review.html',
     'public/club-store/version-2-club-store-review.html'
   ];
@@ -114,7 +116,8 @@ test('local and testing page styles keep responsive navigation and reduced-motio
   const styles = await Promise.all([
     readFile('public/website/home.css', 'utf8'),
     readFile('public/website/version-2-review.css', 'utf8'),
-    readFile('public/club-store/version-2-club-store-review.css', 'utf8')
+    readFile('public/club-store/version-2-club-store-review.css', 'utf8'),
+    readFile('public/club-store/pivot/pivot-store.css', 'utf8')
   ]);
 
   for (const css of styles) {
