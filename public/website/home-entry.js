@@ -27,7 +27,7 @@ async function route() {
   if (studioRoutes.has(location.hash)) {
     window.removeEventListener('hashchange', route);
     await loadStudioStyles().catch(() => {});
-    await import('../app.js?v=20260805-3');
+    await import('../app.js?v=20260805-4');
     return;
   }
 

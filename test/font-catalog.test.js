@@ -8,6 +8,7 @@ import {
   listFontChoices,
   renderDevelopmentFontOptions
 } from '../public/studio/font-catalog.js';
+import { createApp } from '../src/server.js';
 import {
   createInitialStudioState,
   reduceStudioState,
@@ -76,7 +77,14 @@ test('development font assets match the validated artifacts and retain OFL evide
     ['public/fonts/oswald/Oswald[wght].ttf', '5b38c246e255a12f5712d640d56bcced0472466fc68983d2d0410ec0457c2817'],
     ['public/fonts/league-spartan/LeagueSpartan-Regular.woff2', '41a272ba94993caefcdc0444407b7bfa400a6d44c32857b8f2273b3c568bc112'],
     ['public/fonts/league-spartan/LeagueSpartan-Bold.woff2', '353514311e239dfba514b3673a9348caab3a0fc639bd4e889b00707576d532ed'],
-    ['public/fonts/graduate/Graduate-Regular.ttf', '971222b309851d86f2513f89b510dc52d52ef7798b5f43af2c6f58d43df568e5']
+    ['public/fonts/barlow-condensed/BarlowCondensed-Regular.ttf', '583cec5da3b84bc4dc7c9c72e2a565c94d34e431518b19d7e250b7830ad5f996'],
+    ['public/fonts/barlow-condensed/BarlowCondensed-SemiBold.ttf', '7b619d14bc2327509a9ef32b0890f709626f7ecc9ff61191c2a4314c5499d2d9'],
+    ['public/fonts/barlow-condensed/BarlowCondensed-Bold.ttf', 'e476562ec9c1e16cf16475895b511f08c804f438cc9a9f80a44ea50a0eeb5b65'],
+    ['public/fonts/montserrat/Montserrat[wght].ttf', '0f7b311b2f3279e4eef9b2f968bcdbab6e28f4daeb1f049f4f278a902bcd82f7'],
+    ['public/fonts/archivo-black/ArchivoBlack-Regular.ttf', 'dd9a89a019b4849f66ab75455fe7bdf931311042cbb0f0f97acc061539703180'],
+    ['public/fonts/bitter/Bitter[wght].ttf', 'ef2b9a711fb02f1e5823b34da1b7450e0fc76793b7d733a8b41006e24916d4a7'],
+    ['public/fonts/graduate/Graduate-Regular.ttf', '971222b309851d86f2513f89b510dc52d52ef7798b5f43af2c6f58d43df568e5'],
+    ['public/fonts/pacifico/Pacifico-Regular.ttf', '5b6c0d5334a7bf77dea52b975c5a0c408878c0f7115ed5b6fb151f634b7bf701']
   ]);
 
   for (const [path, hash] of expected) {
@@ -94,4 +102,19 @@ test('development font assets match the validated artifacts and retain OFL evide
   assert.match(css, /font-family: "Pivot Anton"/);
   assert.match(css, /font-family: "Pivot Pacifico"/);
   assert.match(css, /None of these faces is production approved/);
+});
+
+test('server sends development fonts and licence evidence with usable content types', async t => {
+  const server = createApp();
+  await new Promise(resolve => server.listen(0, resolve));
+  t.after(() => server.close());
+  const origin = `http://127.0.0.1:${server.address().port}`;
+
+  const font = await fetch(`${origin}/fonts/anton/Anton-Regular.ttf`);
+  const licence = await fetch(`${origin}/fonts/anton/OFL.txt`);
+
+  assert.equal(font.status, 200);
+  assert.equal(font.headers.get('content-type'), 'font/ttf');
+  assert.equal(licence.status, 200);
+  assert.equal(licence.headers.get('content-type'), 'text/plain; charset=utf-8');
 });

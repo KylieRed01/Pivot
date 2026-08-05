@@ -9,7 +9,7 @@ import { uniformRuleProfile } from './uniform-rules.js';
 import { getHomePageMarkup } from '../public/website/home-page.js';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const stateFile = join(root, 'data/state.json');
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.ttf':'font/ttf','.woff':'font/woff','.woff2':'font/woff2','.otf':'font/otf','.txt':'text/plain; charset=utf-8','.md':'text/markdown; charset=utf-8'};
 const compressible=new Set(['.html','.js','.css','.svg']);
 const brotliCompress=promisify(brotliCompressCallback);const gzip=promisify(gzipCallback);
 const securityHeaders={'content-security-policy':"default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self' mailto:; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'",'permissions-policy':'camera=(), geolocation=(), microphone=()','referrer-policy':'strict-origin-when-cross-origin','x-content-type-options':'nosniff'};

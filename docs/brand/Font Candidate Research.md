@@ -9,7 +9,7 @@
 
 All ten candidates now covered by this report are distributed by their copyright holders and Google Fonts under the **SIL Open Font License, Version 1.1 (OFL-1.1)**. Subject to compliance with that licence, the licence permits Pivot to use the fonts in a browser design application, let customers create designs, embed webfonts, rasterise or outline text, and commercially print the resulting designs on uniforms and merchandise. The licence does not require attribution on a rendered garment.
 
-On 5 August 2026, with Director permission, the exact candidate binaries were downloaded temporarily from pinned official sources. Their internal names, versions, weight/variable metadata, ASCII character coverage, digits `0`–`9` and SHA-256 values were inspected. The temporary binaries were then deleted; no font was committed, embedded or exposed in the Studio. Browser/export testing, physical print testing, supplier acceptance and Director approval remain outstanding.
+On 5 August 2026, with Director permission, the exact candidate binaries were downloaded from pinned official sources. Their internal names, versions, weight/variable metadata, ASCII character coverage, digits `0`–`9` and SHA-256 values were inspected. The exact development artifacts and OFL notices are now retained under `public/fonts/` and exposed only in the explicitly labelled non-production Studio trial under the Font Register's Evaluation controls. Browser/export consistency, physical print testing, supplier acceptance and production approval remain outstanding.
 
 Recommended smallest practical general-text set for evaluation:
 
@@ -61,7 +61,7 @@ Authoritative licence guidance:
 
 ## 4. Expanded tee and hoodie font library
 
-The following is the proposed **Pending** general-apparel library. All ten families may be shown on tee, hoodie, polo and ordinary uniform text layers after approval. Basketball numeral eligibility is a separate flag; none is currently enabled for a basketball number layer.
+The following **Evaluation** general-apparel library is available on tee, hoodie, polo and ordinary uniform text layers in the non-production Studio trial. All choices are also available on basketball number layers for development experimentation, but every such use creates a blocking production-validation check.
 
 | Category | Exact family/styles proposed | Author/foundry | Binary and OFL-1.1 evidence | General-apparel notes |
 |---|---|---|---|---|
@@ -126,7 +126,7 @@ FIBA 2026 source: <https://assets.fiba.basketball/image/upload/documents-corpora
 
 ### Mandatory measurement gate
 
-Anton must remain Pending until Pivot and the selected supplier complete and record:
+Anton must remain Evaluation-only and blocked from production until Pivot and the selected supplier complete and record:
 
 1. retain the verified binary metadata and SHA-256 for Anton Regular v2.116 in the controlled record;
 2. render the verified glyphs `0 1 2 3 4 5 6 7 8 9` and the composed value `00` at the locked production settings;
@@ -145,7 +145,7 @@ There is currently **no selected supplier or supplier-approved production templa
 
 ### Evidence retained by URL
 
-No font packages or binaries were retained after temporary inspection. The pinned repository/release URLs and recorded hashes preserve the identity of the reviewed artifacts, version statements, copyright notices and licence text. On approved repository acquisition, Pivot should retain locally:
+The exact development font artifacts and their OFL notices are retained under `public/fonts/`. The pinned repository/release URLs and recorded hashes preserve the identity of the reviewed artifacts, version statements, copyright notices and licence text. Before any production approval, Pivot must continue to retain:
 
 - the unmodified source package or exact approved files;
 - copyright notice and `OFL.txt` from the same package;
@@ -169,19 +169,19 @@ No font packages or binaries were retained after temporary inspection. The pinne
 - The BBA by-laws located are dated September 2021 and are no longer linked from the current Forms & Information page. Obtain current written BBA confirmation before production.
 - No separate current uniform specification was located from Basketball Victoria or Basketball Australia that overrides the competition/FIBA geometry. Confirm the exact competition pathway rather than assuming their general endorsement.
 
-## 8. Proposed Font Register updates
+## 8. Font Register controls
 
-Do not apply these as approvals. After review, amend `docs/brand/Font Register.md` as follows:
+`docs/brand/Font Register.md` now records the development-only authorisation and the remaining production gates:
 
-1. Replace the unnamed PFR-005 entry with **Pending** general-apparel entries for the exact ten-family/style library in section 4, including each source, internal version, SHA-256, locked weight and any all-caps/minimum-size restriction.
-2. Replace the unnamed PFR-004 candidate text with **Anton Regular 400, pinned Google Fonts binary v2.116 — Pending measurement and approval**, while retaining every existing basketball gate.
+1. PFR-005 records the exact ten-family/style library as **Evaluation**, with each source, internal version, SHA-256, locked weight and applicable all-caps/minimum-size restriction retained here.
+2. PFR-004 records **Anton Regular 400, pinned Google Fonts binary v2.116 — Evaluation only**, while retaining every basketball production gate.
 3. Add a source commit/release, SHA-256 and internal-version field to the approval record.
 4. Add an “accepted character set and unsupported-glyph behaviour” field.
 5. Add a fixed/static-instance field and prohibit silent variable-axis or upstream version changes.
 6. Record the BBA September 2021 by-law as the source of the stricter 10/20/2/5 baseline, flag it for current written confirmation, and note FIBA 2024's 16/8/2/4 baseline.
 7. Add FIBA 2026's 1 October 2026 effective date as a mandatory review trigger.
 8. Record that manufacturer font-file sharing is licence-permitted only with OFL notices but operationally prohibited unless expressly authorised; outlined immutable artwork remains the default.
-9. Keep all ten families **Pending**. Do not expose them in Studio until the Director changes each exact entry to Approved or Conditional.
+9. Keep all ten families **Evaluation** and visibly labelled in the non-production Studio. Do not permit publication or manufacture until the affected exact entry becomes Approved or Conditional.
 
 ## 9. Director approval checklist
 
@@ -200,13 +200,13 @@ Do not apply these as approvals. After review, amend `docs/brand/Font Register.m
 - [ ] Confirm supplier accepts outlined immutable artwork.
 - [ ] Decide whether any manufacturer may receive font files; if yes, require minimum access and accompanying copyright/OFL notices.
 - [ ] Approve exact register entries, uses, garments, production treatment, review trigger and evidence paths.
-- [ ] Only after register approval, authorise repository addition and Studio exposure as separate changes.
+- [x] Authorise development-only repository addition and Studio exposure under the recorded Evaluation controls.
 
 ## 10. Repository recommendation
 
-**Not yet.** The current register expressly prohibits committing, embedding or self-hosting font files before authorisation, and all candidates remain Pending.
+**Development-only addition completed.** The Font Register now expressly authorises the exact Evaluation artifacts to be stored and self-hosted for the non-production Studio trial. This does not authorise production use or manufacturer sharing.
 
-After exact entries are approved, OFL-1.1 permits repository storage and webfont embedding. Prefer this controlled arrangement:
+For the later production decision, retain this controlled arrangement:
 
 - commit only the approved production webfont/static files, not entire families;
 - keep each family/version in a clearly versioned path;
