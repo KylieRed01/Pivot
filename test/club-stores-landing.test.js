@@ -7,21 +7,17 @@ test('Club Stores landing reuses the website shell and provides a Pivot design e
     readFile('public/club-store/index.html', 'utf8'),
     readFile('public/index.html', 'utf8')
   ]);
-  const shell = source => ({
-    header: source.match(/<header>.*?<\/header>/s)?.[0],
-    footer: source.match(/<footer>.*?<\/footer>/s)?.[0]
-  });
+  const footer = source => source.match(/<footer>.*?<\/footer>/s)?.[0];
 
-  assert.deepEqual(shell(html), shell(home));
+  assert.equal(footer(html), footer(home));
+  assert.match(html, /<a class="studio-nav-link" href="\/#studio">Pivot Design Studio<\/a><span class="club-login-link" aria-disabled="true">Club login<\/span>/);
+  assert.doesNotMatch(home, /club-login-link/);
   assert.match(html, /href="\/website\/home\.css\?v=20260805-4"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(html, /<h1 id="club-stores-title">Explore an example club store\.<\/h1>/);
   assert.match(html, /The Pivot Club Store demonstrates how approved teamwear could be presented to club members\./);
-  assert.match(html, /<span class="eyebrow">Pilot club access<\/span>/);
-  assert.match(html, /<h2 id="club-login-title">Authorised club users<\/h2>/);
-  assert.match(html, /<button type="button" disabled>Club login<\/button>/);
-  assert.match(html, /<small>Sign-in is not available yet<\/small>/);
+  assert.doesNotMatch(html, /<aside class="club-login"|Pilot club access|Authorised club users|Sign-in is not available yet/);
   assert.doesNotMatch(html, /<form|type="password"/);
   assert.match(html, /class="sample-store-logo" src="\/brand\/Pivot_Logo_Transparent\.svg" alt="Pivot Teamwear"/);
   assert.match(html, /<h2 id="pivot-store-title">Pivot Club Store<\/h2>/);
@@ -45,6 +41,7 @@ test('Club Stores styling preserves the approved logo and brand presentation', a
   assert.match(css, /#F4951D/i);
   assert.match(css, /Century Gothic/);
   assert.match(css, /Calibri/);
+  assert.match(pageCss, /\.club-login-link\s*\{[^}]*font-size:\s*\.9rem;[^}]*font-weight:\s*700;/s);
   assert.match(pageCss, /\.sample-store-logo\s*\{[^}]*width:\s*min\(330px, 100%\);[^}]*height:\s*auto;/s);
   assert.doesNotMatch(pageCss, /\.sample-store-logo\s*\{[^}]*(?:transform|filter|clip-path):/s);
   assert.match(pageCss, /\.pivot-store-card:focus-visible\s*\{[^}]*outline:\s*3px solid #092C71/s);

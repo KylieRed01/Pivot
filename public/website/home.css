@@ -59,6 +59,7 @@ nav a:last-child {
 nav a:last-child:hover { background: #F4951D; color: #092C71; }
 
 main#app { min-height: calc(100vh - 72px); }
+#home { scroll-margin-top: 72px; }
 footer { padding: 25px 7vw; color: #000000; text-align: left; }
 
 .pivot-hero {
@@ -320,6 +321,7 @@ select:focus-visible {
   .interest-field-grid .wide { grid-column: auto; }
   .club-interest-form { padding: 22px; }
   .interest-form-actions > button { width: 100%; min-height: 48px; }
+  #home { scroll-margin-top: 200px; }
   body > header {
     height: auto;
     min-height: 72px;

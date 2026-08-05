@@ -208,9 +208,11 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
     readFile('public/website/home.css', 'utf8')
   ]);
 
-  assert.match(html, /href="\/website\/home\.css\?v=20260805-4"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-2"/);
+  assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
+  assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
   assert.match(entry, /href = '\/style\.css\?v=20260805-9'/);

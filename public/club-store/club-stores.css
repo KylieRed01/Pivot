@@ -1,3 +1,23 @@
+.studio-nav-link {
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: #092C71;
+  color: #FFFFFF;
+  font-weight: 900;
+}
+
+nav a.studio-nav-link:hover,
+nav a.studio-nav-link:focus-visible {
+  background: #F4951D;
+  color: #092C71;
+  text-decoration: none;
+}
+
+.club-login-link {
+  font-size: .9rem;
+  font-weight: 700;
+}
+
 .club-stores-page {
   min-height: calc(100vh - 72px);
   color: #000000;
@@ -5,10 +25,6 @@
 }
 
 .club-stores-intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
-  align-items: center;
-  gap: 48px;
   min-height: 430px;
   background: #FFFFFF;
 }
@@ -23,40 +39,6 @@
 .club-stores-intro > div > p {
   max-width: 620px;
   font-size: 1.15rem;
-}
-
-.club-login {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 8px 20px;
-  padding: 26px;
-  border-left: 6px solid #F4951D;
-  background: var(--pivot-orange-tint);
-  color: #092C71;
-}
-
-.club-login h2 {
-  margin: 5px 0 0;
-  font: 700 1.3rem "Century Gothic", Arial, sans-serif;
-}
-
-.club-login button {
-  grid-column: 2;
-  grid-row: 1;
-  padding: 12px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--pivot-midnight) 12%, var(--pivot-white));
-  color: #000000;
-  font-weight: 700;
-  cursor: not-allowed;
-}
-
-.club-login small {
-  grid-column: 2;
-  color: #000000;
-  text-align: center;
 }
 
 .pivot-store-section {
@@ -140,7 +122,6 @@
 }
 
 @media (max-width: 800px) {
-  .club-stores-intro,
   .pivot-store-card {
     grid-template-columns: 1fr;
   }
@@ -158,20 +139,11 @@
   }
 }
 
-@media (max-width: 480px) {
-  .club-login {
-    grid-template-columns: 1fr;
-  }
-
-  .club-login button,
-  .club-login small {
-    grid-column: 1;
-    grid-row: auto;
-    text-align: left;
-  }
-
-  .club-login button {
-    justify-self: start;
+@media (max-width: 720px) {
+  nav a.studio-nav-link {
+    flex-basis: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
   }
 }
 
