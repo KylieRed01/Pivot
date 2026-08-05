@@ -78,7 +78,7 @@ export function fontStyle(id) {
 
 export function renderDevelopmentFontOptions(selectedId) {
   return DEVELOPMENT_FONT_FAMILIES.map(font => {
-    const options = font.styles.map(style => `<option value="${style.id}"${style.id === selectedId ? ' selected' : ''}>${style.label} · Not production validated</option>`).join('');
+    const options = font.styles.map(style => `<option value="${style.id}"${style.id === selectedId ? ' selected' : ''}>${font.label} — ${style.label} · Not production validated</option>`).join('');
     return `<optgroup label="${font.label}">${options}</optgroup>`;
   }).join('');
 }

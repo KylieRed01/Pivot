@@ -97,8 +97,13 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.doesNotMatch(source, /class="view-label"/);
   assert.doesNotMatch(source, /class="canvas-footer"/);
   assert.doesNotMatch(source, /renderStudioSetup/);
-  assert.match(source, /data-tool="templates"[^>]*aria-label="Templates"/);
-  assert.match(source, /data-tool-panel="templates"><nav class="template-menu"/);
+  assert.match(source, /class="rail-item active" data-tool="templates"[^>]*aria-label="Templates"/);
+  assert.match(source, /<h2 id="tool-heading">Templates<\/h2>/);
+  assert.match(source, /class="tool-section active" data-tool-panel="templates"><nav class="template-menu"/);
+  assert.doesNotMatch(source, /class="rail-item active" data-tool="colours"/);
+  assert.doesNotMatch(source, /class="tool-section active" data-tool-panel="colours"/);
+  assert.match(source, /data-tool-panel="artwork"[\s\S]*?class="panel-help"[\s\S]*?id="add-text" class="add-text-primary"[\s\S]*?id="text-selection-empty"[\s\S]*?id="text-controls"/);
+  assert.match(source, /if\(b\.dataset\.tool==='artwork'&&!sides\[side\]\.layers\.some\(layer=>layer\.id===selectedId&&layer\.type==='text'\)\)/);
   assert.doesNotMatch(source, /<aside class="design-guidance"[\s\S]*?<nav class="template-menu"/);
   assert.match(source, /data-template="basketball-jersey"/);
   assert.match(source, /data-template="generic-t-shirt"/);
@@ -251,15 +256,15 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-5"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-6"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-12', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-13', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-4'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-5'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);

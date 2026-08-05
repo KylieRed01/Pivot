@@ -65,7 +65,8 @@ test('basketball development picker keeps every candidate selectable and labels 
   const html = renderDevelopmentFontOptions('graduate-regular');
 
   assert.match(html, /<optgroup label="Anton">/);
-  assert.match(html, /value="graduate-regular" selected/);
+  assert.match(html, />Anton — Regular · Not production validated<\/option>/);
+  assert.match(html, /value="graduate-regular" selected[^>]*>Graduate — Regular/);
   assert.doesNotMatch(html, /disabled/);
   assert.match(html, /Not production validated/);
 });
