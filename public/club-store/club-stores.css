@@ -1,0 +1,176 @@
+.club-stores-page {
+  min-height: calc(100vh - 72px);
+  color: #000000;
+  background: #F3F7FC;
+}
+
+.club-stores-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+  align-items: center;
+  gap: 48px;
+  min-height: 430px;
+  background: #FFFFFF;
+}
+
+.club-stores-intro h1 {
+  max-width: 760px;
+  margin: 8px 0 18px;
+  color: #092C71;
+  font: 700 clamp(2.7rem, 6vw, 5.6rem)/.98 "Century Gothic", Arial, sans-serif;
+}
+
+.club-stores-intro > div > p {
+  max-width: 620px;
+  font-size: 1.15rem;
+}
+
+.club-login {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 26px;
+  border-left: 6px solid #F4951D;
+  background: #FFF3DF;
+  color: #092C71;
+}
+
+.club-login h2 {
+  margin: 5px 0 0;
+  font: 700 1.3rem "Century Gothic", Arial, sans-serif;
+}
+
+.club-login button {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #DCE4EF;
+  color: #566578;
+  font-weight: 700;
+  cursor: not-allowed;
+}
+
+.club-login small {
+  grid-column: 2;
+  color: #667687;
+  text-align: center;
+}
+
+.pivot-store-section {
+  background: #F3F7FC;
+}
+
+.pivot-store-section .section-heading {
+  gap: 32px;
+  margin-bottom: 26px;
+}
+
+.pivot-store-section .section-heading h2 {
+  margin: 8px 0 0;
+  color: #092C71;
+  font: 700 clamp(2rem, 4vw, 3.3rem) "Century Gothic", Arial, sans-serif;
+}
+
+.pivot-store-section .section-heading > p {
+  max-width: 430px;
+}
+
+.pivot-store-card {
+  max-width: 920px;
+  display: grid;
+  grid-template-columns: minmax(300px, .9fr) minmax(320px, 1.1fr);
+  background: #092C71;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.pivot-store-card:focus-visible {
+  outline: 3px solid #F4951D;
+  outline-offset: 4px;
+}
+
+.pivot-store-identity {
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+  padding: 34px;
+}
+
+.sample-store-logo {
+  display: block;
+  width: min(330px, 100%);
+  height: auto;
+}
+
+.pivot-store-copy {
+  display: grid;
+  align-content: center;
+  padding: clamp(32px, 5vw, 64px);
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.pivot-store-copy h3 {
+  margin: 8px 0 0;
+  color: #092C71;
+  font: 700 clamp(1.8rem, 3vw, 2.6rem) "Century Gothic", Arial, sans-serif;
+}
+
+.pivot-store-copy p {
+  margin: 12px 0 28px;
+}
+
+.pivot-store-copy strong {
+  color: #092C71;
+}
+
+.pivot-store-copy strong span {
+  margin-left: 10px;
+  color: #F4951D;
+  font-size: 1.25rem;
+}
+
+@media (max-width: 800px) {
+  .club-stores-intro,
+  .pivot-store-card {
+    grid-template-columns: 1fr;
+  }
+
+  .club-stores-intro {
+    min-height: 0;
+  }
+
+  .pivot-store-section .section-heading {
+    display: block;
+  }
+
+  .pivot-store-identity {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .club-login {
+    grid-template-columns: 1fr;
+  }
+
+  .club-login button,
+  .club-login small {
+    grid-column: 1;
+    grid-row: auto;
+    text-align: left;
+  }
+
+  .club-login button {
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}

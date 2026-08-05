@@ -44,8 +44,15 @@ test('Studio setup returns the selected setup through one completion boundary', 
     garment: 'basketball-jersey',
     ruleProfile: 'basketball-rules'
   });
-  assert.match(root.innerHTML, /Browser-local Design Studio trial/);
+  assert.match(root.innerHTML, /Design Studio trial/);
+  assert.match(root.innerHTML, /Your work stays in this browser/);
+  assert.match(root.innerHTML, /Pivot will confirm final colours, sizing and placement before anything can be made\./);
+  assert.match(root.innerHTML, /<strong>Basketball<\/strong><small>Available to try<\/small>/);
+  assert.match(root.innerHTML, /<strong>Netball<\/strong><small>Not available yet<\/small>/);
+  assert.match(root.innerHTML, /Bendigo Basketball Association is the only competition available to try\./);
+  assert.doesNotMatch(root.innerHTML, /Unavailable in pilot|Only the pilot competition|Provisional · cost confirmation pending/);
   assert.match(root.innerHTML, /id="demo-acknowledgement"/);
+  assert.doesNotMatch(root.innerHTML, /browser-local|production infrastructure|manufacturing integration|supplier-approved/i);
   assert.doesNotMatch(root.innerHTML, /demonstrator/i);
 });
 

@@ -73,6 +73,15 @@ test('serves responsive brand styling with visible keyboard focus', async () => 
   assert.match(css, /prefers-reduced-motion/);
 });
 
+test('serves the Club Stores landing page from its navigation URL', async () => {
+  const response = await fetch(`${base}/club-store/index.html`);
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /<title>Club Stores \| Pivot Teamwear<\/title>/);
+  assert.match(html, /Pivot Club Store/);
+});
+
 test('serves an isolated non-transactional club-store concept', async () => {
   const response = await fetch(`${base}/club-store/version-2-club-store-review.html`);
   const html = await response.text();
@@ -80,7 +89,8 @@ test('serves an isolated non-transactional club-store concept', async () => {
   assert.equal(response.status, 200);
   assert.match(html, /Club Store — Local Review/);
   assert.match(html, /Local concept only — no live store, ordering or checkout/);
-  assert.match(html, /href="\/website\/version-2-review\.html"/);
+  assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
+  assert.match(html, /href="\/club-store\/index\.html"/);
   assert.match(html, /href="\/club-store\/version-2-club-store-review\.css"/);
   assert.match(html, /src="\/club-store\/version-2-club-store-review\.js"/);
   assert.match(html, /Light theme/);
@@ -125,4 +135,13 @@ test('keeps a visible persistence warning inside the vertical editor instead of 
 
   assert.match(source, /<section class="editor">\$\{workflowDemo\?'':'<p id="local-persistence-warning"/);
   assert.doesNotMatch(source, /<\/span><\/div>\$\{workflowDemo\?'':'<p id="local-persistence-warning"/);
+});
+
+test('explains public Design Studio limits without internal technical language', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /Use the front and back views as the clearest record of your design\./);
+  assert.match(source, /Pivot must review and approve a final 2D design showing exactly what will be made\./);
+  assert.match(source, /These checks are a guide only\. Pivot must review any final design before it can be made\./);
+  assert.doesNotMatch(source, /Partial profile:|production infrastructure|manufacturing integration|immutable 2D proof/);
 });

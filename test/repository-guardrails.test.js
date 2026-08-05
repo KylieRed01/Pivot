@@ -21,9 +21,9 @@ test('Playwright remains prohibited from the repository toolchain', async () => 
 
 test('future website navigation links to Club Stores between Products and FAQs', async () => {
   const html = await readFile('public/index.html', 'utf8');
-  const products = html.indexOf('<a href="#products">Products</a>');
-  const clubStores = html.indexOf('<a href="/club-store/version-2-club-store-review.html">Club Stores</a>');
-  const faqs = html.indexOf('<a href="#faqs">FAQs</a>');
+  const products = html.indexOf('<a href="/#products">Products</a>');
+  const clubStores = html.indexOf('<a href="/club-store/index.html">Club Stores</a>');
+  const faqs = html.indexOf('<a href="/#faqs">FAQs</a>');
 
   assert.ok(products >= 0);
   assert.ok(clubStores > products);
