@@ -1,21 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { renderHomePage } from '../public/website/home-page.js';
+import { createApp } from '../src/server.js';
 
 test('public home page renders the approved website experience', () => {
   const root = { innerHTML: '' };
 
   renderHomePage(root);
 
+  assert.match(root.innerHTML, /<section class="pivot-hero" id="home">/);
+  assert.match(root.innerHTML, /<img class="hero-logo"[^>]*width="670" height="295" fetchpriority="high">/);
   assert.match(root.innerHTML, /Built for action\.<br><em>Priced to play\.<\/em>/);
   assert.match(root.innerHTML, /Quality custom teamwear that helps clubs and players get in the game\./);
   assert.match(root.innerHTML, /href="#studio"/);
+  assert.match(root.innerHTML, /aria-label="Game On\. Start designing with the interactive Pivot Design Studio"/);
   assert.match(root.innerHTML, />Game On\. /);
   assert.doesNotMatch(root.innerHTML, /Game On\. Start Designing/);
   assert.doesNotMatch(root.innerHTML, /Design Studio trial:/);
   assert.doesNotMatch(root.innerHTML, /Your kit\. Your identity\./);
   assert.doesNotMatch(root.innerHTML, /class="home-features"/);
-  assert.doesNotMatch(root.innerHTML, /<span class="eyebrow">Benefits<\/span>/);
+  assert.doesNotMatch(root.innerHTML, /<span class="eyebrow">/);
   assert.doesNotMatch(root.innerHTML, /Quality teamwear made simple, affordable and reliable for community sport\./);
   assert.doesNotMatch(root.innerHTML, /class="home-strip"/);
   assert.doesNotMatch(root.innerHTML, /class="text-link"/);
@@ -26,6 +30,7 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /<h3>Club apparel<\/h3>/);
   assert.doesNotMatch(root.innerHTML, /class="availability-note"/);
   assert.match(root.innerHTML, /data-help-category="faqs"/);
+  assert.doesNotMatch(root.innerHTML, /<h3>FAQs<\/h3>/);
   assert.doesNotMatch(root.innerHTML, /data-help-category="studio"/);
   assert.doesNotMatch(root.innerHTML, /<h3>Pivot Design Studio Help<\/h3>/);
   assert.doesNotMatch(root.innerHTML, /data-help-category="club"/);
@@ -51,7 +56,7 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /How do we register our club's interest\?/);
   assert.match(root.innerHTML, /Pivot is working with one pilot club to test a simpler teamwear experience/);
   assert.match(root.innerHTML, /our interactive Pivot Design Studio/);
-  assert.match(root.innerHTML, /<span class="eyebrow">Contact us<\/span>/);
+  assert.doesNotMatch(root.innerHTML, />Contact us<\/span>/);
   assert.match(root.innerHTML, /id="open-club-interest"[^>]*aria-expanded="false"/);
   assert.match(root.innerHTML, /class="club-interest-form" id="club-interest-form"[^>]*hidden/);
   assert.match(root.innerHTML, /\*<\/span> Required fields/);
@@ -71,7 +76,37 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /<optgroup/);
   assert.doesNotMatch(root.innerHTML, />Not sure</);
   assert.match(root.innerHTML, /Gridiron \(American football\)/);
-  assert.match(root.innerHTML, /I agree to receive Pivot Teamwear news and updates by email\. I can unsubscribe at any time\./);
+  assert.match(root.innerHTML, /We’ll use your details to contact you about your club’s interest and relevant Pivot availability updates\./);
+  assert.doesNotMatch(root.innerHTML, /name="Contact consent"|type="checkbox"|general marketing/i);
   assert.match(root.innerHTML, /Register Your Club’s Interest/);
   assert.doesNotMatch(root.innerHTML, /demonstrator/i);
+});
+
+test('server includes essential homepage content in the initial response', async t => {
+  const server = createApp();
+  await new Promise(resolve => server.listen(0, resolve));
+  t.after(() => server.close());
+
+  const response = await fetch(`http://127.0.0.1:${server.address().port}/`);
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('cache-control'), 'no-cache');
+  assert.match(response.headers.get('content-security-policy'), /default-src 'self'/);
+  assert.equal(response.headers.get('permissions-policy'), 'camera=(), geolocation=(), microphone=()');
+  assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
+  assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+  assert.match(html, /<body><a class="skip-link" href="#app">Skip to content<\/a><header>/);
+  assert.match(html, /<main id="app" tabindex="-1"><section class="pivot-hero" id="home">/);
+  assert.match(html, /Built for action\.<br><em>Priced to play\.<\/em>/);
+  assert.match(html, /id="club-interest-form"/);
+  assert.doesNotMatch(html, /<main id="app" tabindex="-1"><\/main>/);
+
+  const stylesheet = await fetch(`http://127.0.0.1:${server.address().port}/style.css`, {
+    headers: { 'accept-encoding': 'br' }
+  });
+  assert.equal(stylesheet.headers.get('content-encoding'), 'br');
+  assert.equal(stylesheet.headers.get('cache-control'), 'public, max-age=3600');
+  assert.equal(stylesheet.headers.get('vary'), 'Accept-Encoding');
+  assert.match(await stylesheet.text(), /--pivot-midnight:#092C71/);
 });

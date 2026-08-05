@@ -30,6 +30,21 @@ test('future website navigation links to Club Stores between Products and FAQs',
   assert.ok(faqs > clubStores);
 });
 
+test('website navigation consistently uses the home route name', async () => {
+  const sources = await Promise.all([
+    readFile('public/index.html', 'utf8'),
+    readFile('public/club-store/index.html', 'utf8'),
+    readFile('public/app.js', 'utf8'),
+    readFile('public/website/home-page.js', 'utf8')
+  ]);
+
+  for (const source of sources) assert.doesNotMatch(source, /#store/);
+  assert.match(sources[0], /href="\/#home">Home<\/a>/);
+  assert.match(sources[1], /href="\/#home">Home<\/a>/);
+  assert.match(sources[2], /href="#home" class="back">← Back to home<\/a>/);
+  assert.match(sources[3], /<section class="pivot-hero" id="home">/);
+});
+
 test('future website footer uses a left-aligned copyright notice without repeating homepage messaging', async () => {
   const [html, css] = await Promise.all([
     readFile('public/index.html', 'utf8'),
@@ -41,13 +56,18 @@ test('future website footer uses a left-aligned copyright notice without repeati
   assert.match(css, /footer\{text-align:left;padding:25px 7vw;/);
 });
 
-test('future homepage uses a consistent section-label size', async () => {
-  const css = await readFile('public/style.css', 'utf8');
-
-  assert.match(css, /\.eyebrow\{[^}]*font-size:14px[^}]*\}/);
-  assert.doesNotMatch(css, /\.contact-section \.eyebrow\{[^}]*font-size:/);
+test('future homepage avoids redundant section labels and decorative card differences', async () => {
+  const [source, css] = await Promise.all([
+    readFile('public/website/home-page.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
   const homepageStyles = css.slice(0, css.indexOf('.mode-notice'));
+
+  assert.doesNotMatch(source, /class="eyebrow"/);
+  assert.doesNotMatch(source, /<h3>FAQs<\/h3>/);
   assert.doesNotMatch(homepageStyles, /\.home-features|\.energy-card/);
+  assert.doesNotMatch(homepageStyles, /\.info-grid article:nth-child/);
+  assert.match(homepageStyles, /\.hero-logo\{[^}]*width:min\(670px,88vw\);height:295px;/);
 });
 
 test('future homepage colours use approved bases and traceable supporting variations', async () => {
@@ -69,7 +89,29 @@ test('future homepage colours use approved bases and traceable supporting variat
   assert.deepEqual(unapprovedColours, []);
   assert.doesNotMatch(homepageStyles, /\b(?:rgb|hsl)a?\(/i);
   assert.match(homepageStyles, /--pivot-midnight-tint:color-mix\(in srgb,var\(--pivot-midnight\) 6%,var\(--pivot-white\)\)/);
+  assert.match(homepageStyles, /--pivot-cerulean-tint:color-mix\(in srgb,var\(--pivot-cerulean\) 12%,var\(--pivot-white\)\)/);
   assert.match(homepageStyles, /--pivot-orange-tint:color-mix\(in srgb,var\(--pivot-orange\) 14%,var\(--pivot-white\)\)/);
+  assert.match(homepageStyles, /\.faq-section\{background:var\(--pivot-orange-tint\)\}/);
+  assert.match(homepageStyles, /\.contact-section\{[^}]*background:var\(--pivot-cerulean-tint\);color:#092C71\}/);
+  assert.match(homepageStyles, /\.faq-section p a\{[^}]*text-decoration:underline[^}]*\}/);
+  assert.match(homepageStyles, /\.faq-section details\{width:100%;[^}]*\}/);
+  assert.match(homepageStyles, /\.faq-section details p\{max-width:75ch\}/);
+  assert.doesNotMatch(homepageStyles, /\.faq-section details\{max-width:/);
+  assert.match(homepageStyles, /\.contact-section\{[^}]*grid-template-columns:minmax\(0,1fr\) auto;[^}]*\}/);
+  assert.match(homepageStyles, /\.contact-section:has\(\.club-interest-form:not\(\[hidden\]\)\)\{grid-template-columns:minmax\(0,\.8fr\) minmax\(520px,1\.2fr\)\}/);
+  assert.match(homepageStyles, /\.interest-copy p\{max-width:75ch;/);
+});
+
+test('homepage defers Design Studio code until a Studio route is selected', async () => {
+  const [html, entry] = await Promise.all([
+    readFile('public/index.html', 'utf8'),
+    readFile('public/website/home-entry.js', 'utf8')
+  ]);
+
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-1"/);
+  assert.doesNotMatch(html, /src="\/app\.js/);
+  assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js'\)/);
 });
 
 test('customer-facing copy consistently names the Pivot Design Studio', async () => {
