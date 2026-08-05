@@ -1,4 +1,7 @@
 node_modules/
 .tmp/
+
+# Superseded local recovery material retained only for historical reference.
+# It is non-authoritative; promote any approved decision into maintained docs instead.
 .planning/pivot-design-tool-baseline/
 specs/pivot-design-tool-baseline/

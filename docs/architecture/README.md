@@ -35,6 +35,12 @@ This catalogue was checked against the current repository baseline:
 
 The governing-document precedence recorded in the Constitution applies.
 
+## Legacy baseline material
+
+`.planning/pivot-design-tool-baseline/` and `specs/pivot-design-tool-baseline/` contain superseded recovery material retained locally for historical reference. They are intentionally ignored, are not current authority, and do not gate commits or implementation. If an old decision becomes relevant, review that item against the current governing baseline and promote only the approved outcome into maintained documentation.
+
+Local retention is optional; deleting these ignored copies does not affect the application or its current documentation.
+
 ## Maintenance rule
 
 Update this catalogue when a module's responsibility, public interface or dependency direction changes. Keep current facts separate from possible future structure, and do not add empty architectural containers in anticipation of unapproved work.
