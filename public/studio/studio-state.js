@@ -47,6 +47,10 @@ function safeLayer(layer) {
     safe.flipX = Boolean(layer.flipX);
     safe.flipY = Boolean(layer.flipY);
   } else {
+    safe.scale = 1;
+    safe.fontSize = Number.isFinite(layer.fontSize)
+      ? Math.max(5, layer.fontSize)
+      : Math.max(5, Math.round((Number.isFinite(layer.scale) ? layer.scale : 1) * 14));
     safe.text = String(layer.text ?? '');
     safe.colour = String(layer.colour ?? '#FFFFFF');
     safe.alignment = ['left', 'center', 'right'].includes(layer.alignment) ? layer.alignment : 'center';
@@ -290,7 +294,12 @@ export function reduceStudioState(current, action) {
     }
     const protectedKeys = new Set(['id', 'required', 'controlLevel', 'role', 'type']);
     for (const [key, value] of Object.entries(patch)) {
-      if (!protectedKeys.has(key)) layer[key] = value;
+      if (protectedKeys.has(key) || (layer.type === 'text' && key === 'scale')) continue;
+      if (layer.type === 'text' && key === 'fontSize') {
+        if (Number.isFinite(value)) layer.fontSize = Math.max(5, value);
+        continue;
+      }
+      layer[key] = value;
     }
     next.view.surface = surfaceKey;
     next.view.selectedLayerId = layer.id;

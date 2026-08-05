@@ -10,8 +10,9 @@ export const SURFACE_KEYS = Object.freeze([
 export const PUBLIC_STUDIO_STORAGE_KEY = 'pivot-public-studio-session-v1';
 
 // Indicative 2:1 visual ratio for the BBA 20 cm back / 10 cm front baseline.
-// Exact physical dimensions remain blocked until supplier-template measurement.
-const BBA_TRIAL_NUMBER_SCALE = Object.freeze({ front: 1.5, back: 3 });
+// Point sizes control trial typography only; exact physical dimensions remain
+// blocked until supplier-template measurement.
+const BBA_TRIAL_NUMBER_FONT_SIZE = Object.freeze({ front: 21, back: 42 });
 
 const surface = (key, background, foreground, { basketball = true } = {}) => ({
   key,
@@ -36,7 +37,8 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
       colour: foreground,
       x: 50,
       y: key.endsWith('back') ? 58 : 62,
-      scale: key.endsWith('back') ? BBA_TRIAL_NUMBER_SCALE.back : BBA_TRIAL_NUMBER_SCALE.front,
+      scale: 1,
+      fontSize: key.endsWith('back') ? BBA_TRIAL_NUMBER_FONT_SIZE.back : BBA_TRIAL_NUMBER_FONT_SIZE.front,
       rotation: 0,
       alignment: 'center',
       letterSpacing: 0,

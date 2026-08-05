@@ -105,8 +105,8 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.doesNotMatch(source, /class="tool-section active" data-tool-panel="colours"/);
   assert.match(source, /data-tool-panel="artwork"[\s\S]*?class="panel-help"[\s\S]*?id="add-text" class="add-text-primary"[\s\S]*?id="text-selection-empty"[\s\S]*?id="text-controls"[\s\S]*?<details class="text-more-options">/);
   assert.match(source, /<summary>More text options<\/summary>/);
-  assert.match(source, /class="text-size-control"><span>Size<\/span><input id="layer-scale"[^>]*type="range"[\s\S]*?<input id="text-size-value"[^>]*type="number"/);
-  assert.doesNotMatch(source, /id="text-size-down"|id="text-size-up"|adjustTextSize/);
+  assert.match(source, /class="text-size-control"><span>Font size \(pt\)<\/span><input id="text-font-size"[^>]*type="number"[^>]*min="5"/);
+  assert.doesNotMatch(source, /id="layer-scale"|id="text-size-value"|id="text-size-down"|id="text-size-up"|adjustTextSize/);
   assert.match(source, />Duplicate text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>[\s\S]*?>Remove text<\/button>/);
   assert.doesNotMatch(source, /Text layers|id="layer-list"/);
   assert.doesNotMatch(source, /sideName\+'-pivot-text'|'back-'\+sideName\+'-pivot-text'/);
@@ -271,15 +271,15 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-9"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-10"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-15', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-16', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-8'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-9'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);
@@ -289,7 +289,6 @@ test('customer-facing copy consistently names the Pivot Design Studio', async ()
   const customerFacingFiles = [
     'public/website/home-page.js',
     'public/app.js',
-    'public/studio/studio-setup.js',
     'public/studio/studio-state.js'
   ];
 

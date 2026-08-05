@@ -24,6 +24,7 @@ const addTestText = (state, surface = 'dark.front', overrides = {}) => {
     x: 50,
     y: 40,
     scale: 1,
+    fontSize: 14,
     rotation: 0,
     alignment: 'center',
     letterSpacing: 0,
@@ -66,7 +67,8 @@ test('initial public Studio state contains four 2D surfaces and required numbers
     assert.equal(number.text, '24');
     assert.equal(number.controlLevel, 'constrained');
     assert.equal(number.required, true);
-    assert.equal(number.scale, key.endsWith('back') ? 3 : 1.5, `${key} reflects the 20 cm back / 10 cm front BBA trial ratio`);
+    assert.equal(number.scale, 1, `${key} does not expose an internal text scale multiplier`);
+    assert.equal(number.fontSize, key.endsWith('back') ? 42 : 21, `${key} preserves the indicative 20 cm back / 10 cm front BBA trial ratio as a point size`);
   }
   assert.equal(state.view.mode, '2d');
   assert.equal(state.meta.templateStatus, 'placeholder');
@@ -249,7 +251,7 @@ test('text controls preserve supplier-independent properties through history', (
     surface: 'dark.front',
     layerId: layer.id,
     patch: {
-      text: 'TEAM', colour: '#F4951D', scale: 1.4, x: 35, y: 44,
+      text: 'TEAM', colour: '#F4951D', fontSize: 42, x: 35, y: 44,
       rotation: 12, alignment: 'left', letterSpacing: 2, lineSpacing: 1.2
     }
   });
@@ -259,12 +261,12 @@ test('text controls preserve supplier-independent properties through history', (
   const updated = history.getState().surfaces['dark.front'].layers.find(candidate => candidate.id === layer.id);
   assert.deepEqual(
     {
-      text: updated.text, colour: updated.colour, scale: updated.scale, x: updated.x,
+      text: updated.text, colour: updated.colour, fontSize: updated.fontSize, x: updated.x,
       y: updated.y, rotation: updated.rotation, alignment: updated.alignment,
       letterSpacing: updated.letterSpacing, lineSpacing: updated.lineSpacing
     },
     {
-      text: 'TEAM', colour: '#F4951D', scale: 1.4, x: 35,
+      text: 'TEAM', colour: '#F4951D', fontSize: 42, x: 35,
       y: 44, rotation: 12, alignment: 'left', letterSpacing: 2, lineSpacing: 1.2
     }
   );
