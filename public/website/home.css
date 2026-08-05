@@ -133,12 +133,32 @@ footer { padding: 25px 7vw; color: #000000; text-align: left; }
 }
 .info-grid article {
   padding: 26px;
+  display: flex;
+  flex-direction: column;
   border-top: 6px solid #0096D6;
   background: var(--pivot-midnight-tint);
 }
+.availability-status {
+  width: max-content;
+  color: #092C71;
+  font-weight: 700;
+}
 .info-grid h3 {
+  margin: 10px 0 0;
   color: #092C71;
   font: 700 21px "Century Gothic", Arial, sans-serif;
+}
+.info-grid p { margin-bottom: 24px; }
+.product-link {
+  margin-top: auto;
+  color: #092C71;
+  font-weight: 700;
+}
+.product-link span { margin-left: 8px; color: #F4951D; }
+.product-link:hover,
+.product-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .faq-section { background: var(--pivot-orange-tint); }

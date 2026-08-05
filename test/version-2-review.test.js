@@ -97,27 +97,28 @@ test('serves the Club Stores landing page from its navigation URL', async () => 
   const html = await response.text();
 
   assert.equal(response.status, 200);
-  assert.match(html, /<title>Club Stores \| Pivot Teamwear<\/title>/);
+  assert.match(html, /<title>Example Club Store \| Pivot Teamwear<\/title>/);
   assert.match(html, /Pivot Club Store/);
 });
 
-test('serves an isolated non-transactional club-store concept', async () => {
+test('serves a clearly labelled non-transactional example club store', async () => {
   const response = await fetch(`${base}/club-store/version-2-club-store-review.html`);
   const html = await response.text();
 
   assert.equal(response.status, 200);
-  assert.match(html, /Club Store — Local Review/);
-  assert.match(html, /Local concept only — no live store, ordering or checkout/);
-  assert.match(html, /Controlled identity preview/);
-  assert.match(html, /Local review palette/);
-  assert.match(html, /Decision workspace/);
+  assert.match(html, /Pivot Club Store — Example/);
+  assert.match(html, /Example store only — no ordering or checkout/);
+  assert.match(html, /Example identity/);
+  assert.match(html, /Example colour palette/);
+  assert.match(html, /What this example demonstrates/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(html, /href="\/club-store\/index\.html"/);
   assert.match(html, /href="\/club-store\/version-2-club-store-review\.css"/);
   assert.match(html, /src="\/club-store\/version-2-club-store-review\.js"/);
   assert.match(html, /Light theme/);
   assert.match(html, /Dark theme/);
-  assert.match(html, /Local review palette/);
+  assert.match(html, /Example colour palette/);
+  assert.doesNotMatch(html, /local concept|local review|internal review aid|decision workspace/i);
   assert.match(html, /class="club-logo-preview" src="\/brand\/Pivot_Logo_Transparent\.svg"/);
   assert.doesNotMatch(html, /Club logo placeholder/);
   assert.equal((html.match(/type="color"/g) ?? []).length, 2);

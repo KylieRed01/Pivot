@@ -13,17 +13,22 @@ test('Club Stores landing reuses the website shell and provides a Pivot design e
   });
 
   assert.deepEqual(shell(html), shell(home));
-  assert.match(html, /href="\/website\/home\.css\?v=20260805-3"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-4"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
-  assert.match(html, /<h1 id="club-stores-title">Find your club store\.<\/h1>/);
-  assert.match(html, /Club login/);
+  assert.match(html, /<h1 id="club-stores-title">Explore an example club store\.<\/h1>/);
+  assert.match(html, /The Pivot Club Store demonstrates how approved teamwear could be presented to club members\./);
+  assert.match(html, /<span class="eyebrow">Pilot club access<\/span>/);
+  assert.match(html, /<h2 id="club-login-title">Authorised club users<\/h2>/);
   assert.match(html, /<button type="button" disabled>Club login<\/button>/);
+  assert.match(html, /<small>Sign-in is not available yet<\/small>/);
   assert.doesNotMatch(html, /<form|type="password"/);
   assert.match(html, /class="sample-store-logo" src="\/brand\/Pivot_Logo_Transparent\.svg" alt="Pivot Teamwear"/);
   assert.match(html, /<h2 id="pivot-store-title">Pivot Club Store<\/h2>/);
   assert.match(html, /href="\/club-store\/version-2-club-store-review\.html"/);
-  assert.match(html, /Design preview/);
+  assert.match(html, /Example store/);
+  assert.match(html, /View example store/);
+  assert.doesNotMatch(html, /Design preview|Find your club store/i);
   assert.doesNotMatch(html, /Phoenix/i);
   assert.doesNotMatch(html, /buy now|add to cart|checkout|\$\d/i);
 });

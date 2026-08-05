@@ -208,7 +208,7 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
     readFile('public/website/home.css', 'utf8')
   ]);
 
-  assert.match(html, /href="\/website\/home\.css\?v=20260805-3"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-4"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-2"/);
   assert.doesNotMatch(html, /src="\/app\.js/);

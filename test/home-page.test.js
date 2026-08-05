@@ -42,10 +42,18 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /class="text-link"/);
   assert.doesNotMatch(root.innerHTML, /Working with our pilot club\./);
   assert.match(root.innerHTML, /<h3>Custom uniforms<\/h3>/);
+  assert.match(root.innerHTML, /<span class="availability-status">Not currently available<\/span><h3>Custom uniforms<\/h3>/);
+  assert.match(root.innerHTML, /Quality custom uniforms designed around your club's identity, sport and competition requirements\./);
+  assert.doesNotMatch(root.innerHTML, /<a class="product-link" href="#studio">Try the Pivot Design Studio/);
   assert.doesNotMatch(root.innerHTML, /<h3>Playing uniforms<\/h3>/);
   assert.match(root.innerHTML, /<h3>Club merchandise<\/h3>/);
+  assert.match(root.innerHTML, /<span class="availability-status">Not currently available<\/span><h3>Club merchandise<\/h3>/);
+  assert.match(root.innerHTML, /Club tees, beanies and other merchandise for players, coaches, volunteers and supporters\./);
+  assert.doesNotMatch(root.innerHTML, /<a class="product-link" href="#contact">Register your club’s interest/);
   assert.doesNotMatch(root.innerHTML, /<h3>Club apparel<\/h3>/);
-  assert.doesNotMatch(root.innerHTML, /class="availability-note"/);
+  assert.match(root.innerHTML, /<span class="availability-status">Example store<\/span><h3>Club stores<\/h3>/);
+  assert.match(root.innerHTML, /A modern, club-branded place for your community to explore and access approved teamwear\./);
+  assert.match(root.innerHTML, /<a class="product-link" href="\/club-store\/index\.html">View example store <span aria-hidden="true">→<\/span><\/a>/);
   assert.match(root.innerHTML, /data-help-category="faqs"/);
   assert.doesNotMatch(root.innerHTML, /<h3>FAQs<\/h3>/);
   assert.doesNotMatch(root.innerHTML, /data-help-category="studio"/);
@@ -97,6 +105,15 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /name="Contact consent"|type="checkbox"|general marketing/i);
   assert.match(root.innerHTML, /Register Your Club’s Interest/);
   assert.doesNotMatch(root.innerHTML, /demonstrator/i);
+});
+
+test('homepage product availability and actions are clearly styled', async () => {
+  const css = await readFile('public/website/home.css', 'utf8');
+
+  assert.match(css, /\.info-grid article\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;/s);
+  assert.match(css, /\.availability-status\s*\{[^}]*width:\s*max-content;[^}]*color:\s*#092C71;[^}]*font-weight:\s*700;/s);
+  assert.match(css, /\.product-link\s*\{[^}]*margin-top:\s*auto;[^}]*color:\s*#092C71;[^}]*font-weight:\s*700;/s);
+  assert.match(css, /\.product-link:hover,[\s\S]*\.product-link:focus-visible\s*\{[^}]*text-decoration:\s*underline;/s);
 });
 
 test('existing homepage markup is enhanced without being rebuilt', () => {
