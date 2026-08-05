@@ -140,3 +140,21 @@ Do not add individual ordering, checkout, payments, customer accounts, order win
 When the club onboarding process is designed, capture authoritative club colours alongside uploaded brand assets. For each named colour, record available HEX, RGB, CMYK and Pantone values, the source document, whether each value was club-supplied or derived, version, approval status, approving club administrator and date.
 
 Do not require formats the club does not hold or treat automatic conversions as authoritative. Mark missing or derived production values as pending confirmation. Final production colours remain subject to the manufacturer’s process, material and colour profile, with a physical proof or sample used where colour accuracy is critical. Club approval does not itself release a design to manufacture.
+
+## Backlog bookmark — Club onboarding image authority
+
+When the customer onboarding workflow is designed, decide how Pivot captures and maintains authority for club, sponsor and other customer-supplied images before those assets can enter an approved garment design.
+
+The onboarding discussion should consider:
+
+- whether reusable club assets are collected during onboarding while later one-off uploads use the same authority process;
+- which users may upload or experiment with pending assets, and which declarations require Club Administrator confirmation;
+- separate evidence requirements for club-owned, sponsor-provided, licensed and other third-party assets;
+- the claimed owner, permitted commercial garment use, modification permission, restrictions, expiry and supporting evidence;
+- an immutable identity for the exact supplied file, including version or checksum, so replacement artwork requires renewed review;
+- pending, confirmed, expired and rejected authority states;
+- whether club approval and submission to Pivot are blocked while any included asset has incomplete or expired authority;
+- how the Design Studio health check reports unresolved asset authority without representing a declaration as proof that no copyright, trademark or other rights risk exists; and
+- the declarations, audit records, retention, privacy controls and Pivot review responsibilities required by the governing documents.
+
+This bookmark records a topic for the future onboarding design discussion; it does not approve a final workflow or make a club declaration sufficient for production release.
