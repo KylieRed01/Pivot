@@ -32,7 +32,7 @@ test('website implementation guidance is required and records approved page patt
   assert.match(guide, /prefers-reduced-motion/);
   assert.match(guide, /Fastmail setup/);
   assert.match(guide, /web-font licensing/);
-  assert.match(guide, /distributes no font files/);
+  assert.match(guide, /OFL-1\.1 garment fonts[\s\S]*development-only exception/);
   assert.match(guide, /Node test suite/);
   assert.match(guide, /manual HTTP verification/);
   assert.doesNotMatch(guide, /Playwright|axe-core/i);
@@ -256,7 +256,8 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /href = '\/style\.css\?v=20260805-11'/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-12', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
   assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-3'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);

@@ -29,7 +29,8 @@ Read the Pivot Constitution and current approved governing documents before chan
 ## Release dependencies
 
 - Club-interest form delivery is waiting on Kylie’s Fastmail setup. Treat this as an external dependency; do not redesign or reopen the agreed form approach.
-- Century Gothic and Calibri web-font licensing and availability must be confirmed before release. The current CSS requests locally installed fonts and distributes no font files, so unlicensed redistribution is avoided but fallback rendering remains possible. Do not download, embed, self-host or substitute these fonts without an approved licensing and brand decision.
+- Century Gothic and Calibri web-font licensing and availability must be confirmed before release. The current CSS requests those fonts locally and distributes no Century Gothic or Calibri files, so unlicensed redistribution is avoided but fallback rendering remains possible. Do not download, embed, self-host or substitute those brand fonts without an approved licensing and brand decision.
+- The OFL-1.1 garment fonts recorded as **Evaluation** in `docs/brand/Font Register.md` are a development-only exception. They may be self-hosted in the explicitly labelled, non-production Studio trial with their licence evidence and blocking release checks. This does not approve them for production or change website brand typography.
 
 ## Delivery
 

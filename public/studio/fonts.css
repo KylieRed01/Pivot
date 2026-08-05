@@ -1,0 +1,14 @@
+/* Development-preview font library. None of these faces is production approved. */
+@font-face { font-family: "Pivot Anton"; src: url("/fonts/anton/Anton-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Pivot Bebas Neue"; src: url("/fonts/bebas-neue/BebasNeue-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Pivot Oswald"; src: url("/fonts/oswald/Oswald%5Bwght%5D.ttf") format("truetype-variations"); font-style: normal; font-weight: 200 700; font-display: swap; }
+@font-face { font-family: "Pivot League Spartan"; src: url("/fonts/league-spartan/LeagueSpartan-Regular.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Pivot League Spartan"; src: url("/fonts/league-spartan/LeagueSpartan-Bold.woff2") format("woff2"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: "Pivot Barlow Condensed"; src: url("/fonts/barlow-condensed/BarlowCondensed-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Pivot Barlow Condensed"; src: url("/fonts/barlow-condensed/BarlowCondensed-SemiBold.ttf") format("truetype"); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: "Pivot Barlow Condensed"; src: url("/fonts/barlow-condensed/BarlowCondensed-Bold.ttf") format("truetype"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: "Pivot Montserrat"; src: url("/fonts/montserrat/Montserrat%5Bwght%5D.ttf") format("truetype-variations"); font-style: normal; font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Pivot Archivo Black"; src: url("/fonts/archivo-black/ArchivoBlack-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Pivot Bitter"; src: url("/fonts/bitter/Bitter%5Bwght%5D.ttf") format("truetype-variations"); font-style: normal; font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Pivot Graduate"; src: url("/fonts/graduate/Graduate-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Pivot Pacifico"; src: url("/fonts/pacifico/Pacifico-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }

@@ -1,6 +1,6 @@
 # Pivot Font Register
 
-**Version:** 0.01  
+**Version:** 0.02
 **Status:** Draft — not approved for production use  
 **Owner:** Director  
 **Last updated:** 5 August 2026
@@ -30,11 +30,12 @@ The Brand Kit specifies Century Gothic for headings and Calibri for body copy. M
 |---|---|
 | Approved | Evidence has been reviewed and the font may be used only for the recorded uses. |
 | Conditional | Use is limited by a recorded condition, such as outlining text before manufacture. |
+| Evaluation | The exact files may be used only in the recorded non-production Design Studio trial. They remain blocked from publication and manufacture. |
 | Pending | Evidence or a required decision is incomplete. Do not use in released garment artwork. |
 | Prohibited | The font must not be used for the recorded purpose. |
 | Retired | Previously approved, but unavailable for new designs. Existing records must be retained. |
 
-Only entries marked **Approved** or **Conditional** may appear as selectable garment-design fonts.
+Only entries marked **Approved** or **Conditional** may appear as selectable garment-design fonts in production. An **Evaluation** entry may appear only in an explicitly labelled non-production trial with a recorded release gate.
 
 ## 4. Controlled font register
 
@@ -43,8 +44,8 @@ Only entries marked **Approved** or **Conditional** may appear as selectable gar
 | PFR-001 | Century Gothic | Brand headings | Local system-font request only; no font files distributed | Not approved | Not approved | Not applicable until licensed | Pending | Confirm web, application/customer-generated-content and commercial merchandise rights. |
 | PFR-002 | Calibri | Brand body copy | Local system-font request only; no font files distributed | Not approved | Not approved | Not applicable until licensed | Pending | Confirm web, application/customer-generated-content and commercial merchandise rights. |
 | PFR-003 | Mokoto and Gruppo within approved Pivot artwork | Pivot logo and wordmark artwork only | Approved artwork assets only | Not selectable | Exact approved artwork only, subject to recorded Pivot authorisation | Supply only approved outlined/raster artwork; never provide reusable font files | Conditional | Retain the approved asset and authorisation record. Do not recreate the wordmark or expose either font in the Studio. |
-| PFR-004 | Basketball numeral font — to be selected | Mandatory player numbers | Preview only after selection | Number layers only | Not approved until all checks below are complete | Outline text in the immutable production artwork unless the final licence and manufacturer workflow expressly authorise another method | Pending | Select candidate; retain licence; verify glyphs 0–9 and 00; verify competition, supplier-template, minimum-height, minimum-stroke, clearance and contrast requirements; approve a rendered sample. |
-| PFR-005 | General garment text font set — to be selected | Names and customer-created text | Preview only after selection | Optional text layers | Not approved until licensed | Outline text in final production artwork unless expressly authorised otherwise | Pending | Select the smallest practical font set and verify web/application, customer-generated design, merchandise and production rights. |
+| PFR-004 | Anton Regular 400, Google Fonts binary v2.116 | Development basketball-number candidate | Non-production preview only | Number layers in the trial | Prohibited from publication and manufacture until every basketball check is complete | Do not create production artwork | Evaluation | Licence and binary identity verified in `Font Candidate Research.md`; supplier-template geometry, physical rendering, current competition confirmation and Director production approval remain outstanding. |
+| PFR-005 | Ten-family development font library recorded in `Font Candidate Research.md` section 4 | Names and customer-created text on tee, hoodie, polo and uniform previews | Non-production preview only | Optional text layers; also visible for basketball-number experimentation | Prohibited from publication and manufacture | Do not create production artwork | Evaluation | Exact binary identity and OFL evidence verified. Browser/export consistency, physical printing, supplier acceptance and Director production approval remain outstanding. |
 
 ## 5. Basketball numeral control
 
@@ -116,16 +117,32 @@ Pivot should normally provide the manufacturer with outlined or rasterised artwo
 | Review date | Date or triggering event |
 | Notes | Supplier, competition or legal review details |
 
-## 8. Change control
+## 8. Development evaluation authorisation
+
+On 5 August 2026, the Director authorised the exact font artifacts recorded in `docs/brand/Font Candidate Research.md` section 4 to be downloaded, committed, self-hosted and displayed in Pivot's non-production Design Studio trial.
+
+This authorisation is subject to all of the following controls:
+
+- every font and style remains **Evaluation**, not Approved or Conditional;
+- the Studio and font picker must state that the fonts are development-preview only and not production validated;
+- all evaluation fonts may be selected on basketball number layers while Pivot is not live;
+- every basketball number layer using an evaluation font must create a blocking `UNVALIDATED_BASKETBALL_FONT` release check;
+- no design using an Evaluation font may be published, represented as compliant or released to manufacture;
+- no font file may be sent to a club, customer or manufacturer;
+- each repository font file must match the recorded SHA-256 and retain its OFL notice;
+- the production launch gate requires exact font/style approval plus browser/export, physical print, supplier and applicable basketball-template validation; and
+- before production launch, any font that has not passed its applicable gate must be disabled for the affected layer or removed.
+
+## 9. Change control
 
 - Adding a font, style or variable-font axis requires a new or amended register entry.
 - A font update must not silently replace the approved version.
 - Licence, supplier, product-template or competition changes trigger review.
 - Existing approved designs must retain the exact font version or outlined production artwork used for approval.
 - Pivot approval and club approval must be recorded separately where a design proceeds toward manufacture.
-- Font files must not be committed, embedded, self-hosted or supplied to a manufacturer until the register expressly authorises that action.
+- Font files must not be committed, embedded, self-hosted or supplied to a manufacturer until the register expressly authorises that action. Section 8 is a narrow development-only repository and self-hosting authorisation; it does not authorise manufacturer sharing or production use.
 
-## 9. Approval
+## 10. Approval
 
 This draft becomes controlled only when the Director records approval below. Approval of this document does not automatically approve Pending font entries.
 

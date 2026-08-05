@@ -22,7 +22,7 @@ const design = {
   neck: '#FFFFFF',
   armTrim: '#0096D6',
   layers: [
-    { id: 'wordmark', type: 'text', text: 'A&B <Club>', colour: '#FFFFFF', x: 50, y: 40, scale: 1, rotation: 0, alignment: 'center', letterSpacing: 0, lineSpacing: 1 },
+    { id: 'wordmark', type: 'text', text: 'A&B <Club>', fontId: 'graduate-regular', colour: '#FFFFFF', x: 50, y: 40, scale: 1, rotation: 0, alignment: 'center', letterSpacing: 0, lineSpacing: 1 },
     { id: 'crest', type: 'image', name: 'Club crest', src: '/brand/Pivot_Icon.svg', x: 50, y: 27, scale: 0.65, rotation: 0, cropZoom: 1, cropX: 50, cropY: 50, opacity: 1, flipX: false, flipY: false }
   ]
 };
@@ -34,6 +34,7 @@ test('jersey preview renders the selected surface without exposing text as HTML'
   assert.match(html, /class="art-layer\s+ selected"/);
   assert.match(html, /A&amp;B &lt;Club&gt;/);
   assert.doesNotMatch(html, /A&B <Club>/);
+  assert.match(html, /font-family:&quot;Pivot Graduate&quot;,Arial,sans-serif;font-weight:400/);
   assert.match(html, /Preview only · placeholder template/);
 });
 

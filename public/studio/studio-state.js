@@ -3,6 +3,14 @@ import {
   PUBLIC_STUDIO_STORAGE_KEY,
   SURFACE_KEYS
 } from './studio-config.js';
+import {
+  DEFAULT_BASKETBALL_NUMBER_FONT_ID,
+  DEFAULT_TEXT_FONT_ID,
+  getFontChoice,
+  listFontChoices
+} from './font-catalog.js';
+
+const FONT_IDS = new Set(listFontChoices().map(choice => choice.id));
 
 const clone = value => structuredClone(value);
 
@@ -44,6 +52,8 @@ function safeLayer(layer) {
     safe.alignment = ['left', 'center', 'right'].includes(layer.alignment) ? layer.alignment : 'center';
     safe.letterSpacing = Number.isFinite(layer.letterSpacing) ? layer.letterSpacing : 0;
     safe.lineSpacing = Number.isFinite(layer.lineSpacing) ? layer.lineSpacing : 1;
+    const fallbackFontId = safe.role === 'number' ? DEFAULT_BASKETBALL_NUMBER_FONT_ID : DEFAULT_TEXT_FONT_ID;
+    safe.fontId = FONT_IDS.has(layer.fontId) ? layer.fontId : fallbackFontId;
   }
   return safe;
 }
@@ -142,6 +152,12 @@ export function runIndicativeChecks(candidate) {
       const requiredNumber = surface.layers.find(layer => layer.role === 'number' && layer.required);
       if (!requiredNumber || !/^\d{1,2}$/.test(requiredNumber.text.trim())) {
         checks.push({ code: 'REQUIRED_NUMBER', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber?.id, message: `A required one- or two-digit basketball number is needed on ${surfaceKey}.` });
+      }
+      if (requiredNumber) {
+        const font = getFontChoice(requiredNumber.fontId);
+        if (!font.productionApproved) {
+          checks.push({ code: 'UNVALIDATED_BASKETBALL_FONT', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber.id, message: `${font.familyLabel} ${font.label} is available for development preview only. Basketball production validation is still required before release.` });
+        }
       }
     }
     for (const layer of surface.layers) {

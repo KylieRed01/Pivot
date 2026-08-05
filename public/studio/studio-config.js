@@ -1,3 +1,8 @@
+import {
+  DEFAULT_BASKETBALL_NUMBER_FONT_ID,
+  DEFAULT_TEXT_FONT_ID
+} from './font-catalog.js';
+
 export const SURFACE_KEYS = Object.freeze([
   'dark.front',
   'dark.back',
@@ -34,7 +39,8 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
       rotation: 0,
       alignment: 'center',
       letterSpacing: 0,
-      lineSpacing: 1
+      lineSpacing: 1,
+      fontId: DEFAULT_TEXT_FONT_ID
     },
     ...(basketball ? [{
       id: `${key}-number`,
@@ -50,7 +56,8 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
       rotation: 0,
       alignment: 'center',
       letterSpacing: 0,
-      lineSpacing: 1
+      lineSpacing: 1,
+      fontId: DEFAULT_BASKETBALL_NUMBER_FONT_ID
     }] : [])
   ]
 });

@@ -381,9 +381,9 @@ test('indicative checks distinguish blocking errors, warnings and unresolved gui
   assert.equal(JSON.stringify(checks).toLowerCase().includes('production ready'), false);
 });
 
-test('clean placeholder still reports unresolved production dependencies', () => {
+test('clean basketball placeholder remains blocked by the development font gate and unresolved dependencies', () => {
   const checks = runIndicativeChecks(createInitialStudioState());
-  assert.equal(checks.some(check => check.severity === 'error'), false);
+  assert.equal(checks.some(check => check.code === 'UNVALIDATED_BASKETBALL_FONT' && check.severity === 'error' && check.blocking), true);
   assert.equal(checks.some(check => check.code === 'UNRESOLVED_DEPENDENCIES'), true);
   assert.equal(checks.some(check => check.code === 'INDICATIVE_ONLY'), true);
 });
