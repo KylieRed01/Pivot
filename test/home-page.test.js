@@ -1,7 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { renderHomePage } from '../public/website/home-page.js';
 import { createApp } from '../src/server.js';
+
+test('homepage metadata describes Pivot while remaining excluded from indexing', async () => {
+  const html = await readFile('public/index.html', 'utf8');
+
+  assert.match(html, /<html lang="en-AU">/);
+  assert.match(html, /<title>Custom Teamwear for Community Sport \| Pivot Teamwear<\/title>/);
+  assert.match(html, /<meta name="description" content="Explore custom uniforms, club merchandise and club stores for community sport in Greater Bendigo, and register your club’s interest with Pivot Teamwear\.">/);
+  assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
+  assert.match(html, /<meta property="og:type" content="website">/);
+  assert.match(html, /<meta property="og:locale" content="en_AU">/);
+  assert.match(html, /<meta property="og:site_name" content="Pivot Teamwear">/);
+  assert.match(html, /<meta property="og:title" content="Custom Teamwear for Community Sport \| Pivot Teamwear">/);
+  assert.match(html, /<meta property="og:description" content="Explore custom uniforms, club merchandise and club stores for community sport in Greater Bendigo, and register your club’s interest with Pivot Teamwear\.">/);
+  assert.doesNotMatch(html, /property="og:image"/);
+  assert.match(html, /<link rel="icon" href="\/brand\/Pivot_Icon\.svg" type="image\/svg\+xml">/);
+});
 
 test('public home page renders the approved website experience', () => {
   const root = { innerHTML: '' };
@@ -102,11 +119,11 @@ test('server includes essential homepage content in the initial response', async
   assert.match(html, /id="club-interest-form"/);
   assert.doesNotMatch(html, /<main id="app" tabindex="-1"><\/main>/);
 
-  const stylesheet = await fetch(`http://127.0.0.1:${server.address().port}/style.css`, {
+  const stylesheet = await fetch(`http://127.0.0.1:${server.address().port}/website/home.css`, {
     headers: { 'accept-encoding': 'br' }
   });
   assert.equal(stylesheet.headers.get('content-encoding'), 'br');
   assert.equal(stylesheet.headers.get('cache-control'), 'public, max-age=3600');
   assert.equal(stylesheet.headers.get('vary'), 'Accept-Encoding');
-  assert.match(await stylesheet.text(), /--pivot-midnight:#092C71/);
+  assert.match(await stylesheet.text(), /--pivot-midnight:\s*#092C71/);
 });

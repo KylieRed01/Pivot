@@ -45,34 +45,42 @@ test('website navigation consistently uses the home route name', async () => {
   assert.match(sources[3], /<section class="pivot-hero" id="home">/);
 });
 
+test('homepage navigation provides accessible pointer and keyboard feedback', async () => {
+  const css = await readFile('public/website/home.css', 'utf8');
+
+  assert.match(css, /nav a:not\(:last-child\):hover,\s*nav a:not\(:last-child\):focus-visible\s*\{[^}]*color:\s*#092C71;[^}]*text-decoration:\s*underline;[^}]*text-underline-offset:\s*4px;/);
+  assert.match(css, /nav a:focus-visible\s*\{\s*outline-color:\s*#092C71;/);
+  assert.match(css, /nav a:last-child:hover\s*\{\s*background:\s*#F4951D;\s*color:\s*#092C71;/);
+  assert.match(css, /summary:focus-visible,[\s\S]*select:focus-visible\s*\{[^}]*outline:\s*3px solid #092C71;[^}]*outline-offset:\s*3px;/);
+  assert.match(css, /\.pivot-hero a:focus-visible\s*\{\s*outline-color:\s*#FFFFFF;/);
+});
+
 test('future website footer uses a left-aligned copyright notice without repeating homepage messaging', async () => {
   const [html, css] = await Promise.all([
     readFile('public/index.html', 'utf8'),
-    readFile('public/style.css', 'utf8')
+    readFile('public/website/home.css', 'utf8')
   ]);
 
   assert.match(html, /<footer>© 2026 Pivot Teamwear<\/footer>/);
   assert.doesNotMatch(html, /<footer>[^<]*Quality teamwear/);
-  assert.match(css, /footer\{text-align:left;padding:25px 7vw;/);
+  assert.match(css, /footer\s*\{[^}]*padding:\s*25px 7vw;[^}]*text-align:\s*left;/);
 });
 
 test('future homepage avoids redundant section labels and decorative card differences', async () => {
   const [source, css] = await Promise.all([
     readFile('public/website/home-page.js', 'utf8'),
-    readFile('public/style.css', 'utf8')
+    readFile('public/website/home.css', 'utf8')
   ]);
-  const homepageStyles = css.slice(0, css.indexOf('.mode-notice'));
 
   assert.doesNotMatch(source, /class="eyebrow"/);
   assert.doesNotMatch(source, /<h3>FAQs<\/h3>/);
-  assert.doesNotMatch(homepageStyles, /\.home-features|\.energy-card/);
-  assert.doesNotMatch(homepageStyles, /\.info-grid article:nth-child/);
-  assert.match(homepageStyles, /\.hero-logo\{[^}]*width:min\(670px,88vw\);height:295px;/);
+  assert.doesNotMatch(css, /\.home-features|\.energy-card/);
+  assert.doesNotMatch(css, /\.info-grid article:nth-child/);
+  assert.match(css, /\.hero-logo\s*\{[^}]*width:\s*min\(670px, 88vw\);[^}]*height:\s*295px;/);
 });
 
 test('future homepage colours use approved bases and traceable supporting variations', async () => {
-  const css = await readFile('public/style.css', 'utf8');
-  const homepageStyles = css.slice(0, css.indexOf('.mode-notice'));
+  const homepageStyles = await readFile('public/website/home.css', 'utf8');
   const approvedColours = new Set([
     '#000',
     '#000000',
@@ -88,30 +96,38 @@ test('future homepage colours use approved bases and traceable supporting variat
 
   assert.deepEqual(unapprovedColours, []);
   assert.doesNotMatch(homepageStyles, /\b(?:rgb|hsl)a?\(/i);
-  assert.match(homepageStyles, /--pivot-midnight-tint:color-mix\(in srgb,var\(--pivot-midnight\) 6%,var\(--pivot-white\)\)/);
-  assert.match(homepageStyles, /--pivot-cerulean-tint:color-mix\(in srgb,var\(--pivot-cerulean\) 12%,var\(--pivot-white\)\)/);
-  assert.match(homepageStyles, /--pivot-orange-tint:color-mix\(in srgb,var\(--pivot-orange\) 14%,var\(--pivot-white\)\)/);
-  assert.match(homepageStyles, /\.faq-section\{background:var\(--pivot-orange-tint\)\}/);
-  assert.match(homepageStyles, /\.contact-section\{[^}]*background:var\(--pivot-cerulean-tint\);color:#092C71\}/);
-  assert.match(homepageStyles, /\.faq-section p a\{[^}]*text-decoration:underline[^}]*\}/);
-  assert.match(homepageStyles, /\.faq-section details\{width:100%;[^}]*\}/);
-  assert.match(homepageStyles, /\.faq-section details p\{max-width:75ch\}/);
-  assert.doesNotMatch(homepageStyles, /\.faq-section details\{max-width:/);
-  assert.match(homepageStyles, /\.contact-section\{[^}]*grid-template-columns:minmax\(0,1fr\) auto;[^}]*\}/);
-  assert.match(homepageStyles, /\.contact-section:has\(\.club-interest-form:not\(\[hidden\]\)\)\{grid-template-columns:minmax\(0,\.8fr\) minmax\(520px,1\.2fr\)\}/);
-  assert.match(homepageStyles, /\.interest-copy p\{max-width:75ch;/);
+  assert.match(homepageStyles, /--pivot-midnight-tint:\s*color-mix\(in srgb, var\(--pivot-midnight\) 6%, var\(--pivot-white\)\)/);
+  assert.match(homepageStyles, /--pivot-cerulean-tint:\s*color-mix\(in srgb, var\(--pivot-cerulean\) 12%, var\(--pivot-white\)\)/);
+  assert.match(homepageStyles, /--pivot-orange-tint:\s*color-mix\(in srgb, var\(--pivot-orange\) 14%, var\(--pivot-white\)\)/);
+  assert.match(homepageStyles, /\.faq-section\s*\{\s*background:\s*var\(--pivot-orange-tint\);/);
+  assert.match(homepageStyles, /\.contact-section\s*\{[^}]*background:\s*var\(--pivot-cerulean-tint\);[^}]*color:\s*#092C71;/);
+  assert.match(homepageStyles, /\.faq-section p a\s*\{[^}]*text-decoration:\s*underline/);
+  assert.match(homepageStyles, /\.faq-section details\s*\{[^}]*width:\s*100%;/);
+  assert.match(homepageStyles, /\.faq-section details p\s*\{\s*max-width:\s*75ch;/);
+  assert.doesNotMatch(homepageStyles, /\.faq-section details\s*\{[^}]*max-width:/);
+  assert.match(homepageStyles, /\.contact-section\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto;/);
+  assert.match(homepageStyles, /\.contact-section:has\(\.club-interest-form:not\(\[hidden\]\)\)\s*\{\s*grid-template-columns:\s*minmax\(0, \.8fr\) minmax\(520px, 1\.2fr\);/);
+  assert.match(homepageStyles, /\.interest-copy p\s*\{[^}]*max-width:\s*75ch;/);
 });
 
-test('homepage defers Design Studio code until a Studio route is selected', async () => {
-  const [html, entry] = await Promise.all([
+test('homepage defers Design Studio code and styles until a Studio route is selected', async () => {
+  const [html, entry, homeCss] = await Promise.all([
     readFile('public/index.html', 'utf8'),
-    readFile('public/website/home-entry.js', 'utf8')
+    readFile('public/website/home-entry.js', 'utf8'),
+    readFile('public/website/home.css', 'utf8')
   ]);
 
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-1"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-2"/);
+  assert.doesNotMatch(html, /href="\/style\.css/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-2"/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
+  assert.match(entry, /href = '\/style\.css\?v=20260805-9'/);
+  assert.match(entry, /await loadStudioStyles\(\)\.catch/);
   assert.match(entry, /await import\('\.\.\/app\.js'\)/);
+  assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
+  assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
+  assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);
 });
 
 test('customer-facing copy consistently names the Pivot Design Studio', async () => {
