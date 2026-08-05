@@ -1,10 +1,10 @@
 # Pivot Constitution
 
-**Version:** 1.08
+**Version:** 1.09
 
 **Status:** Approved
 
-**Date:** 25 July 2026
+**Date:** 5 August 2026
 
 **Authority:** Kylie Stewart, Director
 
@@ -21,6 +21,7 @@
 | 1.06 | Approved | 18 July 2026 | Kylie Stewart, Director | Retain enduring role-appropriate authentication controls without prescribing the Phoenix club sign-in mechanism. |
 | 1.07 | Approved | 18 July 2026 | Kylie Stewart, Director | Correct the repository path to the approved Brand Kit. |
 | 1.08 | Approved | 25 July 2026 | Kylie Stewart, Director | Update related-document references to the approved replacement governing versions. |
+| 1.09 | Approved | 5 August 2026 | Kylie Stewart, Director | Replace the unsupported Australian-only production-data rule with risk-based provider and overseas-processing controls aligned to Pivot's operating model. |
 
 ## 1. Purpose
 
@@ -97,7 +98,7 @@ Pivot will operate according to these principles:
 - Technology must simplify customer interactions, reduce manual administration and improve reliability, consistency and scalability.
 - Pivot will build a multi-club foundation while restricting production pilot access to Phoenix.
 - The design experience is a Pivot-owned capability. Established components may be used where they reduce delivery risk without surrendering Pivot's customer, design or approval records.
-- Customer data, uploaded artwork, database backups and audit records under Pivot's control must be stored and processed in Australia in production. Global delivery may be used only for static public assets. After formal Pivot release, an authorised manufacturer may receive only the minimum immutable package required to manufacture the released work; this exception grants no broader access to Pivot's platform or records.
+- Pivot must protect customer data, uploaded artwork, database backups and audit records using service providers assessed and approved for the sensitivity and operational importance of the information. Providers may process information in Australia or overseas where Pivot has assessed their security, privacy, reliability, access controls and applicable legal obligations. Pivot must minimise the information collected and shared, disclose overseas handling where required, and retain oversight of provider access. After formal Pivot release, an authorised manufacturer may receive only the minimum immutable package required to manufacture the released work; this grants no broader access to Pivot's platform or records.
 - Club access must use individually authenticated accounts appropriate to the user's role and authority. Pivot administrator access requires strong multi-factor authentication.
 - Pivot must retain an audit record of design changes, store publication and approvals, including actor, version and timestamp.
 - Approval records must be retained for the life of the related product and order, plus seven years.
