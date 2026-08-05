@@ -6,8 +6,8 @@ import {
 
 const clone = value => structuredClone(value);
 
-export function createInitialStudioState() {
-  return clone(createPlaceholderStudioConfig());
+export function createInitialStudioState(garment = 'basketball-jersey') {
+  return clone(createPlaceholderStudioConfig(garment));
 }
 
 function safeLayer(layer) {
@@ -28,7 +28,10 @@ function safeLayer(layer) {
     safe.name = String(layer.name ?? 'Browser-local artwork');
     safe.mime = String(layer.mime ?? '');
     safe.size = Number.isFinite(layer.size) ? layer.size : 0;
-    if (typeof layer.src === 'string' && /^data:image\/(?:png|jpeg|webp);base64,/i.test(layer.src)) safe.src = layer.src;
+    if (layer.libraryAssetId === 'pivot-penguin' && layer.src === '/brand/Pivot_Icon.svg') {
+      safe.libraryAssetId = 'pivot-penguin';
+      safe.src = '/brand/Pivot_Icon.svg';
+    } else if (typeof layer.src === 'string' && /^data:image\/(?:png|jpeg|webp);base64,/i.test(layer.src)) safe.src = layer.src;
     safe.cropZoom = Number.isFinite(layer.cropZoom) ? layer.cropZoom : 1;
     safe.cropX = Number.isFinite(layer.cropX) ? layer.cropX : 50;
     safe.cropY = Number.isFinite(layer.cropY) ? layer.cropY : 50;
@@ -46,7 +49,10 @@ function safeLayer(layer) {
 }
 
 function normalize(candidate) {
-  const initial = createInitialStudioState();
+  const garment = ['basketball-jersey', 'generic-t-shirt', 'generic-hoodie'].includes(candidate?.setup?.garment)
+    ? candidate.setup.garment
+    : 'basketball-jersey';
+  const initial = createInitialStudioState(garment);
   if (!candidate || typeof candidate !== 'object') return initial;
   if (!candidate.surfaces || !SURFACE_KEYS.every(key => candidate.surfaces[key])) return initial;
 
@@ -112,8 +118,8 @@ export function restorePublicState(serialized) {
   }
 }
 
-export function resetStudioState() {
-  return createInitialStudioState();
+export function resetStudioState(garment = 'basketball-jersey') {
+  return createInitialStudioState(garment);
 }
 
 const PUBLIC_ARTWORK_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
@@ -132,9 +138,11 @@ export function runIndicativeChecks(candidate) {
   const state = normalize(candidate);
   const checks = [];
   for (const [surfaceKey, surface] of Object.entries(state.surfaces)) {
-    const requiredNumber = surface.layers.find(layer => layer.role === 'number' && layer.required);
-    if (!requiredNumber || !/^\d{1,2}$/.test(requiredNumber.text.trim())) {
-      checks.push({ code: 'REQUIRED_NUMBER', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber?.id, message: `A required one- or two-digit basketball number is needed on ${surfaceKey}.` });
+    if (state.setup.garment === 'basketball-jersey') {
+      const requiredNumber = surface.layers.find(layer => layer.role === 'number' && layer.required);
+      if (!requiredNumber || !/^\d{1,2}$/.test(requiredNumber.text.trim())) {
+        checks.push({ code: 'REQUIRED_NUMBER', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber?.id, message: `A required one- or two-digit basketball number is needed on ${surfaceKey}.` });
+      }
     }
     for (const layer of surface.layers) {
       if (layer.type === 'text' && layer.role !== 'number' && !layer.text.trim()) {
@@ -143,7 +151,7 @@ export function runIndicativeChecks(candidate) {
       if (layer.x < 5 || layer.x > 95 || layer.y < 10 || layer.y > 92) {
         checks.push({ code: 'INDICATIVE_BOUNDARY', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'An element sits outside the Design Studio trial boundary. Supplier geometry is still unresolved.' });
       }
-      if (layer.type === 'image') {
+      if (layer.type === 'image' && layer.libraryAssetId !== 'pivot-penguin') {
         const validation = validatePublicArtwork({ type: layer.mime, size: layer.size });
         if (!validation.ok) checks.push({ code: validation.error.code, severity: 'error', blocking: true, surface: surfaceKey, layerId: layer.id, message: validation.error.message });
       }
@@ -278,7 +286,7 @@ export function reduceStudioState(current, action) {
     const next = clone(state);
     const surface = next.surfaces[surfaceKey];
     if (!surface) return failed(state, 'INVALID_SURFACE', 'Choose an available 2D surface.');
-    if (action.layer?.type === 'image') {
+    if (action.layer?.type === 'image' && action.layer.libraryAssetId !== 'pivot-penguin') {
       const validation = validatePublicArtwork({ type: action.layer.mime, size: action.layer.size }, publicArtworkBytes(state));
       if (!validation.ok) return { ...validation, state: clone(state) };
     }
@@ -297,7 +305,7 @@ export function reduceStudioState(current, action) {
     const source = surface?.layers.find(candidate => candidate.id === action.layerId);
     if (!source) return failed(state, 'LAYER_NOT_FOUND', 'The selected layer is no longer available.');
     if (source.controlLevel !== 'flexible') return failed(state, 'PROTECTED_LAYER', 'This required layer cannot be duplicated.');
-    if (source.type === 'image') {
+    if (source.type === 'image' && source.libraryAssetId !== 'pivot-penguin') {
       const validation = validatePublicArtwork({ type: source.mime, size: source.size }, publicArtworkBytes(state));
       if (!validation.ok) return { ...validation, state: clone(state) };
     }
@@ -383,8 +391,8 @@ export function createStudioHistory(initialState = createInitialStudioState(), o
       const persisted = persist();
       return { ok: true, state: clone(state), persisted };
     },
-    reset() {
-      state = createInitialStudioState();
+    reset(garment = 'basketball-jersey') {
+      state = createInitialStudioState(garment);
       past = [];
       future = [];
       store?.clear?.();

@@ -80,8 +80,46 @@ test('website navigation consistently uses the home route name', async () => {
   for (const source of sources) assert.doesNotMatch(source, /#store/);
   assert.match(sources[0], /href="\/#home">Home<\/a>/);
   assert.match(sources[1], /href="\/#home">Home<\/a>/);
-  assert.match(sources[2], /href="#home" class="back">← Back to home<\/a>/);
+  assert.match(sources[2], /class="studio-home" href="#home" aria-label="Return to home"/);
   assert.match(sources[3], /<section class="pivot-hero" id="home">/);
+});
+
+test('Design Studio gives creation, canvas and guidance one distinct owner', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title">/);
+  assert.match(source, /id="guidance-view"/);
+  assert.match(source, /id="guidance-selection"/);
+  assert.match(source, /id="open-design-checks"/);
+  assert.doesNotMatch(source, /data-tool="help"/);
+  assert.doesNotMatch(source, /data-tool-panel="help"/);
+  assert.doesNotMatch(source, /legacy-help-copy/);
+  assert.doesNotMatch(source, /class="view-label"/);
+  assert.doesNotMatch(source, /class="canvas-footer"/);
+  assert.doesNotMatch(source, /renderStudioSetup/);
+  assert.match(source, /data-tool="templates"[^>]*aria-label="Templates"/);
+  assert.match(source, /data-tool-panel="templates"><nav class="template-menu"/);
+  assert.doesNotMatch(source, /<aside class="design-guidance"[\s\S]*?<nav class="template-menu"/);
+  assert.match(source, /data-template="basketball-jersey"/);
+  assert.match(source, /data-template="generic-t-shirt"/);
+  assert.match(source, /data-template="generic-hoodie"/);
+  assert.match(source, /data-tool="library"/);
+  assert.match(source, /data-tool="club-images"[^>]*aria-label="Approved club images"/);
+  assert.match(source, /data-tool-panel="club-images"/);
+  assert.match(source, /Access is not connected in this trial/);
+  assert.match(source, /data-tool="images"[^>]*aria-label="Upload image"/);
+  assert.match(source, /href="\/club-login\/index\.html"/);
+  assert.match(source, /authorised club users and club administrators/i);
+  assert.doesNotMatch(source, /id="change-setup"/);
+  assert.match(source, /el\.onpointerdown=e=>\{if\(viewMode==='3d'\)return;e\.preventDefault\(\);selectedId=el\.dataset\.layerId;if\(!workflowDemo\)dispatchPublic\(\{type:'selectLayer'/);
+});
+
+test('Design Studio combines custom colour picking with the exact HEX control', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.doesNotMatch(source, /class="custom-colour-row"/);
+  assert.match(source, /class="hex-editor"><input id="dock-colour" type="color"[^>]*aria-label="Choose exact colour"[^>]*><span>#<\/span><input id="precise-hex"/);
+  assert.match(source, /document\.querySelector\('#dock-colour'\)\.oninput=e=>applyColour\(e\.target\.value\)/);
 });
 
 test('homepage navigation provides accessible pointer and keyboard feedback', async () => {
@@ -213,14 +251,14 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-2"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-4"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /href = '\/style\.css\?v=20260805-9'/);
+  assert.match(entry, /href = '\/style\.css\?v=20260805-11'/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-3'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);

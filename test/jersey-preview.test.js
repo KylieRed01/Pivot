@@ -30,9 +30,20 @@ const design = {
 test('jersey preview renders the selected surface without exposing text as HTML', () => {
   const html = renderJerseyPreview(palette, design, 'wordmark');
 
-  assert.match(html, /class="jersey pattern-velocity"/);
+  assert.match(html, /class="jersey garment-basketball-jersey pattern-velocity"/);
   assert.match(html, /class="art-layer\s+ selected"/);
   assert.match(html, /A&amp;B &lt;Club&gt;/);
   assert.doesNotMatch(html, /A&B <Club>/);
   assert.match(html, /Preview only · placeholder template/);
+});
+
+test('preview renders original generic trial garment silhouettes', () => {
+  const shirt = renderJerseyPreview(palette, design, null, 'generic-t-shirt');
+  const hoodie = renderJerseyPreview(palette, design, null, 'generic-hoodie');
+
+  assert.match(shirt, /garment-generic-t-shirt/);
+  assert.match(hoodie, /garment-generic-hoodie/);
+  assert.match(hoodie, /class="garment-hood"/);
+  assert.doesNotMatch(shirt, /class="armhole/);
+  assert.doesNotMatch(hoodie, /class="armhole/);
 });

@@ -151,7 +151,7 @@ test('server includes essential homepage content in the initial response', async
     headers: { 'accept-encoding': 'br' }
   });
   assert.equal(stylesheet.headers.get('content-encoding'), 'br');
-  assert.equal(stylesheet.headers.get('cache-control'), 'public, max-age=3600');
+  assert.equal(stylesheet.headers.get('cache-control'), 'no-cache');
   assert.equal(stylesheet.headers.get('vary'), 'Accept-Encoding');
   assert.match(await stylesheet.text(), /--pivot-midnight:\s*#092C71/);
 });

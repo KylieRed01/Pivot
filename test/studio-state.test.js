@@ -14,6 +14,15 @@ import {
 
 const surfaceKeys = state => Object.keys(state.surfaces).sort();
 
+test('generic trial garments start without basketball number requirements', () => {
+  for (const garment of ['generic-t-shirt', 'generic-hoodie']) {
+    const state = createInitialStudioState(garment);
+    assert.equal(state.setup.garment, garment);
+    assert.equal(Object.values(state.surfaces).some(surface => surface.layers.some(layer => layer.role === 'number')), false);
+    assert.equal(runIndicativeChecks(state).some(check => check.code === 'REQUIRED_NUMBER'), false);
+  }
+});
+
 test('initial public Studio state contains four 2D surfaces and required numbers', () => {
   const state = createInitialStudioState();
 
@@ -74,6 +83,21 @@ test('session store restores valid state and fails closed to a clean placeholder
 
   store.clear();
   assert.deepEqual(store.load(), createInitialStudioState());
+});
+
+test('starting another garment clears the previous browser design', () => {
+  let cleared = false;
+  const changed = createInitialStudioState();
+  changed.designName = 'Previous design';
+  changed.view.mode = '3d';
+  changed.surfaces['dark.front'].base = '#123456';
+  const history = createStudioHistory(changed, { store: { clear() { cleared = true; } } });
+
+  const result = history.reset();
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(history.getState(), createInitialStudioState());
+  assert.equal(cleared, true);
 });
 
 test('surface and view selection do not mutate independent 2D surfaces', () => {
@@ -205,6 +229,24 @@ test('text controls preserve supplier-independent properties through history', (
       y: 44, rotation: 12, alignment: 'left', letterSpacing: 2, lineSpacing: 1.2
     }
   );
+});
+
+test('approved Pivot penguin can be added for Studio experimentation', () => {
+  const history = createStudioHistory(createInitialStudioState());
+  const result = history.dispatch({
+    type: 'addLayer', surface: 'dark.front',
+    layer: {
+      id: 'penguin-test', type: 'image', role: 'artwork', controlLevel: 'flexible',
+      libraryAssetId: 'pivot-penguin', name: 'Pivot penguin', mime: 'image/svg+xml', size: 0,
+      src: '/brand/Pivot_Icon.svg', x: 50, y: 45, scale: 1, rotation: 0
+    }
+  });
+
+  assert.equal(result.ok, true);
+  const layer = history.getState().surfaces['dark.front'].layers.find(candidate => candidate.id === 'penguin-test');
+  assert.equal(layer.src, '/brand/Pivot_Icon.svg');
+  assert.equal(layer.libraryAssetId, 'pivot-penguin');
+  assert.equal(runIndicativeChecks(history.getState()).some(check => check.code === 'UNSUPPORTED_UPLOAD' && check.layerId === layer.id), false);
 });
 
 test('public artwork validation permits raster formats and rejects active or oversized files', () => {

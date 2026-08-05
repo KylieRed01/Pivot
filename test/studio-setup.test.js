@@ -2,32 +2,24 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { renderStudioSetup } from '../public/studio/studio-setup.js';
 
-function createSetupHarness({ acknowledged = true } = {}) {
-  const acknowledgement = {
-    checked: acknowledged,
-    addEventListener() {}
-  };
+function createSetupHarness(garment = 'generic-t-shirt') {
   const form = {
-    sport: { value: 'basketball' },
-    league: { value: 'bendigo-basketball-association', addEventListener() {} },
-    garment: { value: 'basketball-jersey' },
+    garment: { value: garment },
     querySelectorAll() { return []; },
     onsubmit: null
   };
-  const elements = {
-    '#design-setup-form': form,
-    '#demo-acknowledgement': acknowledgement,
-    '.sport-choices': { children: [], append() {} }
-  };
   const root = {
     innerHTML: '',
-    querySelector(selector) { return elements[selector] ?? null; },
+    querySelector(selector) {
+      if (selector === '#design-setup-form') return form;
+      return null;
+    },
     querySelectorAll() { return []; }
   };
-  return { acknowledgement, form, root };
+  return { form, root };
 }
 
-test('Studio setup returns the selected setup through one completion boundary', () => {
+test('Studio chooser starts the selected trial item through one completion boundary', () => {
   const { form, root } = createSetupHarness();
   let submitted;
 
@@ -41,34 +33,28 @@ test('Studio setup returns the selected setup through one completion boundary', 
   assert.deepEqual(submitted, {
     sport: 'basketball',
     league: 'bendigo-basketball-association',
-    garment: 'basketball-jersey',
+    garment: 'generic-t-shirt',
     ruleProfile: 'basketball-rules'
   });
-  assert.match(root.innerHTML, /Design Studio trial/);
-  assert.match(root.innerHTML, /Your work stays in this browser/);
-  assert.match(root.innerHTML, /Pivot will confirm final colours, sizing and placement before anything can be made\./);
-  assert.match(root.innerHTML, /<strong>Basketball<\/strong><small>Available to try<\/small>/);
-  assert.match(root.innerHTML, /<strong>Netball<\/strong><small>Not available yet<\/small>/);
-  assert.match(root.innerHTML, /Bendigo Basketball Association is the only competition available to try\./);
-  assert.doesNotMatch(root.innerHTML, /Unavailable in pilot|Only the pilot competition|Provisional · cost confirmation pending/);
-  assert.match(root.innerHTML, /id="demo-acknowledgement"/);
-  assert.doesNotMatch(root.innerHTML, /browser-local|production infrastructure|manufacturing integration|supplier-approved/i);
-  assert.doesNotMatch(root.innerHTML, /demonstrator/i);
 });
 
-test('public Studio setup requires acknowledgement of the browser-local trial', () => {
-  const { acknowledgement, form, root } = createSetupHarness({ acknowledged: false });
-  let submissions = 0;
+test('Studio chooser presents only the three genuine starting choices', () => {
+  const { root } = createSetupHarness();
 
   renderStudioSetup(root, {
     workflowDemo: false,
     ruleProfileId: 'basketball-rules',
-    onSubmit() { submissions += 1; }
+    onSubmit() {}
   });
-  form.onsubmit({ preventDefault() {} });
-  assert.equal(submissions, 0);
 
-  acknowledgement.checked = true;
-  form.onsubmit({ preventDefault() {} });
-  assert.equal(submissions, 1);
+  assert.match(root.innerHTML, /What would you like to design\?/);
+  assert.match(root.innerHTML, /value="basketball-jersey"/);
+  assert.match(root.innerHTML, /<strong>Basketball jersey<\/strong>/);
+  assert.match(root.innerHTML, /value="generic-t-shirt"/);
+  assert.match(root.innerHTML, /<strong>T-shirt concept<\/strong>/);
+  assert.match(root.innerHTML, /value="generic-hoodie"/);
+  assert.match(root.innerHTML, /<strong>Hoodie concept<\/strong>/);
+  assert.match(root.innerHTML, /Start designing/);
+  assert.match(root.innerHTML, /Generic testing templates/);
+  assert.doesNotMatch(root.innerHTML, /Not available yet|Choose your sport|Choose a competition|demo-acknowledgement|AS Colour/i);
 });

@@ -7,7 +7,7 @@ export const SURFACE_KEYS = Object.freeze([
 
 export const PUBLIC_STUDIO_STORAGE_KEY = 'pivot-public-studio-session-v1';
 
-const surface = (key, background, foreground) => ({
+const surface = (key, background, foreground, { basketball = true } = {}) => ({
   key,
   base: background,
   accent: key.startsWith('dark') ? '#0096D6' : '#092C71',
@@ -36,7 +36,7 @@ const surface = (key, background, foreground) => ({
       letterSpacing: 0,
       lineSpacing: 1
     },
-    {
+    ...(basketball ? [{
       id: `${key}-number`,
       type: 'text',
       role: 'number',
@@ -51,18 +51,19 @@ const surface = (key, background, foreground) => ({
       alignment: 'center',
       letterSpacing: 0,
       lineSpacing: 1
-    }
+    }] : [])
   ]
 });
 
-export function createPlaceholderStudioConfig() {
+export function createPlaceholderStudioConfig(garment = 'basketball-jersey') {
+  const basketball = garment === 'basketball-jersey';
   return {
     version: 1,
     designName: 'Untitled browser design',
     setup: {
       sport: 'basketball',
       competition: 'bendigo-basketball-association',
-      garment: 'basketball-jersey'
+      garment
     },
     view: {
       surface: 'dark.front',
@@ -79,10 +80,10 @@ export function createPlaceholderStudioConfig() {
       light: '#FFFFFF'
     },
     surfaces: {
-      'dark.front': surface('dark.front', '#092C71', '#FFFFFF'),
-      'dark.back': surface('dark.back', '#092C71', '#FFFFFF'),
-      'light.front': surface('light.front', '#FFFFFF', '#092C71'),
-      'light.back': surface('light.back', '#FFFFFF', '#092C71')
+      'dark.front': surface('dark.front', '#092C71', '#FFFFFF', { basketball }),
+      'dark.back': surface('dark.back', '#092C71', '#FFFFFF', { basketball }),
+      'light.front': surface('light.front', '#FFFFFF', '#092C71', { basketball }),
+      'light.back': surface('light.back', '#FFFFFF', '#092C71', { basketball })
     },
     meta: {
       persistence: 'browser-session-only',

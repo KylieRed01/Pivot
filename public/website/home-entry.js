@@ -9,7 +9,7 @@ function loadStudioStyles() {
 
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = '/style.css?v=20260805-9';
+  link.href = '/style.css?v=20260805-11';
   link.dataset.studioStyles = '';
 
   return new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ async function route() {
   if (studioRoutes.has(location.hash)) {
     window.removeEventListener('hashchange', route);
     await loadStudioStyles().catch(() => {});
-    await import('../app.js');
+    await import('../app.js?v=20260805-3');
     return;
   }
 

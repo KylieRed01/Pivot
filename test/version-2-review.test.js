@@ -164,11 +164,11 @@ test('uses theme-responsive high-contrast colours for the internal store review 
   assert.match(css, /color-mix\(in srgb, var\(--club-primary\) 36%, var\(--black\)\)/);
 });
 
-test('keeps a visible persistence warning inside the vertical editor instead of pushing the workspace aside', async () => {
+test('keeps the persistence warning on the Studio header line', async () => {
   const source = await readFile('public/app.js', 'utf8');
 
-  assert.match(source, /<section class="editor">\$\{workflowDemo\?'':'<p id="local-persistence-warning"/);
-  assert.doesNotMatch(source, /<\/span><\/div>\$\{workflowDemo\?'':'<p id="local-persistence-warning"/);
+  assert.match(source, /<header class="editor-top">[\s\S]*id="local-persistence-warning"/);
+  assert.doesNotMatch(source, /<section class="editor">\$\{workflowDemo\?'':'<p id="local-persistence-warning"/);
 });
 
 test('explains public Design Studio limits without internal technical language', async () => {
