@@ -134,3 +134,9 @@
 ## Scope guardrails
 
 Do not add individual ordering, checkout, payments, customer accounts, order windows, batch automation, supplier API integration, additional production clubs, a public marketing site, pricing, or native applications to these issues. Supplier API integration is a later, separate vertical slice; the current design, approval and publishing workflows must operate without it.
+
+## Backlog bookmark — Club onboarding colour records
+
+When the club onboarding process is designed, capture authoritative club colours alongside uploaded brand assets. For each named colour, record available HEX, RGB, CMYK and Pantone values, the source document, whether each value was club-supplied or derived, version, approval status, approving club administrator and date.
+
+Do not require formats the club does not hold or treat automatic conversions as authoritative. Mark missing or derived production values as pending confirmation. Final production colours remain subject to the manufacturer’s process, material and colour profile, with a physical proof or sample used where colour accuracy is critical. Club approval does not itself release a design to manufacture.
