@@ -19,9 +19,20 @@ test('Playwright remains prohibited from the repository toolchain', async () => 
   assert.equal(await exists('test/e2e'), false);
 });
 
+test('future website navigation links to Club Stores between Products and FAQs', async () => {
+  const html = await readFile('public/index.html', 'utf8');
+  const products = html.indexOf('<a href="#products">Products</a>');
+  const clubStores = html.indexOf('<a href="/club-store/version-2-club-store-review.html">Club Stores</a>');
+  const faqs = html.indexOf('<a href="#faqs">FAQs</a>');
+
+  assert.ok(products >= 0);
+  assert.ok(clubStores > products);
+  assert.ok(faqs > clubStores);
+});
+
 test('customer-facing copy consistently names the Pivot Design Studio', async () => {
   const customerFacingFiles = [
-    'public/home-page.js',
+    'public/website/home-page.js',
     'public/app.js',
     'public/studio/studio-setup.js',
     'public/studio/studio-state.js'

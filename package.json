@@ -8,7 +8,7 @@
     "start": "node src/server.js",
     "test": "node --test test/*.test.js",
     "test:unit": "node --test test/*.test.js",
-    "check": "node --check src/server.js && node --check src/domain.js && node --check public/app.js && node --check public/home-page.js && node --check public/studio/jersey-preview.js && node --check public/studio/studio-config.js && node --check public/studio/studio-setup.js && node --check public/studio/studio-state.js && node --check public/website/version-2-review.js && node --check public/club-store/version-2-club-store-review.js"
+    "check": "node --check src/server.js && node --check src/domain.js && node --check public/app.js && node --check public/website/home-page.js && node --check public/website/club-interest-form.js && node --check public/studio/jersey-preview.js && node --check public/studio/studio-config.js && node --check public/studio/studio-setup.js && node --check public/studio/studio-state.js && node --check public/website/version-2-review.js && node --check public/club-store/version-2-club-store-review.js"
   },
   "engines": {
     "node": ">=20"

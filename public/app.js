@@ -1,4 +1,4 @@
-import { renderHomePage } from './home-page.js';
+import { renderHomePage } from './website/home-page.js';
 import { renderJerseyPreview } from './studio/jersey-preview.js';
 import { renderStudioSetup } from './studio/studio-setup.js';
 import { createSessionStore, createStudioHistory, runIndicativeChecks, validatePublicArtwork } from './studio/studio-state.js';
