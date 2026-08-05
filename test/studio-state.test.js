@@ -13,12 +13,33 @@ import {
 } from '../public/studio/studio-state.js';
 
 const surfaceKeys = state => Object.keys(state.surfaces).sort();
+const addTestText = (state, surface = 'dark.front', overrides = {}) => {
+  const layer = {
+    id: `test-text-${surface}`,
+    type: 'text',
+    role: 'artwork',
+    controlLevel: 'flexible',
+    text: 'PIVOT',
+    colour: '#FFFFFF',
+    x: 50,
+    y: 40,
+    scale: 1,
+    rotation: 0,
+    alignment: 'center',
+    letterSpacing: 0,
+    lineSpacing: 1,
+    fontId: 'league-spartan-regular',
+    ...overrides
+  };
+  state.surfaces[surface].layers.push(layer);
+  return layer;
+};
 
 test('generic trial garments start without basketball number requirements', () => {
   for (const garment of ['generic-t-shirt', 'generic-hoodie']) {
     const state = createInitialStudioState(garment);
     assert.equal(state.setup.garment, garment);
-    assert.equal(Object.values(state.surfaces).some(surface => surface.layers.some(layer => layer.role === 'number')), false);
+    assert.equal(Object.values(state.surfaces).every(surface => surface.layers.length === 0), true);
     assert.equal(runIndicativeChecks(state).some(check => check.code === 'REQUIRED_NUMBER'), false);
   }
 });
@@ -27,11 +48,24 @@ test('initial public Studio state contains four 2D surfaces and required numbers
   const state = createInitialStudioState();
 
   assert.deepEqual(surfaceKeys(state), ['dark.back', 'dark.front', 'light.back', 'light.front']);
-  for (const surface of Object.values(state.surfaces)) {
-    const number = surface.layers.find(layer => layer.role === 'number');
-    assert.ok(number, 'each surface has a representative number');
+  assert.deepEqual(state.palette, {
+    primary: '#0096D6',
+    secondary: '#F4951D',
+    accent: '#092C71',
+    light: '#FFFFFF'
+  });
+  for (const [key, surface] of Object.entries(state.surfaces)) {
+    assert.equal(surface.base, key.startsWith('dark') ? '#0096D6' : '#F4951D');
+    assert.equal(surface.accent, key.startsWith('dark') ? '#F4951D' : '#0096D6');
+    assert.equal(surface.neck, '#092C71');
+    assert.equal(surface.armTrim, '#092C71');
+    assert.equal(surface.layers.length, 1, `${key} starts with the required number only`);
+    const [number] = surface.layers;
+    assert.equal(number.role, 'number');
+    assert.equal(number.text, '24');
     assert.equal(number.controlLevel, 'constrained');
     assert.equal(number.required, true);
+    assert.equal(number.scale, key.endsWith('back') ? 3 : 1.5, `${key} reflects the 20 cm back / 10 cm front BBA trial ratio`);
   }
   assert.equal(state.view.mode, '2d');
   assert.equal(state.meta.templateStatus, 'placeholder');
@@ -116,9 +150,10 @@ test('surface and view selection do not mutate independent 2D surfaces', () => {
 });
 
 test('history updates one surface and provides deterministic undo and redo', () => {
-  const history = createStudioHistory(createInitialStudioState(), { limit: 10 });
-  const darkWordmark = history.getState().surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark');
-  const lightWordmarkBefore = structuredClone(history.getState().surfaces['light.front'].layers.find(layer => layer.role === 'wordmark'));
+  const initial = createInitialStudioState();
+  const darkWordmark = addTestText(initial);
+  const lightWordmarkBefore = structuredClone(addTestText(initial, 'light.front'));
+  const history = createStudioHistory(initial, { limit: 10 });
 
   const changed = history.dispatch({
     type: 'updateLayer',
@@ -130,7 +165,7 @@ test('history updates one surface and provides deterministic undo and redo', () 
   assert.equal(changed.ok, true);
   assert.equal(history.canUndo(), true);
   assert.equal(history.getState().surfaces['dark.front'].layers.find(layer => layer.id === darkWordmark.id).text, 'DARK ONLY');
-  assert.deepEqual(history.getState().surfaces['light.front'].layers.find(layer => layer.role === 'wordmark'), lightWordmarkBefore);
+  assert.deepEqual(history.getState().surfaces['light.front'].layers.find(layer => layer.id === lightWordmarkBefore.id), lightWordmarkBefore);
 
   assert.equal(history.undo().ok, true);
   assert.equal(history.getState().surfaces['dark.front'].layers.find(layer => layer.id === darkWordmark.id).text, 'PIVOT');
@@ -180,8 +215,9 @@ test('accepted history changes persist through the session store', () => {
     setItem: (key, value) => values.set(key, value),
     removeItem: key => values.delete(key)
   }, 'history-store');
-  const history = createStudioHistory(createInitialStudioState(), { store });
-  const wordmark = history.getState().surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark');
+  const initial = createInitialStudioState();
+  const wordmark = addTestText(initial);
+  const history = createStudioHistory(initial, { store });
 
   history.dispatch({ type: 'updateLayer', surface: 'dark.front', layerId: wordmark.id, patch: { text: 'RESTORED' } });
 
@@ -189,8 +225,9 @@ test('accepted history changes persist through the session store', () => {
 });
 
 test('history reports persistence failure while retaining accepted in-memory edits', () => {
-  const history = createStudioHistory(createInitialStudioState(), { store: { save: () => false } });
-  const layer = history.getState().surfaces['dark.front'].layers.find(candidate => candidate.role === 'wordmark');
+  const initial = createInitialStudioState();
+  const layer = addTestText(initial);
+  const history = createStudioHistory(initial, { store: { save: () => false } });
 
   const result = history.dispatch({
     type: 'updateLayer', surface: 'dark.front', layerId: layer.id, patch: { text: 'IN MEMORY' }
@@ -202,8 +239,9 @@ test('history reports persistence failure while retaining accepted in-memory edi
 });
 
 test('text controls preserve supplier-independent properties through history', () => {
-  const history = createStudioHistory(createInitialStudioState());
-  const layer = history.getState().surfaces['dark.front'].layers.find(candidate => candidate.role === 'wordmark');
+  const initial = createInitialStudioState();
+  const layer = addTestText(initial);
+  const history = createStudioHistory(initial);
 
   history.dispatch({
     type: 'updateLayer',
@@ -369,8 +407,8 @@ test('indicative checks treat blank or invalid required numbers as blocking erro
 test('indicative checks distinguish blocking errors, warnings and unresolved guidance', () => {
   const state = createInitialStudioState();
   state.surfaces['dark.front'].layers = state.surfaces['dark.front'].layers.filter(layer => layer.role !== 'number');
-  state.surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark').text = '';
-  state.surfaces['light.front'].layers.find(layer => layer.role === 'wordmark').x = 101;
+  addTestText(state, 'dark.front', { text: '' });
+  addTestText(state, 'light.front', { x: 101 });
 
   const checks = runIndicativeChecks(state);
 

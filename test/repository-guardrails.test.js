@@ -87,7 +87,8 @@ test('website navigation consistently uses the home route name', async () => {
 test('Design Studio gives creation, canvas and guidance one distinct owner', async () => {
   const source = await readFile('public/app.js', 'utf8');
 
-  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title">/);
+  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title"><header><div class="guidance-design-row"><label class="design-name guidance-design-name">[\s\S]*?id="design-name"[\s\S]*?id="save-browser-design"[\s\S]*?>Save design<\/button>[\s\S]*?<small>Saved only in this browser<\/small>[\s\S]*?<span>Design support<\/span>/);
+  assert.match(source, /class="studio-logo-home" href="#home" aria-label="Return to home"/);
   assert.match(source, /id="guidance-view"/);
   assert.match(source, /id="guidance-selection"/);
   assert.match(source, /id="open-design-checks"/);
@@ -102,13 +103,19 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /class="tool-section active" data-tool-panel="templates"><nav class="template-menu"/);
   assert.doesNotMatch(source, /class="rail-item active" data-tool="colours"/);
   assert.doesNotMatch(source, /class="tool-section active" data-tool-panel="colours"/);
-  assert.match(source, /data-tool-panel="artwork"[\s\S]*?class="panel-help"[\s\S]*?id="add-text" class="add-text-primary"[\s\S]*?id="text-selection-empty"[\s\S]*?id="text-controls"/);
+  assert.match(source, /data-tool-panel="artwork"[\s\S]*?class="panel-help"[\s\S]*?id="add-text" class="add-text-primary"[\s\S]*?id="text-selection-empty"[\s\S]*?id="text-controls"[\s\S]*?<details class="text-more-options">/);
+  assert.match(source, /<summary>More text options<\/summary>/);
+  assert.match(source, /id="text-size-down"[^>]*aria-label="Decrease text size"[\s\S]*?id="layer-scale"[^>]*type="range"[\s\S]*?id="text-size-value"[^>]*type="number"[\s\S]*?id="text-size-up"[^>]*aria-label="Increase text size"/);
+  assert.match(source, />Duplicate text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>[\s\S]*?>Remove text<\/button>/);
+  assert.doesNotMatch(source, /Text layers|id="layer-list"/);
+  assert.doesNotMatch(source, /sideName\+'-pivot-text'|'back-'\+sideName\+'-pivot-text'/);
   assert.match(source, /if\(b\.dataset\.tool==='artwork'&&!sides\[side\]\.layers\.some\(layer=>layer\.id===selectedId&&layer\.type==='text'\)\)/);
   assert.doesNotMatch(source, /<aside class="design-guidance"[\s\S]*?<nav class="template-menu"/);
   assert.match(source, /data-template="basketball-jersey"/);
   assert.match(source, /data-template="generic-t-shirt"/);
   assert.match(source, /data-template="generic-hoodie"/);
   assert.match(source, /data-tool="library"/);
+  assert.match(source, /libraryAssetId:'pivot-penguin'[\s\S]*?x:50,y:45,scale:1\.6,rotation:0/);
   assert.match(source, /data-tool="club-images"[^>]*aria-label="Approved club images"/);
   assert.match(source, /data-tool-panel="club-images"/);
   assert.match(source, /Access is not connected in this trial/);
@@ -119,10 +126,17 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /el\.onpointerdown=e=>\{if\(viewMode==='3d'\)return;e\.preventDefault\(\);selectedId=el\.dataset\.layerId;if\(!workflowDemo\)dispatchPublic\(\{type:'selectLayer'/);
 });
 
-test('Design Studio combines custom colour picking with the exact HEX control', async () => {
-  const source = await readFile('public/app.js', 'utf8');
+test('Design Studio combines visible pattern colours with the exact HEX control', async () => {
+  const [source, css] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
 
   assert.doesNotMatch(source, /class="custom-colour-row"/);
+  assert.match(source, /class="pattern-colours pattern-colour-flyout"/);
+  assert.match(css, /\.studio-status\{[^}]*position:absolute;[^}]*left:50%;[^}]*transform:translateX\(-50%\)/);
+  assert.match(css, /\.pattern-colour-flyout\{position:fixed;z-index:30;left:416px;top:154px;width:270px/);
+  assert.match(css, /@media\(max-width:720px\)\{\.pattern-colour-flyout\{position:static;width:auto/);
   assert.match(source, /class="hex-editor"><input id="dock-colour" type="color"[^>]*aria-label="Choose exact colour"[^>]*><span>#<\/span><input id="precise-hex"/);
   assert.match(source, /document\.querySelector\('#dock-colour'\)\.oninput=e=>applyColour\(e\.target\.value\)/);
 });
@@ -256,15 +270,15 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-6"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-7"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-13', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-14', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-5'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-6'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);

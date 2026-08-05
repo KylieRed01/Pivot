@@ -1,7 +1,4 @@
-import {
-  DEFAULT_BASKETBALL_NUMBER_FONT_ID,
-  DEFAULT_TEXT_FONT_ID
-} from './font-catalog.js';
+import { DEFAULT_BASKETBALL_NUMBER_FONT_ID } from './font-catalog.js';
 
 export const SURFACE_KEYS = Object.freeze([
   'dark.front',
@@ -12,37 +9,24 @@ export const SURFACE_KEYS = Object.freeze([
 
 export const PUBLIC_STUDIO_STORAGE_KEY = 'pivot-public-studio-session-v1';
 
+// Indicative 2:1 visual ratio for the BBA 20 cm back / 10 cm front baseline.
+// Exact physical dimensions remain blocked until supplier-template measurement.
+const BBA_TRIAL_NUMBER_SCALE = Object.freeze({ front: 1.5, back: 3 });
+
 const surface = (key, background, foreground, { basketball = true } = {}) => ({
   key,
   base: background,
-  accent: key.startsWith('dark') ? '#0096D6' : '#092C71',
+  accent: key.startsWith('dark') ? '#F4951D' : '#0096D6',
   pattern: key.endsWith('front') ? 'velocity' : 'clean',
   scale: 48,
   angle: key.endsWith('front') ? -28 : 0,
   density: 32,
   gradient: false,
-  gradientColour: key.startsWith('dark') ? '#0096D6' : '#092C71',
+  gradientColour: key.startsWith('dark') ? '#F4951D' : '#0096D6',
   gradientAngle: 135,
-  neck: key.startsWith('dark') ? '#FFFFFF' : '#092C71',
-  armTrim: '#0096D6',
-  layers: [
-    {
-      id: `${key}-wordmark`,
-      type: 'text',
-      role: 'wordmark',
-      controlLevel: 'flexible',
-      text: 'PIVOT',
-      colour: foreground,
-      x: 50,
-      y: 38,
-      scale: 1,
-      rotation: 0,
-      alignment: 'center',
-      letterSpacing: 0,
-      lineSpacing: 1,
-      fontId: DEFAULT_TEXT_FONT_ID
-    },
-    ...(basketball ? [{
+  neck: '#092C71',
+  armTrim: '#092C71',
+  layers: basketball ? [{
       id: `${key}-number`,
       type: 'text',
       role: 'number',
@@ -52,14 +36,13 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
       colour: foreground,
       x: 50,
       y: key.endsWith('back') ? 58 : 62,
-      scale: key.endsWith('back') ? 3 : 2.4,
+      scale: key.endsWith('back') ? BBA_TRIAL_NUMBER_SCALE.back : BBA_TRIAL_NUMBER_SCALE.front,
       rotation: 0,
       alignment: 'center',
       letterSpacing: 0,
       lineSpacing: 1,
       fontId: DEFAULT_BASKETBALL_NUMBER_FONT_ID
-    }] : [])
-  ]
+    }] : []
 });
 
 export function createPlaceholderStudioConfig(garment = 'basketball-jersey') {
@@ -81,16 +64,16 @@ export function createPlaceholderStudioConfig(garment = 'basketball-jersey') {
       panY: 0
     },
     palette: {
-      primary: '#092C71',
-      secondary: '#0096D6',
-      accent: '#F4951D',
+      primary: '#0096D6',
+      secondary: '#F4951D',
+      accent: '#092C71',
       light: '#FFFFFF'
     },
     surfaces: {
-      'dark.front': surface('dark.front', '#092C71', '#FFFFFF', { basketball }),
-      'dark.back': surface('dark.back', '#092C71', '#FFFFFF', { basketball }),
-      'light.front': surface('light.front', '#FFFFFF', '#092C71', { basketball }),
-      'light.back': surface('light.back', '#FFFFFF', '#092C71', { basketball })
+      'dark.front': surface('dark.front', '#0096D6', '#FFFFFF', { basketball }),
+      'dark.back': surface('dark.back', '#0096D6', '#FFFFFF', { basketball }),
+      'light.front': surface('light.front', '#F4951D', '#092C71', { basketball }),
+      'light.back': surface('light.back', '#F4951D', '#092C71', { basketball })
     },
     meta: {
       persistence: 'browser-session-only',

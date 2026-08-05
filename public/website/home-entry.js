@@ -18,7 +18,7 @@ function loadStylesheet(href, dataAttribute) {
 
 function loadStudioStyles() {
   return Promise.all([
-    loadStylesheet('/style.css?v=20260805-13', 'data-studio-styles'),
+    loadStylesheet('/style.css?v=20260805-14', 'data-studio-styles'),
     loadStylesheet('/studio/fonts.css?v=20260805-1', 'data-studio-fonts')
   ]);
 }
@@ -27,7 +27,7 @@ async function route() {
   if (studioRoutes.has(location.hash)) {
     window.removeEventListener('hashchange', route);
     await loadStudioStyles().catch(() => {});
-    await import('../app.js?v=20260805-5');
+    await import('../app.js?v=20260805-6');
     return;
   }
 

@@ -11,7 +11,7 @@ const palette = {
 
 const design = {
   base: '#092C71',
-  accent: '#0096D6',
+  accent: '#F4951D',
   pattern: 'velocity',
   scale: 48,
   angle: -28,
@@ -31,11 +31,27 @@ test('jersey preview renders the selected surface without exposing text as HTML'
   const html = renderJerseyPreview(palette, design, 'wordmark');
 
   assert.match(html, /class="jersey garment-basketball-jersey pattern-velocity"/);
+  assert.match(html, /--trim:#F4951D/);
   assert.match(html, /class="art-layer\s+ selected"/);
+  assert.match(html, /--anchor-x:-50%/);
   assert.match(html, /A&amp;B &lt;Club&gt;/);
   assert.doesNotMatch(html, /A&B <Club>/);
   assert.match(html, /font-family:&quot;Pivot Graduate&quot;,Arial,sans-serif;font-weight:400/);
   assert.match(html, /Preview only · placeholder template/);
+});
+
+test('text alignment anchors content inside its selected position', () => {
+  const left = renderJerseyPreview(palette, {
+    ...design,
+    layers: [{ ...design.layers[0], alignment: 'left', x: 12 }]
+  }, null);
+  const right = renderJerseyPreview(palette, {
+    ...design,
+    layers: [{ ...design.layers[0], alignment: 'right', x: 88 }]
+  }, null);
+
+  assert.match(left, /--x:12%;[^"]*--anchor-x:0%/);
+  assert.match(right, /--x:88%;[^"]*--anchor-x:-100%/);
 });
 
 test('preview renders original generic trial garment silhouettes', () => {
