@@ -14,7 +14,17 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /Game On\. Start Designing/);
   assert.doesNotMatch(root.innerHTML, /Design Studio trial:/);
   assert.doesNotMatch(root.innerHTML, /Your kit\. Your identity\./);
-  assert.match(root.innerHTML, /Quality teamwear made simple, affordable and reliable for community sport\./);
+  assert.doesNotMatch(root.innerHTML, /class="home-features"/);
+  assert.doesNotMatch(root.innerHTML, /<span class="eyebrow">Benefits<\/span>/);
+  assert.doesNotMatch(root.innerHTML, /Quality teamwear made simple, affordable and reliable for community sport\./);
+  assert.doesNotMatch(root.innerHTML, /class="home-strip"/);
+  assert.doesNotMatch(root.innerHTML, /class="text-link"/);
+  assert.doesNotMatch(root.innerHTML, /Working with our pilot club\./);
+  assert.match(root.innerHTML, /<h3>Custom uniforms<\/h3>/);
+  assert.doesNotMatch(root.innerHTML, /<h3>Playing uniforms<\/h3>/);
+  assert.match(root.innerHTML, /<h3>Club merchandise<\/h3>/);
+  assert.doesNotMatch(root.innerHTML, /<h3>Club apparel<\/h3>/);
+  assert.doesNotMatch(root.innerHTML, /class="availability-note"/);
   assert.match(root.innerHTML, /data-help-category="faqs"/);
   assert.doesNotMatch(root.innerHTML, /data-help-category="studio"/);
   assert.doesNotMatch(root.innerHTML, /<h3>Pivot Design Studio Help<\/h3>/);

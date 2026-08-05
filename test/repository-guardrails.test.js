@@ -41,6 +41,37 @@ test('future website footer uses a left-aligned copyright notice without repeati
   assert.match(css, /footer\{text-align:left;padding:25px 7vw;/);
 });
 
+test('future homepage uses a consistent section-label size', async () => {
+  const css = await readFile('public/style.css', 'utf8');
+
+  assert.match(css, /\.eyebrow\{[^}]*font-size:14px[^}]*\}/);
+  assert.doesNotMatch(css, /\.contact-section \.eyebrow\{[^}]*font-size:/);
+  const homepageStyles = css.slice(0, css.indexOf('.mode-notice'));
+  assert.doesNotMatch(homepageStyles, /\.home-features|\.energy-card/);
+});
+
+test('future homepage colours use approved bases and traceable supporting variations', async () => {
+  const css = await readFile('public/style.css', 'utf8');
+  const homepageStyles = css.slice(0, css.indexOf('.mode-notice'));
+  const approvedColours = new Set([
+    '#000',
+    '#000000',
+    '#0096d6',
+    '#092c71',
+    '#f4951d',
+    '#fff',
+    '#ffffff'
+  ]);
+  const usedColours = [...homepageStyles.matchAll(/#[0-9a-f]{3,8}\b/gi)]
+    .map(match => match[0].toLowerCase());
+  const unapprovedColours = [...new Set(usedColours.filter(colour => !approvedColours.has(colour)))];
+
+  assert.deepEqual(unapprovedColours, []);
+  assert.doesNotMatch(homepageStyles, /\b(?:rgb|hsl)a?\(/i);
+  assert.match(homepageStyles, /--pivot-midnight-tint:color-mix\(in srgb,var\(--pivot-midnight\) 6%,var\(--pivot-white\)\)/);
+  assert.match(homepageStyles, /--pivot-orange-tint:color-mix\(in srgb,var\(--pivot-orange\) 14%,var\(--pivot-white\)\)/);
+});
+
 test('customer-facing copy consistently names the Pivot Design Studio', async () => {
   const customerFacingFiles = [
     'public/website/home-page.js',
