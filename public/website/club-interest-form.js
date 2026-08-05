@@ -1,3 +1,20 @@
+// Victorian Government Know Your Council locality list for Greater Bendigo.
+// https://www.vic.gov.au/know-your-council-greater-bendigo-city-council
+const greaterBendigoLocalities = Object.freeze([
+  'Argyle', 'Ascot', 'Avonmore', 'Axe Creek', 'Axedale', 'Bagshot', 'Bagshot North', 'Barnadown',
+  'Bendigo', 'Bendigo East', 'Bendigo North', 'Bendigo West', 'Big Hill', 'California Gully',
+  'Costerfield', 'Derrinal', 'Diamond Hill', 'Drummartin', 'Eaglehawk', 'Eaglehawk North', 'Elmore',
+  'Emu Creek', 'Eppalock', 'Epsom', 'Flora Hill', 'Fosterville', 'Golden Gully', 'Golden Square',
+  'Goornong', 'Harcourt North', 'Heathcote', 'Hunter', 'Huntly', 'Huntly North', 'Ironbark',
+  'Jackass Flat', 'Junortoun', 'Kamarooka', 'Kangaroo Flat', 'Kennington', 'Kimbolton', 'Knowsley',
+  'Ladys Pass', 'Leichardt', 'Lockwood', 'Lockwood South', 'Long Gully', 'Longlea', 'Lyal',
+  'Maiden Gully', 'Mandurang', 'Mandurang South', 'Marong', 'Mia Mia', 'Minto', 'Mosquito Creek',
+  'Mount Camel', 'Myers Flat', 'Myrtle Creek', 'Neilborough', 'Pilchers Bridge', 'Quarry Hill',
+  'Raywood', 'Redcastle', 'Redesdale', 'Sailors Gully', 'Sandhurst East', 'Sebastian', 'Sedgwick',
+  'Shelbourne', 'Specimen Hill', 'Spring Gully', 'Strathdale', 'Strathfieldsaye', 'Summerfield',
+  'Toolleen', 'Tysons Reef', 'Wellsford', 'Whipstick', 'White Hills', 'Wilsons Hill', 'Woodvale'
+]);
+
 const associationOptions = Object.freeze({
   'Australian rules football': ['Bendigo Football Netball League', 'Bendigo Junior Football League', 'Heathcote District Football Netball League', 'Loddon Valley Football Netball League'],
   Badminton: ['Bendigo Eaglehawk Badminton Association'],
@@ -19,6 +36,7 @@ const associationOptions = Object.freeze({
 });
 
 export const getAssociationsForSport = sport => associationOptions[sport] ?? [];
+export const getGreaterBendigoLocalities = () => [...greaterBendigoLocalities];
 
 export function bindClubInterestForm(root) {
   const openInterest = root.querySelector?.('#open-club-interest');
@@ -46,6 +64,9 @@ export function bindClubInterestForm(root) {
   const otherSport = root.querySelector?.('#club-interest-other-sport');
   const otherAssociationField = root.querySelector?.('#club-interest-other-association-field');
   const otherAssociation = root.querySelector?.('#club-interest-other-association');
+  const locality = root.querySelector?.('#club-interest-locality');
+  const otherLocalityField = root.querySelector?.('#club-interest-other-locality-field');
+  const otherLocality = root.querySelector?.('#club-interest-other-locality');
   if (!sport || !association) return;
 
   const addOption = (label, value = label) => {
@@ -78,5 +99,8 @@ export function bindClubInterestForm(root) {
 
   sport.addEventListener('change', updateAssociations);
   association.addEventListener('change', updateOtherAssociation);
+  locality?.addEventListener('change', () => {
+    showOtherField(otherLocalityField, otherLocality, locality.value === 'Other');
+  });
   updateAssociations();
 }

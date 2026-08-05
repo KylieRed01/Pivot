@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bindClubInterestForm, getAssociationsForSport } from '../public/website/club-interest-form.js';
+import { bindClubInterestForm, getAssociationsForSport, getGreaterBendigoLocalities } from '../public/website/club-interest-form.js';
 
 test('club-interest form expands inline and can be cancelled', () => {
   const openListeners = {};
@@ -43,7 +43,17 @@ test('club-interest associations are linked to the selected sport', () => {
   assert.deepEqual(getAssociationsForSport('Soccer'), ['FV Greater Bendigo']);
 });
 
-test('club-interest form updates associations and reveals Other fields', () => {
+test('club-interest localities use the official Greater Bendigo list', () => {
+  const localities = getGreaterBendigoLocalities();
+
+  assert.equal(localities.length, 82);
+  assert.deepEqual(localities.slice(0, 5), ['Argyle', 'Ascot', 'Avonmore', 'Axe Creek', 'Axedale']);
+  assert.ok(localities.includes('Bendigo'));
+  assert.ok(localities.includes('Heathcote'));
+  assert.deepEqual(localities.slice(-3), ['White Hills', 'Wilsons Hill', 'Woodvale']);
+});
+
+test('club-interest form updates linked dropdowns and reveals Other fields', () => {
   const sportListeners = {};
   const associationListeners = {};
   const sport = { value: '', addEventListener: (name, handler) => { sportListeners[name] = handler; } };
@@ -60,13 +70,20 @@ test('club-interest form updates associations and reveals Other fields', () => {
   const otherSport = { required: false, value: '' };
   const otherAssociationField = { hidden: true };
   const otherAssociation = { required: false, value: '' };
+  const localityListeners = {};
+  const locality = { value: '', addEventListener: (name, handler) => { localityListeners[name] = handler; } };
+  const otherLocalityField = { hidden: true };
+  const otherLocality = { required: false, value: '' };
   const controls = {
     '#club-interest-sport': sport,
     '#club-interest-association': association,
     '#club-interest-other-sport-field': otherSportField,
     '#club-interest-other-sport': otherSport,
     '#club-interest-other-association-field': otherAssociationField,
-    '#club-interest-other-association': otherAssociation
+    '#club-interest-other-association': otherAssociation,
+    '#club-interest-locality': locality,
+    '#club-interest-other-locality-field': otherLocalityField,
+    '#club-interest-other-locality': otherLocality
   };
 
   bindClubInterestForm({ querySelector: selector => controls[selector] });
@@ -89,4 +106,15 @@ test('club-interest form updates associations and reveals Other fields', () => {
   sportListeners.change();
   assert.equal(otherSportField.hidden, false);
   assert.equal(otherSport.required, true);
+
+  locality.value = 'Other';
+  localityListeners.change();
+  assert.equal(otherLocalityField.hidden, false);
+  assert.equal(otherLocality.required, true);
+
+  locality.value = 'Bendigo';
+  localityListeners.change();
+  assert.equal(otherLocalityField.hidden, true);
+  assert.equal(otherLocality.required, false);
+  assert.equal(otherLocality.value, '');
 });

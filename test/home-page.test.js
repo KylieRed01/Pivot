@@ -26,7 +26,7 @@ test('public home page renders the approved website experience', () => {
   assert.match(root.innerHTML, /\*<\/span> Required fields/);
   assert.match(root.innerHTML, /Contact name <b class="required-mark"/);
   assert.match(root.innerHTML, /League or association <b class="required-mark"/);
-  assert.match(root.innerHTML, /Club suburb or postcode <b class="required-mark"/);
+  assert.match(root.innerHTML, /Club suburb or town <b class="required-mark"/);
   assert.match(root.innerHTML, /Register My Club’s Interest/);
   assert.match(root.innerHTML, /class="linked-interest-fields"/);
   assert.match(root.innerHTML, /mailto:hello@pivotteamwear\.com\?subject=Club%20Interest/);
@@ -34,6 +34,9 @@ test('public home page renders the approved website experience', () => {
   assert.match(root.innerHTML, /id="club-interest-association"/);
   assert.match(root.innerHTML, /id="club-interest-other-sport"/);
   assert.match(root.innerHTML, /id="club-interest-other-association"/);
+  assert.match(root.innerHTML, /id="club-interest-locality"[^>]*required/);
+  assert.match(root.innerHTML, /id="club-interest-other-locality-field"[^>]*hidden/);
+  assert.match(root.innerHTML, /id="club-interest-other-locality"/);
   assert.doesNotMatch(root.innerHTML, /<optgroup/);
   assert.doesNotMatch(root.innerHTML, />Not sure</);
   assert.match(root.innerHTML, /Gridiron \(American football\)/);
