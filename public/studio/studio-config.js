@@ -20,7 +20,7 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
   pattern: key.endsWith('front') ? 'velocity' : 'clean',
   scale: 48,
   angle: key.endsWith('front') ? -28 : 0,
-  density: 32,
+  density: 100,
   gradient: false,
   gradientColour: key.startsWith('dark') ? '#F4951D' : '#0096D6',
   gradientAngle: 135,

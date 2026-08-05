@@ -270,7 +270,7 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-7"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-8"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
@@ -278,7 +278,7 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
   assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-14', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-6'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-7'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);

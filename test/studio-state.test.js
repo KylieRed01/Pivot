@@ -59,6 +59,7 @@ test('initial public Studio state contains four 2D surfaces and required numbers
     assert.equal(surface.accent, key.startsWith('dark') ? '#F4951D' : '#0096D6');
     assert.equal(surface.neck, '#092C71');
     assert.equal(surface.armTrim, '#092C71');
+    assert.equal(surface.density, 100, `${key} keeps the approved pattern colours at full intensity`);
     assert.equal(surface.layers.length, 1, `${key} starts with the required number only`);
     const [number] = surface.layers;
     assert.equal(number.role, 'number');
