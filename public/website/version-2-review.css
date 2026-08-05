@@ -8,6 +8,9 @@
   --orange: #F4951D;
   --white: #FFFFFF;
   --black: #000000;
+  --midnight-tint: color-mix(in srgb, var(--midnight) 6%, var(--white));
+  --cerulean-tint: color-mix(in srgb, var(--cerulean) 12%, var(--white));
+  --midnight-border: color-mix(in srgb, var(--midnight) 25%, var(--white));
 }
 
 * { box-sizing: border-box; }
@@ -30,8 +33,11 @@ button { cursor: pointer; }
 .skip-link:focus { top: 1rem; }
 
 :focus-visible {
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--midnight);
   outline-offset: 3px;
+}
+.hero :focus-visible {
+  outline-color: var(--white);
 }
 
 .review-banner {
@@ -54,13 +60,18 @@ button { cursor: pointer; }
   justify-content: space-between;
   gap: 2rem;
   padding: 1rem 6vw;
-  border-bottom: 1px solid rgba(9, 44, 113, .25);
+  border-bottom: 1px solid var(--midnight-border);
   background: var(--white);
 }
 .site-header img { width: 180px; height: 72px; object-fit: contain; }
-.site-header nav { display: flex; gap: 1.5rem; font-weight: 700; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 1.5rem; font-weight: 700; }
 .site-header nav a { text-decoration: none; }
-.site-header nav a:hover { text-decoration: underline; }
+.site-header nav a:hover,
+.site-header nav a:focus-visible {
+  color: var(--midnight);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 
 .hero {
   padding: clamp(4rem, 9vw, 8rem) 7vw;
@@ -69,20 +80,21 @@ button { cursor: pointer; }
 }
 .hero-logo {
   display: block;
-  width: min(580px, 88vw);
-  height: 255px;
+  width: min(670px, 88vw);
+  height: 295px;
   margin: 0 0 12px;
   object-fit: contain;
   object-position: left center;
 }
 .eyebrow {
   margin: 0 0 .75rem;
-  color: var(--cerulean);
+  color: var(--midnight);
   font-size: .78rem;
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
 }
+.hero .eyebrow { color: var(--orange); }
 .hero h1, h2, h3 {
   font-family: "Century Gothic", Arial, sans-serif;
 }
@@ -116,10 +128,8 @@ button { cursor: pointer; }
   min-height: 230px;
   padding: 2rem;
   border-top: 8px solid var(--cerulean);
-  background: rgba(0, 150, 214, .08);
+  background: var(--midnight-tint);
 }
-.card-grid article:nth-child(2) { border-color: var(--orange); background: rgba(244, 149, 29, .1); }
-.card-grid article:nth-child(3) { border-color: var(--midnight); background: rgba(9, 44, 113, .07); }
 .card-grid h3 { color: var(--midnight); font-size: 1.45rem; }
 .review-link { display: inline-block; margin-top: 1rem; color: var(--midnight); font-weight: 700; }
 
@@ -127,7 +137,7 @@ button { cursor: pointer; }
   display: grid;
   grid-template-columns: minmax(0, .8fr) minmax(420px, 1.2fr);
   gap: clamp(2rem, 6vw, 6rem);
-  background: var(--cerulean);
+  background: var(--cerulean-tint);
   color: var(--midnight);
 }
 .interest-section .eyebrow { color: var(--midnight); }
@@ -175,12 +185,12 @@ form button {
   color: var(--midnight);
   font-weight: 700;
 }
-form button:hover { border-color: var(--cerulean); background: var(--cerulean); }
+form button:hover { border-color: var(--midnight); background: var(--midnight); color: var(--white); }
 form output { display: grid; gap: .35rem; margin-top: 1.25rem; color: var(--midnight); }
 form output strong { font-family: "Century Gothic", Arial, sans-serif; font-size: 1.25rem; }
 form output small { font-weight: 700; }
 
-.help-section { background: rgba(9, 44, 113, .06); }
+.help-section { background: var(--midnight-tint); }
 .help-group { max-width: 900px; margin: 2.5rem 0; }
 .help-group h3 {
   padding-bottom: .8rem;
@@ -190,7 +200,7 @@ form output small { font-weight: 700; }
 }
 .help-group:nth-of-type(2) h3 { border-color: var(--orange); }
 .help-group:nth-of-type(3) h3 { border-color: var(--midnight); }
-details { padding: 1rem 0; border-bottom: 1px solid rgba(9, 44, 113, .3); }
+details { padding: 1rem 0; border-bottom: 1px solid var(--midnight-border); }
 summary { color: var(--midnight); font-family: "Century Gothic", Arial, sans-serif; font-weight: 700; cursor: pointer; }
 .help-group li { margin: .55rem 0; }
 
@@ -207,7 +217,7 @@ footer img { width: 160px; max-height: 50px; }
 
 @media (max-width: 850px) {
   .review-banner, .site-header { align-items: flex-start; flex-direction: column; }
-  .site-header nav { width: 100%; overflow-x: auto; }
+  .site-header nav { width: 100%; flex-wrap: wrap; }
   .card-grid, .interest-section { grid-template-columns: 1fr; }
   .interest-section { gap: 2rem; }
 }
@@ -225,5 +235,9 @@ footer img { width: 160px; max-height: 50px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
 }

@@ -1,7 +1,7 @@
 .club-stores-page {
   min-height: calc(100vh - 72px);
   color: #000000;
-  background: #F3F7FC;
+  background: var(--pivot-midnight-tint);
 }
 
 .club-stores-intro {
@@ -32,7 +32,7 @@
   gap: 8px 20px;
   padding: 26px;
   border-left: 6px solid #F4951D;
-  background: #FFF3DF;
+  background: var(--pivot-orange-tint);
   color: #092C71;
 }
 
@@ -47,20 +47,20 @@
   padding: 12px 18px;
   border: 0;
   border-radius: 999px;
-  background: #DCE4EF;
-  color: #566578;
+  background: color-mix(in srgb, var(--pivot-midnight) 12%, var(--pivot-white));
+  color: #000000;
   font-weight: 700;
   cursor: not-allowed;
 }
 
 .club-login small {
   grid-column: 2;
-  color: #667687;
+  color: #000000;
   text-align: center;
 }
 
 .pivot-store-section {
-  background: #F3F7FC;
+  background: var(--pivot-midnight-tint);
 }
 
 .pivot-store-section .section-heading {
@@ -88,8 +88,14 @@
 }
 
 .pivot-store-card:focus-visible {
-  outline: 3px solid #F4951D;
+  outline: 3px solid #092C71;
   outline-offset: 4px;
+}
+
+.pivot-store-card:hover strong,
+.pivot-store-card:focus-visible strong {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .pivot-store-identity {
@@ -172,5 +178,7 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
   }
 }

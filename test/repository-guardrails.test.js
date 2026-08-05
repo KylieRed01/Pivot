@@ -19,6 +19,43 @@ test('Playwright remains prohibited from the repository toolchain', async () => 
   assert.equal(await exists('test/e2e'), false);
 });
 
+test('website implementation guidance is required and records approved page patterns', async () => {
+  const [agents, guide] = await Promise.all([
+    readFile('AGENTS.md', 'utf8'),
+    readFile('docs/website/Website Implementation Guide.md', 'utf8')
+  ]);
+
+  assert.match(agents, /`docs\/website\/Website Implementation Guide\.md`/);
+  assert.match(guide, /Business Plan[\s\S]*Operating Model[\s\S]*Brand Kit/);
+  assert.match(guide, /noindex,nofollow/);
+  assert.match(guide, /skip link/i);
+  assert.match(guide, /prefers-reduced-motion/);
+  assert.match(guide, /Fastmail setup/);
+  assert.match(guide, /web-font licensing/);
+  assert.match(guide, /distributes no font files/);
+  assert.match(guide, /Node test suite/);
+  assert.match(guide, /manual HTTP verification/);
+  assert.doesNotMatch(guide, /Playwright|axe-core/i);
+});
+
+test('local and testing pages apply the approved document and accessibility baseline', async () => {
+  const paths = [
+    'public/club-store/index.html',
+    'public/website/version-2-review.html',
+    'public/club-store/version-2-club-store-review.html'
+  ];
+
+  for (const path of paths) {
+    const html = await readFile(path, 'utf8');
+    assert.match(html, /<html\b[^>]*lang="en-AU"/, path);
+    assert.match(html, /<meta name="robots" content="noindex,nofollow">/, path);
+    assert.match(html, /<meta name="description" content="[^"]+">/, path);
+    assert.match(html, /<link rel="icon" href="\/brand\/Pivot_Icon\.svg" type="image\/svg\+xml">/, path);
+    assert.match(html, /class="skip-link" href="#(?:main|app)"/, path);
+    assert.match(html, /<main\b[^>]*id="(?:main|app)"[^>]*tabindex="-1"/, path);
+  }
+});
+
 test('future website navigation links to Club Stores between Products and FAQs', async () => {
   const html = await readFile('public/index.html', 'utf8');
   const products = html.indexOf('<a href="/#products">Products</a>');
@@ -53,6 +90,48 @@ test('homepage navigation provides accessible pointer and keyboard feedback', as
   assert.match(css, /nav a:last-child:hover\s*\{\s*background:\s*#F4951D;\s*color:\s*#092C71;/);
   assert.match(css, /summary:focus-visible,[\s\S]*select:focus-visible\s*\{[^}]*outline:\s*3px solid #092C71;[^}]*outline-offset:\s*3px;/);
   assert.match(css, /\.pivot-hero a:focus-visible\s*\{\s*outline-color:\s*#FFFFFF;/);
+});
+
+test('homepage required-field indicators use a readable brand colour', async () => {
+  const css = await readFile('public/website/home.css', 'utf8');
+
+  assert.match(css, /\.required-note span,\s*\.required-mark\s*\{\s*color:\s*#092C71;/);
+});
+
+test('local and testing page styles keep responsive navigation and reduced-motion safeguards', async () => {
+  const styles = await Promise.all([
+    readFile('public/website/home.css', 'utf8'),
+    readFile('public/website/version-2-review.css', 'utf8'),
+    readFile('public/club-store/version-2-club-store-review.css', 'utf8')
+  ]);
+
+  for (const css of styles) {
+    assert.match(css, /:focus-visible/);
+    assert.match(css, /prefers-reduced-motion:\s*reduce/);
+    assert.match(css, /flex-wrap:\s*wrap/);
+    assert.doesNotMatch(css, /overflow-x:\s*auto/);
+  }
+});
+
+test('local review pages keep skip navigation first and focus indicators readable by surface', async () => {
+  const [websiteHtml, storeHtml, websiteCss, storeCss] = await Promise.all([
+    readFile('public/website/version-2-review.html', 'utf8'),
+    readFile('public/club-store/version-2-club-store-review.html', 'utf8'),
+    readFile('public/website/version-2-review.css', 'utf8'),
+    readFile('public/club-store/version-2-club-store-review.css', 'utf8')
+  ]);
+
+  for (const html of [websiteHtml, storeHtml]) {
+    const body = html.slice(html.indexOf('<body>'));
+    assert.match(body, /<body>\s*<a class="skip-link"/);
+  }
+
+  assert.match(websiteCss, /:focus-visible\s*\{\s*outline:\s*3px solid var\(--midnight\)/);
+  assert.match(websiteCss, /\.hero :focus-visible\s*\{\s*outline-color:\s*var\(--white\)/);
+  assert.match(storeCss, /:focus-visible\s*\{\s*outline:\s*3px solid var\(--midnight\)/);
+  assert.match(storeCss, /:root\[data-store-theme="dark"\] :focus-visible\s*\{\s*outline-color:\s*var\(--orange\)/);
+  assert.match(storeCss, /\.store-nav a:focus-visible\s*\{[^}]*outline-color:\s*var\(--white\)/);
+  assert.doesNotMatch(storeCss, /\.muted-card\s*\{[^}]*opacity:/);
 });
 
 test('future website footer uses a left-aligned copyright notice without repeating homepage messaging', async () => {

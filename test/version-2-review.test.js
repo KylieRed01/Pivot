@@ -21,6 +21,9 @@ test('serves an isolated Version 2 local review page', async () => {
   assert.equal(response.status, 200);
   assert.match(html, /<title>Pivot Version 2 — Local Review<\/title>/);
   assert.match(html, /Local review only — nothing is submitted, stored or sent/);
+  assert.match(html, /Version 2 local review/);
+  assert.match(html, /Review state:/);
+  assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(html, /href="\/website\/version-2-review\.css"/);
   assert.match(html, /src="\/website\/version-2-review\.js"/);
 });
@@ -69,8 +72,24 @@ test('serves responsive brand styling with visible keyboard focus', async () => 
   assert.equal(response.status, 200);
   assert.match(css, /#092C71/i);
   assert.match(css, /:focus-visible/);
+  assert.match(css, /\.hero \.eyebrow\s*\{\s*color:\s*var\(--orange\)/);
+  assert.match(css, /\.interest-section\s*\{[^}]*background:\s*var\(--cerulean-tint\)/s);
+  assert.match(css, /form button:hover\s*\{[^}]*background:\s*var\(--midnight\)[^}]*color:\s*var\(--white\)/s);
   assert.match(css, /@media\s*\(max-width:/);
   assert.match(css, /prefers-reduced-motion/);
+});
+
+test('local review footers use the approved light wordmark on dark surfaces', async () => {
+  const [websiteHtml, storeHtml, publicWordmark, approvedWordmark] = await Promise.all([
+    readFile('public/website/version-2-review.html', 'utf8'),
+    readFile('public/club-store/version-2-club-store-review.html', 'utf8'),
+    readFile('public/brand/Pivot_Wordmark_White.svg', 'utf8'),
+    readFile('docs/brand/Pivot Logo_Word Mark_White.svg', 'utf8')
+  ]);
+
+  assert.match(websiteHtml, /src="\/brand\/Pivot_Wordmark_White\.svg"/);
+  assert.match(storeHtml, /src="\/brand\/Pivot_Wordmark_White\.svg"/);
+  assert.equal(publicWordmark, approvedWordmark);
 });
 
 test('serves the Club Stores landing page from its navigation URL', async () => {
@@ -89,6 +108,9 @@ test('serves an isolated non-transactional club-store concept', async () => {
   assert.equal(response.status, 200);
   assert.match(html, /Club Store — Local Review/);
   assert.match(html, /Local concept only — no live store, ordering or checkout/);
+  assert.match(html, /Controlled identity preview/);
+  assert.match(html, /Local review palette/);
+  assert.match(html, /Decision workspace/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(html, /href="\/club-store\/index\.html"/);
   assert.match(html, /href="\/club-store\/version-2-club-store-review\.css"/);

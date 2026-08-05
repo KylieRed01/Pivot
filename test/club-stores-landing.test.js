@@ -13,7 +13,8 @@ test('Club Stores landing reuses the website shell and provides a Pivot design e
   });
 
   assert.deepEqual(shell(html), shell(home));
-  assert.match(html, /href="\/style\.css\?v=20260716-6"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-2"/);
+  assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(html, /<h1 id="club-stores-title">Find your club store\.<\/h1>/);
   assert.match(html, /Club login/);
@@ -30,7 +31,7 @@ test('Club Stores landing reuses the website shell and provides a Pivot design e
 test('Club Stores styling preserves the approved logo and brand presentation', async () => {
   const [pageCss, sharedCss] = await Promise.all([
     readFile('public/club-store/club-stores.css', 'utf8'),
-    readFile('public/style.css', 'utf8')
+    readFile('public/website/home.css', 'utf8')
   ]);
   const css = sharedCss + pageCss;
 
@@ -41,6 +42,7 @@ test('Club Stores styling preserves the approved logo and brand presentation', a
   assert.match(css, /Calibri/);
   assert.match(pageCss, /\.sample-store-logo\s*\{[^}]*width:\s*min\(330px, 100%\);[^}]*height:\s*auto;/s);
   assert.doesNotMatch(pageCss, /\.sample-store-logo\s*\{[^}]*(?:transform|filter|clip-path):/s);
+  assert.match(pageCss, /\.pivot-store-card:focus-visible\s*\{[^}]*outline:\s*3px solid #092C71/s);
   assert.match(pageCss, /:focus-visible/);
   assert.match(pageCss, /@media\s*\(max-width:/);
 });

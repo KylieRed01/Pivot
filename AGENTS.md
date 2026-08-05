@@ -9,6 +9,7 @@ Before changing product, brand, website or Studio behaviour, read:
 3. `docs/Operating Model_V1.02.pdf`
 4. `docs/brand/Brand Kit_V1.01.pdf`
 5. `docs/brand/Visual Design Guide_V1.01.pdf`
+6. `docs/website/Website Implementation Guide.md`
 
 Apply the governing-document precedence recorded in the Constitution.
 
