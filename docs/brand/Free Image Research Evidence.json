@@ -1,0 +1,352 @@
+{
+  "schemaVersion": "1.0",
+  "status": "research-only",
+  "capturedAt": "2026-08-05T09:24:21Z",
+  "candidateImageFilesDownloaded": true,
+  "notice": "After Director permission, FIR-001 through FIR-003 were sequentially downloaded to git-ignored, non-public local storage for controlled intake. FIR-001 and FIR-002 were rejected; FIR-003 passed preliminary intake but remains Pending. No derivative was created and no candidate is approved.",
+  "policies": [
+    {
+      "institution": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/open-access/open-access-images",
+      "capturedStatement": "You are welcome to use any images with the label ‘CC0 Public Domain Designation’ for any purpose, including commercial and noncommercial uses, free of charge and without additional permission from the museum.",
+      "qualification": "The page states that identifying and obtaining necessary third-party permissions is the user's responsibility and requests an artist/title/date/institution caption."
+    },
+    {
+      "institution": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/terms",
+      "capturedStatement": "You are welcome to use any images or data with the label ‘CC0 Public Domain Designation,’ or otherwise stated as made available by AIC under the CC0 license, for any purpose, including commercial and noncommercial uses, without additional permission from AIC.",
+      "qualification": "The terms reserve third-party rights and separately control AIC trademarks including its logo, lion statues and building image."
+    },
+    {
+      "institution": "Creative Commons",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+      "capturedStatement": "CC0 is intended to allow a work to be copied, modified, incorporated in other works, reused and redistributed as freely as possible in any form and for any purposes, including commercial purposes.",
+      "qualification": "CC0 does not grant patent or trademark rights and does not waive or affect privacy, publicity or other persons' rights beyond the affirmer's authority."
+    },
+    {
+      "institution": "Rijksmuseum",
+      "url": "https://www.rijksmuseum.nl/en/research/conduct-research/data/policy",
+      "capturedStatement": "The policy says much collection information and data can be freely used, including commercially and without permission, where an exact Public Domain or CC0 notice applies.",
+      "qualification": "Some exact items instead use CC BY 4.0 or are not freely available. The museum requests source credit even where not required."
+    },
+    {
+      "institution": "J. Paul Getty Trust",
+      "url": "https://www.getty.edu/legal/copyright.html",
+      "capturedStatement": "Many high-resolution images identified in the Open Content Program are available under CC0; no Getty permission is required and they may be used for any purpose.",
+      "qualification": "No implied Getty endorsement is allowed and Getty does not warrant that all open-content images are free of third-party rights."
+    },
+    {
+      "institution": "The Metropolitan Museum of Art",
+      "url": "https://raw.githubusercontent.com/metmuseum/openaccess/master/README.md",
+      "capturedStatement": "The Met makes its selected collection dataset available for unrestricted commercial and noncommercial use under CC0 and states that companion artworks covered by its policy are identified with a CC0 icon.",
+      "qualification": "This repository statement does not replace a retained current image-policy and exact object-page capture. The Met image-policy pages returned HTTP 429 during this research."
+    }
+  ],
+  "assets": [
+    {
+      "researchId": "FIR-001",
+      "shortlistState": "prohibited-technically-unsuitable",
+      "institution": "Art Institute of Chicago",
+      "apiUrl": "https://api.artic.edu/api/v1/artworks/38927",
+      "objectUrl": "https://www.artic.edu/artworks/38927",
+      "objectPageEvidence": {
+        "capturedAt": "2026-08-05",
+        "rightsLabel": "CC0 Public Domain Designation",
+        "downloadUrl": "https://www.artic.edu/iiif/2/13e8b1a0-4184-6add-ec70-efd1a9667619/full/!3000,3000/0/default.jpg",
+        "downloadName": "1972.324 - Botanical Specimen.jpg",
+        "declaredWidthPixels": 1853,
+        "declaredHeightPixels": 2250
+      },
+      "apiMetadata": {
+        "id": 38927,
+        "title": "Botanical Specimen",
+        "dateDisplay": "c. 1835",
+        "artistDisplay": "William Henry Fox Talbot\nEnglish, 1800–1877",
+        "placeOfOrigin": "England",
+        "dimensions": "Image/paper: 14 × 11.5 cm (5 9/16 × 4 9/16 in.)",
+        "mediumDisplay": "Photogenic drawing",
+        "creditLine": "Edward E. Ayer Endowment in memory of Charles L. Hutchinson",
+        "mainReferenceNumber": "1972.324",
+        "imageId": "13e8b1a0-4184-6add-ec70-efd1a9667619",
+        "isPublicDomain": true,
+        "copyrightNotice": null,
+        "departmentTitle": "Photography and Media"
+      },
+      "imageAcquisition": {
+        "downloaded": true,
+        "downloadDate": "2026-08-05T09:33:56Z",
+        "retainedPath": ".tmp/image-assets/PIR-006/source/1972.324 - Botanical Specimen.jpg",
+        "byteSize": 644692,
+        "format": "progressive JPEG",
+        "sha256": "697dd59f4a64635eeff141301b1b106c5f8160279000e28abe3368be9e4c7bfe",
+        "embeddedIccProfile": false,
+        "embeddedExif": false,
+        "storageQualification": "The .tmp path is git-ignored and non-public but is not durable controlled storage."
+      },
+      "intakeDecision": {
+        "state": "prohibited",
+        "studioAvailability": "prohibited",
+        "garmentPrinting": "prohibited",
+        "derivativeCreated": false,
+        "supplierReviewRequired": false,
+        "reason": "Full-resolution inspection found the plant specimen extremely faint and indistinct, with uneven aged paper, mount corners, stains, specks and no clean separable edges. A useful garment asset would require interpretive restoration or tracing and could introduce inaccurate botanical detail.",
+        "localEvidenceManifest": ".tmp/image-assets/PIR-006/evidence/evidence-manifest.json"
+      }
+    },
+    {
+      "researchId": "FIR-002",
+      "shortlistState": "prohibited-visually-technically-unsuitable",
+      "institution": "Art Institute of Chicago",
+      "apiUrl": "https://api.artic.edu/api/v1/artworks/150828",
+      "objectUrl": "https://www.artic.edu/artworks/150828",
+      "objectPageEvidence": {
+        "capturedAt": "2026-08-05",
+        "rightsLabel": "CC0 Public Domain Designation",
+        "downloadUrl": "https://www.artic.edu/iiif/2/a153e6ac-16fa-88f3-4984-f96ee6e7353b/full/!3000,3000/0/default.jpg",
+        "downloadName": "1998.698 - Roses in a Vase.jpg",
+        "declaredWidthPixels": 1927,
+        "declaredHeightPixels": 2250
+      },
+      "apiMetadata": {
+        "id": 150828,
+        "title": "Roses in a Vase",
+        "dateDisplay": "1881/83",
+        "artistDisplay": "Georges Seurat\nFrench, 1859–1891",
+        "placeOfOrigin": "France",
+        "dimensions": "31.1 × 24 cm (12 1/4 × 9 1/2 in.)",
+        "mediumDisplay": "Black Conté crayon on ivory laid paper, discolored to tan, edge mounted on tan wove paper",
+        "creditLine": "Gift of Dorothy Braude Edinburg to the Harry B. and Bessie K. Braude Memorial Collection",
+        "mainReferenceNumber": "1998.698",
+        "imageId": "a153e6ac-16fa-88f3-4984-f96ee6e7353b",
+        "isPublicDomain": true,
+        "copyrightNotice": null,
+        "departmentTitle": "Prints and Drawings"
+      },
+      "imageAcquisition": {
+        "downloaded": true,
+        "downloadDate": "2026-08-05T09:40:46Z",
+        "retainedPath": ".tmp/image-assets/PIR-007/source/1998.698 - Roses in a Vase.jpg",
+        "byteSize": 1935667,
+        "format": "progressive JPEG",
+        "sha256": "dd435af69677bec0dbf6791b97cfe623c12e41ebb47a4668ab5cdfb23355e1a9",
+        "storageQualification": "The .tmp path is git-ignored and non-public but is not durable controlled storage."
+      },
+      "intakeDecision": {
+        "state": "prohibited",
+        "studioAvailability": "prohibited",
+        "garmentPrinting": "prohibited",
+        "derivativeCreated": false,
+        "supplierReviewRequired": false,
+        "reason": "The flowers and vase are difficult to distinguish within a dense dark crayon field. Mounting paper, corner mounts, edge wear and pencil marks surround the work. Cropping does not resolve garment-scale clarity, while separation or tracing would require interpretive reconstruction.",
+        "localEvidenceManifest": ".tmp/image-assets/PIR-007/evidence/evidence-manifest.json"
+      }
+    },
+    {
+      "researchId": "FIR-003",
+      "shortlistState": "pending-passed-preliminary-intake",
+      "institution": "Art Institute of Chicago",
+      "apiUrl": "https://api.artic.edu/api/v1/artworks/9415",
+      "objectUrl": "https://www.artic.edu/artworks/9415",
+      "objectPageEvidence": {
+        "capturedAt": "2026-08-05",
+        "rightsLabel": "CC0 Public Domain Designation",
+        "downloadUrl": "https://www.artic.edu/iiif/2/de0be2c7-f7f3-8994-24bb-8ea946a4f7fa/full/!3000,3000/0/default.jpg",
+        "downloadName": "1958.762 - Panel (Furnishing Fabric).jpg",
+        "declaredWidthPixels": 3000,
+        "declaredHeightPixels": 1251
+      },
+      "apiMetadata": {
+        "id": 9415,
+        "title": "Panel (Furnishing Fabric)",
+        "dateDisplay": "1856",
+        "artistDisplay": "Printed and Manufactured by Lancaster Prints\nEngland, Lancashire, Lancaster",
+        "placeOfOrigin": "England",
+        "descriptionSummary": "A butterfly panel intended to be cut down the middle and used as borders for quilted bedcovers and furnishings; roller printed.",
+        "dimensions": "544.8 × 60.7 cm (214 1/2 × 23 7/8 in.); Warp repeat: H.: 40.6 cm (16 in.)",
+        "mediumDisplay": "Cotton, plain weave; engraved roller printed; glazed",
+        "creditLine": "Purchased with funds provided by Mrs. Homer Dixon",
+        "mainReferenceNumber": "1958.762",
+        "imageId": "de0be2c7-f7f3-8994-24bb-8ea946a4f7fa",
+        "isPublicDomain": true,
+        "copyrightNotice": null,
+        "departmentTitle": "Textiles"
+      },
+      "imageAcquisition": {
+        "downloaded": true,
+        "downloadDate": "2026-08-05T09:43:26Z",
+        "retainedPath": ".tmp/image-assets/PIR-008/source/1958.762 - Panel (Furnishing Fabric).jpg",
+        "byteSize": 1964383,
+        "format": "progressive JPEG",
+        "sha256": "aec40a5c6296d62893b7f0fd612e241c4cbc7b0bb5a3f7578863d543ee5cbe29",
+        "storageQualification": "The .tmp path is git-ignored and non-public but is not durable controlled storage."
+      },
+      "intakeDecision": {
+        "state": "pending",
+        "studioAvailability": "unavailable pending derivative, supplier test and Director approval",
+        "garmentPrinting": "prohibited pending derivative, supplier test and Director approval",
+        "derivativeCreated": false,
+        "preliminaryIntakePassed": true,
+        "reason": "The full-resolution file has clear repeated butterfly motifs, strong border structure, no visible text, logos or people, low apparent cultural risk and promising resolution for moderate full-colour placement. A controlled crop must remove only the external capture margin before print testing.",
+        "requiredDerivative": "PIR-008-D01 external-margin crop; lossless production master plus separate Studio preview",
+        "localEvidenceManifest": ".tmp/image-assets/PIR-008/evidence/evidence-manifest.json"
+      }
+    },
+    {
+      "researchId": "FIR-004",
+      "shortlistState": "pending-context-review",
+      "institution": "Art Institute of Chicago",
+      "apiUrl": "https://api.artic.edu/api/v1/artworks/1890",
+      "objectUrl": "https://www.artic.edu/artworks/1890",
+      "objectPageEvidence": {
+        "capturedAt": "2026-08-05",
+        "rightsLabel": "CC0 Public Domain Designation",
+        "downloadUrl": "https://www.artic.edu/iiif/2/1857e961-28af-8e65-f840-fe8189f45f96/full/!3000,3000/0/default.jpg",
+        "downloadName": "1895.654 - Fragment.jpg",
+        "declaredWidthPixels": 3000,
+        "declaredHeightPixels": 1845
+      },
+      "apiMetadata": {
+        "id": 1890,
+        "title": "Fragment",
+        "dateDisplay": "16th century",
+        "artistDisplay": "Italy",
+        "placeOfOrigin": "Italy",
+        "dimensions": "30.7 × 49.8 cm (12 1/8 × 19 5/8 in.); Weft repeat: H.: 25.5 cm (10 in.)",
+        "mediumDisplay": "Silk, plain weave with plain interlacings of secondary binding warps and supplementary patterning wefts",
+        "creditLine": "Gift of Martin A. Ryerson through the Antiquarian Society",
+        "mainReferenceNumber": "1895.654",
+        "imageId": "1857e961-28af-8e65-f840-fe8189f45f96",
+        "isPublicDomain": true,
+        "copyrightNotice": null,
+        "departmentTitle": "Textiles"
+      },
+      "imageAcquisition": {
+        "downloaded": false,
+        "downloadDate": null,
+        "sha256": null
+      }
+    },
+    {
+      "researchId": "FIR-005",
+      "shortlistState": "pending-rights-evidence",
+      "institution": "The Metropolitan Museum of Art",
+      "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/56186",
+      "objectUrl": "https://www.metmuseum.org/art/collection/search/56186",
+      "apiMetadata": {
+        "objectID": 56186,
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/as/original/DP141081.jpg",
+        "objectName": "Print",
+        "title": "Wave",
+        "culture": "Japan",
+        "period": "Edo period (1615–1868)",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistDisplayBio": "Japanese, Tokyo (Edo) 1760–1849 Tokyo (Edo)",
+        "objectDate": "",
+        "objectBeginDate": 1760,
+        "objectEndDate": 1849,
+        "medium": "Monochrome woodblock print; ink on paper",
+        "dimensions": "H. 14 11/16 in. (37.3 cm); W. 10 11/16 in. (27.1 cm)",
+        "creditLine": "H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929",
+        "accessionNumber": "JP1863",
+        "classification": "Prints"
+      },
+      "headMetadata": {
+        "capturedAt": "2026-08-05",
+        "contentLength": 3302528,
+        "contentType": "image/jpeg",
+        "lastModified": "Thu, 06 Mar 2025 17:45:04 GMT",
+        "etag": "\"633407ebf8edb1:0\""
+      },
+      "imageAcquisition": {
+        "downloaded": false,
+        "downloadDate": null,
+        "sha256": null,
+        "declaredWidthPixels": null,
+        "declaredHeightPixels": null,
+        "blocker": "Retain current exact image-level CC0 evidence and inspect the exact response during controlled intake."
+      }
+    }
+  ],
+  "rejectedAndDeferredMetadata": [
+    {
+      "decision": "reject-initial-library",
+      "institution": "The Metropolitan Museum of Art",
+      "objectID": 44779,
+      "title": "Tiger",
+      "creator": "Unidentified",
+      "date": "11th–9th century BCE",
+      "culture": "China",
+      "period": "Western Zhou dynasty (1046–771 BCE)",
+      "medium": "Marble",
+      "dimensions": "H. 1 3/4 in. (4.4 cm); W. 1 7/8 in. (4.8 cm); L. 5 3/4 in. (14.6 cm)",
+      "accessionNumber": "1985.214.93",
+      "objectUrl": "https://www.metmuseum.org/art/collection/search/44779",
+      "primaryImage": "https://images.metmuseum.org/CRDImages/as/original/DP-22992-002.jpg",
+      "isPublicDomain": true
+    },
+    {
+      "decision": "defer-cultural-and-technical-review",
+      "institution": "The Metropolitan Museum of Art",
+      "objectID": 36430,
+      "title": "Tiger",
+      "creator": "Unidentified",
+      "date": "14th century",
+      "culture": "China",
+      "period": "Yuan dynasty (1271–1368)",
+      "medium": "Hanging scroll; ink on silk",
+      "dimensions": "31 11/16 × 15 7/8 in. (80.5 × 40.3 cm)",
+      "accessionNumber": "1986.345.1",
+      "objectUrl": "https://www.metmuseum.org/art/collection/search/36430",
+      "primaryImage": "https://images.metmuseum.org/CRDImages/as/original/DP-1311-002.jpg",
+      "isPublicDomain": true
+    },
+    {
+      "decision": "reject-initial-library",
+      "institution": "The Metropolitan Museum of Art",
+      "objectID": 17139,
+      "title": "Eagle",
+      "creator": "William Rush (1756–1833)",
+      "date": "1809–11",
+      "culture": "American",
+      "medium": "Carved wood, gessoed and gilded, and cast iron, painted",
+      "dimensions": "36 × 68 × 61 in. (91.4 × 172.7 × 154.9 cm)",
+      "accessionNumber": "2002.21.1",
+      "objectUrl": "https://www.metmuseum.org/art/collection/search/17139",
+      "primaryImage": "https://images.metmuseum.org/CRDImages/ad/original/2002.21.jpg",
+      "isPublicDomain": true
+    },
+    {
+      "decision": "reject-initial-library",
+      "institution": "The Metropolitan Museum of Art",
+      "objectID": 12539,
+      "title": "Eagle",
+      "creator": "Wilhelm Schimmel (1817–1890)",
+      "date": "1865–90",
+      "culture": "American",
+      "medium": "White pine, painted",
+      "dimensions": "12 × 19 1/4 in. (30.48 × 48.9 cm)",
+      "accessionNumber": "34.100.169",
+      "objectUrl": "https://www.metmuseum.org/art/collection/search/12539",
+      "primaryImage": "https://images.metmuseum.org/CRDImages/ad/original/DP255758.jpg",
+      "isPublicDomain": true
+    },
+    {
+      "decision": "defer-cultural-context-review",
+      "institution": "Art Institute of Chicago",
+      "id": 23374,
+      "title": "Cock, Hen, and Rising Sun, from the series Seven Bird-and-flower Prints for the Fuyo Circle of Kanuma in Shimotsuke Province",
+      "creator": "Kubo Shunman (Japanese, 1757–1820)",
+      "date": "c. 1810",
+      "dimensions": "20.4 × 18.1 cm (8 1/16 × 7 3/16 in.)",
+      "medium": "Color woodblock print; shikishiban, surimono",
+      "accessionNumber": "1925.2875",
+      "objectUrl": "https://www.artic.edu/artworks/23374",
+      "imageId": "57792abb-e929-1084-2f5f-1ee0ac2b7a56",
+      "rightsLabel": "CC0 Public Domain Designation",
+      "isPublicDomain": true,
+      "declaredWidthPixels": 1995,
+      "declaredHeightPixels": 2250
+    }
+  ]
+}
