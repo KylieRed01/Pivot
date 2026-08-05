@@ -1,4 +1,4 @@
-import { renderHomePage } from './home-page.js';
+import { ensureHomePage } from './home-page.js';
 
 const app = document.querySelector('#app');
 const studioRoutes = new Set(['#studio', '#workflow-demo', '#admin']);
@@ -27,7 +27,7 @@ async function route() {
     return;
   }
 
-  renderHomePage(app);
+  ensureHomePage(app);
 }
 
 window.addEventListener('hashchange', route);

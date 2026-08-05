@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { renderHomePage } from '../public/website/home-page.js';
+import { ensureHomePage, renderHomePage } from '../public/website/home-page.js';
 import { createApp } from '../src/server.js';
 
 test('homepage metadata describes Pivot while remaining excluded from indexing', async () => {
@@ -97,6 +97,17 @@ test('public home page renders the approved website experience', () => {
   assert.doesNotMatch(root.innerHTML, /name="Contact consent"|type="checkbox"|general marketing/i);
   assert.match(root.innerHTML, /Register Your Club’s Interest/);
   assert.doesNotMatch(root.innerHTML, /demonstrator/i);
+});
+
+test('existing homepage markup is enhanced without being rebuilt', () => {
+  const home = {};
+  const root = {
+    innerHTML: 'preserve existing content and form state',
+    querySelector: selector => selector === '#home' ? home : undefined
+  };
+
+  ensureHomePage(root);
+  assert.equal(root.innerHTML, 'preserve existing content and form state');
 });
 
 test('server includes essential homepage content in the initial response', async t => {

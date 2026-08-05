@@ -92,6 +92,18 @@ test('homepage navigation provides accessible pointer and keyboard feedback', as
   assert.match(css, /\.pivot-hero a:focus-visible\s*\{\s*outline-color:\s*#FFFFFF;/);
 });
 
+test('homepage mobile navigation and primary actions remain easy to tap', async () => {
+  const css = await readFile('public/website/home.css', 'utf8');
+  const mobile = css.slice(
+    css.indexOf('@media (max-width: 720px)'),
+    css.indexOf('@media (prefers-reduced-motion: reduce)')
+  );
+
+  assert.match(mobile, /nav a\s*\{[^}]*flex:\s*1 1 calc\(33\.333% - 8px\);[^}]*min-height:\s*44px;[^}]*font-size:\s*14px;/);
+  assert.match(mobile, /nav a:last-child\s*\{[^}]*flex-basis:\s*100%;[^}]*min-height:\s*48px;/);
+  assert.match(mobile, /\.pivot-hero \.hero-link,[\s\S]*\.contact-section > #open-club-interest\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/);
+});
+
 test('homepage required-field indicators use a readable brand colour', async () => {
   const css = await readFile('public/website/home.css', 'utf8');
 
@@ -196,7 +208,7 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
     readFile('public/website/home.css', 'utf8')
   ]);
 
-  assert.match(html, /href="\/website\/home\.css\?v=20260805-2"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-3"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-2"/);
   assert.doesNotMatch(html, /src="\/app\.js/);

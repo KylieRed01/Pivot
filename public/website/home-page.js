@@ -1,5 +1,7 @@
 import { bindClubInterestForm, getGreaterBendigoLocalities } from './club-interest-form.js';
 
+const enhancedHomeSections = new WeakSet();
+
 export function getHomePageMarkup() {
   const localityOptions = getGreaterBendigoLocalities()
     .map(locality => `<option>${locality}</option>`)
@@ -11,4 +13,20 @@ export function getHomePageMarkup() {
 export function renderHomePage(root) {
   root.innerHTML = getHomePageMarkup();
   bindClubInterestForm(root);
+
+  const home = root.querySelector?.('#home');
+  if (home) enhancedHomeSections.add(home);
+}
+
+export function ensureHomePage(root) {
+  const home = root.querySelector?.('#home');
+  if (!home) {
+    renderHomePage(root);
+    return;
+  }
+
+  if (!enhancedHomeSections.has(home)) {
+    bindClubInterestForm(root);
+    enhancedHomeSections.add(home);
+  }
 }

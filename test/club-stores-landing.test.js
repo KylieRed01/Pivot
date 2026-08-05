@@ -13,7 +13,7 @@ test('Club Stores landing reuses the website shell and provides a Pivot design e
   });
 
   assert.deepEqual(shell(html), shell(home));
-  assert.match(html, /href="\/website\/home\.css\?v=20260805-2"/);
+  assert.match(html, /href="\/website\/home\.css\?v=20260805-3"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(html, /<h1 id="club-stores-title">Find your club store\.<\/h1>/);

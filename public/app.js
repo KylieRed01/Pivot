@@ -1,4 +1,4 @@
-import { renderHomePage } from './website/home-page.js';
+import { ensureHomePage } from './website/home-page.js';
 import { renderJerseyPreview } from './studio/jersey-preview.js';
 import { renderStudioSetup } from './studio/studio-setup.js';
 import { createSessionStore, createStudioHistory, runIndicativeChecks, validatePublicArtwork } from './studio/studio-state.js';
@@ -215,7 +215,7 @@ async function route() {
     } else if (['#workflow-demo', '#admin'].includes(location.hash)) {
       await dashboard({ workflowDemo: true });
     } else {
-      await renderHomePage(app);
+      ensureHomePage(app);
     }
   } catch (error) {
     showError(error);
