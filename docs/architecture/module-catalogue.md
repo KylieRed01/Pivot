@@ -66,7 +66,7 @@ Preserve this boundary. Do not split history, validation or storage merely becau
 
 ## M07 — Studio/workflow browser application
 
-`public/app.js` composes setup, preview, editing controls, browser APIs and the workflow simulation. The public trial delegates accepted changes to M06. Workflow mode still mutates a separate `primary`/`reverse` model and persists additional keys in `localStorage`.
+`public/app.js` composes direct Studio entry and template selection, preview, editing controls, browser APIs and the workflow simulation. The public trial delegates accepted changes to M06. Workflow mode still mutates a separate `primary`/`reverse` model and persists additional keys in `localStorage`.
 
 The file is a complexity hotspot, but arbitrary component extraction would not solve the duplicated design meaning. Keep it intact until a specific change can hide a complete decision or workflow.
 

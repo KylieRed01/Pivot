@@ -16,7 +16,7 @@ It is not the production platform. Production identity, durable storage, supplie
 | Capability | Current repository coverage | Current owner |
 |---|---|---|
 | Main Website | Server-rendered initial markup with browser enhancement and a club-interest mail flow | `public/website/home-page.js`, `home-entry.js`, `club-interest-form.js`, `home.css` |
-| Design Studio | Browser-local four-surface trial, setup, preview, history and checks | `public/studio/*`, composed by `public/app.js` |
+| Design Studio | Browser-local four-surface trial with direct template selection, preview, history and checks | `public/studio/*`, composed by `public/app.js` |
 | Workflow simulation | Fixture identities, design transitions and simulated administration | `public/app.js`, `src/domain.js`, `src/server.js`, `data/state.json` |
 | Uniform rules | Partial basketball baseline and server profile | `src/uniform-rules.js`, with browser checks in `public/studio/studio-state.js` |
 | Club Store | Static landing, separate non-transactional customer and administration previews, plus fixture-backed store projection API | `public/club-store/*`, `src/domain.js`, `src/server.js` |
@@ -91,4 +91,4 @@ Shared website-shell CSS does not yet justify another directory or stylesheet. E
 
 ## 7. Verification boundary
 
-The Node test suite covers domain policy, HTTP behaviour, website rendering and enhancement, form behaviour, Studio setup/state/preview, Club Store pages and repository guardrails. Browser/device behaviour remains a documented manual-verification responsibility. Playwright and axe-core Playwright remain prohibited.
+The Node test suite covers domain policy, HTTP behaviour, website rendering and enhancement, form behaviour, Studio state/preview and direct entry, Club Store pages and repository guardrails. Browser/device behaviour remains a documented manual-verification responsibility. Playwright and axe-core Playwright remain prohibited.
