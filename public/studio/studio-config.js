@@ -1,4 +1,7 @@
-import { DEFAULT_BASKETBALL_NUMBER_FONT_ID } from './font-catalog.js';
+import {
+  DEFAULT_BASKETBALL_NUMBER_FONT_ID,
+  DEFAULT_TEXT_FONT_ID
+} from './font-catalog.js';
 
 export const SURFACE_KEYS = Object.freeze([
   'dark.front',
@@ -28,6 +31,22 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
   neck: '#092C71',
   armTrim: '#092C71',
   layers: basketball ? [{
+      id: `${key}-wordmark`,
+      type: 'text',
+      role: 'wordmark',
+      controlLevel: 'flexible',
+      text: 'PIVOT',
+      colour: foreground,
+      x: 50,
+      y: 38,
+      scale: 1,
+      fontSize: 14,
+      rotation: 0,
+      alignment: 'center',
+      letterSpacing: 0,
+      lineSpacing: 1,
+      fontId: DEFAULT_TEXT_FONT_ID
+    }, {
       id: `${key}-number`,
       type: 'text',
       role: 'number',

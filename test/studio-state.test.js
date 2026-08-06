@@ -61,9 +61,12 @@ test('initial public Studio state contains four 2D surfaces and required numbers
     assert.equal(surface.neck, '#092C71');
     assert.equal(surface.armTrim, '#092C71');
     assert.equal(surface.density, 100, `${key} keeps the approved pattern colours at full intensity`);
-    assert.equal(surface.layers.length, 1, `${key} starts with the required number only`);
-    const [number] = surface.layers;
-    assert.equal(number.role, 'number');
+    assert.equal(surface.layers.length, 2, `${key} starts with editable PIVOT text and the required number`);
+    const wordmark = surface.layers.find(layer => layer.role === 'wordmark');
+    assert.equal(wordmark.text, 'PIVOT');
+    assert.equal(wordmark.controlLevel, 'flexible');
+    assert.equal(wordmark.fontSize, 14);
+    const number = surface.layers.find(layer => layer.role === 'number');
     assert.equal(number.text, '24');
     assert.equal(number.controlLevel, 'constrained');
     assert.equal(number.required, true);

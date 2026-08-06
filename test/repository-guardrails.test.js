@@ -141,6 +141,20 @@ test('Studio text size controls share point values with canvas resizing', async 
   assert.match(styles, /\.text-size-control input\[type=range\]\{grid-column:1;width:100%;accent-color:#0096D6\}/);
 });
 
+test('Studio viewport keeps clear useful actions without technical pan fields', async () => {
+  const [source, styles] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(source, /id="fit-view"[^>]*>Fit<\/button>/);
+  assert.match(source, /id="reset-session" class="reset-design-button" aria-label="Reset design">Reset design<\/button>/);
+  assert.match(styles, /\.view-tools \.reset-design-button\{[^}]*border:1px solid #092C71[^}]*background:#fff[^}]*font-weight:900/);
+  assert.doesNotMatch(source, /id="pan-[xy]"/);
+  assert.doesNotMatch(source, /querySelector\('#pan-[xy]'\)/);
+  assert.doesNotMatch(styles, /\.viewport-field/);
+});
+
 test('selected artwork explains deletion paths and required-number protection', async () => {
   const source = await readFile('public/app.js', 'utf8');
   const styles = await readFile('public/style.css', 'utf8');
@@ -439,10 +453,10 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260805-16', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260806-17', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260805-9'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260806-10'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);
