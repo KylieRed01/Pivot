@@ -87,7 +87,7 @@ test('website navigation consistently uses the home route name', async () => {
 test('Design Studio gives creation, canvas and guidance one distinct owner', async () => {
   const source = await readFile('public/app.js', 'utf8');
 
-  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title"><header><div class="guidance-design-row"><label class="design-name guidance-design-name">[\s\S]*?id="design-name"[\s\S]*?id="save-browser-design"[\s\S]*?>Save design<\/button>[\s\S]*?<small>Saved only in this browser<\/small>[\s\S]*?<span>Design support<\/span>/);
+  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title"><header><div class="guidance-design-row"><label class="design-name guidance-design-name">[\s\S]*?id="design-name"[\s\S]*?id="save-browser-design"[\s\S]*?>Save design<\/button>[\s\S]*?<small>Saved only in this browser<\/small>[\s\S]*?<h2 id="guidance-title">Design guidance<\/h2>/);
   assert.match(source, /class="studio-logo-home" href="#home" aria-label="Return to home"/);
   assert.match(source, /id="guidance-view"/);
   assert.match(source, /id="guidance-selection"/);
@@ -125,6 +125,13 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /authorised club users and club administrators/i);
   assert.doesNotMatch(source, /id="change-setup"/);
   assert.match(source, /el\.onpointerdown=e=>\{if\(viewMode==='3d'\)return;e\.preventDefault\(\);selectedId=el\.dataset\.layerId;if\(!workflowDemo\)dispatchPublic\(\{type:'selectLayer'/);
+});
+
+test('Design guidance avoids a redundant section eyebrow', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /<h2 id="guidance-title">Design guidance<\/h2>/);
+  assert.doesNotMatch(source, />Design support</);
 });
 
 test('Pivot penguin library action is clear and provides visible removal', async () => {
