@@ -38,11 +38,24 @@ const associationOptions = Object.freeze({
 export const getAssociationsForSport = sport => associationOptions[sport] ?? [];
 export const getGreaterBendigoLocalities = () => [...greaterBendigoLocalities];
 
+export async function sendClubInterest(fields, fetchImpl = fetch) {
+  const response = await fetchImpl('/api/club-interest', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(fields)
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw Object.assign(new Error('We couldn’t register your club’s interest. Please try again.'), { code: result.code });
+  return result;
+}
+
 export function bindClubInterestForm(root) {
   const openInterest = root.querySelector?.('#open-club-interest');
   const cancelInterest = root.querySelector?.('#cancel-club-interest');
   const interestForm = root.querySelector?.('#club-interest-form');
   const contactName = root.querySelector?.('#club-interest-contact-name');
+  const submitInterest = root.querySelector?.('#submit-club-interest');
+  const interestStatus = root.querySelector?.('#club-interest-status');
   if (openInterest && cancelInterest && interestForm) {
     openInterest.addEventListener('click', () => {
       interestForm.hidden = false;
@@ -54,7 +67,23 @@ export function bindClubInterestForm(root) {
       interestForm.hidden = true;
       openInterest.hidden = false;
       openInterest.setAttribute('aria-expanded', 'false');
+      if (interestStatus) interestStatus.textContent = '';
       openInterest.focus();
+    });
+    interestForm.addEventListener?.('submit', async event => {
+      event.preventDefault();
+      if (submitInterest) submitInterest.disabled = true;
+      if (interestStatus) interestStatus.textContent = 'Sending your club’s details…';
+      try {
+        const fields = Object.fromEntries(new FormData(interestForm).entries());
+        await sendClubInterest(fields);
+        interestForm.reset();
+        if (interestStatus) interestStatus.textContent = 'Thanks for registering your club’s interest. We’ve got your details and will be in touch when it’s time for the next play.';
+      } catch (error) {
+        if (interestStatus) interestStatus.textContent = error.message;
+      } finally {
+        if (submitInterest) submitInterest.disabled = false;
+      }
     });
   }
 

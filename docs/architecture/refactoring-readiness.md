@@ -17,7 +17,7 @@ This guide records when structural change would reduce complexity and when it wo
 | `localStorage` references | 13 |
 | Public Studio storage boundary | One `sessionStorage`-compatible adapter |
 | Automated tests | More than 70 passing Node tests |
-| External runtime dependencies | None |
+| External runtime dependencies | One (`nodemailer`, for authenticated Fastmail SMTP/TLS delivery) |
 
 Counts are navigation aids, not quality targets.
 

@@ -15,12 +15,12 @@ File length alone is not a reason to extract a module.
 |---|---|---|---|---|
 | M01 | Workflow policy | `src/domain.js` | Developing | Useful transition/access boundary; several small policies remain together |
 | M02 | Uniform rules | `src/uniform-rules.js` | Developing | Coherent profile, but Studio checks duplicate part of the rule meaning |
-| M03 | Node application | `src/server.js` | Adequate at current scale | One visible composition root for a small dependency-free server |
+| M03 | Node application | `src/server.js` | Adequate at current scale | One visible composition root for a small server with injected mail delivery |
 | M04 | Workflow fixture | `data/state.json` plus server load/save functions | Adequate for simulation | Explicitly non-production whole-file persistence |
 | M05 | Studio configuration | `public/studio/studio-config.js` | Developing | One placeholder factory appropriately keeps defaults together |
 | M06 | Studio state engine | `public/studio/studio-state.js` | Deep | Hides normalisation, commands, history, persistence and checks |
 | M07 | Studio/workflow browser application | `public/app.js` | Watch point | Large composition module with two design representations |
-| M08 | Main Website | `public/website/*` | Developing | Cohesive rendering, enhancement and form modules |
+| M08 | Main Website | `public/website/*`, `src/club-interest.js`, `src/fastmail.js` | Developing | Cohesive rendering, enhancement, bounded intake and Fastmail delivery modules |
 | M09 | Club Store presentation | `public/club-store/*` | Developing | Landing, customer-store preview and administration preview have distinct routes and responsibilities |
 | M10 | Presentation styles | `public/website/home.css`, `public/style.css` | Adequate at current scale | Homepage and Studio bundles are separated |
 | M11 | Temporary landing page | `public/temporary-landing.*` | Isolated | Correctly separate from release-page work |
@@ -40,9 +40,9 @@ File length alone is not a reason to extract a module.
 
 ## M03 — Node application
 
-`src/server.js` owns the demonstrator's HTTP entry point, static delivery, security/cache headers, compression, fixture API and homepage markup injection. These are multiple responsibilities, but the implementation remains small, dependency-free and directly testable through `createApp()`.
+`src/server.js` owns the HTTP entry point, static delivery, security/cache headers, compression, fixture API, club-interest endpoint and homepage markup injection. These are multiple responsibilities, but the implementation remains small and directly testable through `createApp()`. Live Fastmail delivery is injected, so endpoint tests do not require network access or credentials.
 
-Splitting transport, static delivery and application operations now would create more interfaces than the repository needs.
+Splitting HTTP transport, static delivery and application operations now would create more interfaces than the repository needs. Fastmail protocol handling is the exception: it is isolated behind `createFastmailSender()` because SMTP/TLS and credentials are a provider-specific security boundary.
 
 **Extraction triggers:** route growth makes the handler hard to navigate; fixture operations need independent tests or atomicity; production adapters are approved; or static delivery changes independently enough to obscure API behaviour.
 
@@ -76,10 +76,12 @@ The file is a complexity hotspot, but arbitrary component extraction would not s
 
 - `home-entry.js` keeps homepage startup light and lazy-loads Studio assets.
 - `home-page.js` provides reusable initial markup and browser enhancement.
-- `club-interest-form.js` owns form interaction and its controlled reference options.
+- `club-interest-form.js` owns form interaction, same-origin submission and its controlled reference options.
 - `home.css` owns the website shell and homepage presentation.
+- `src/club-interest.js` owns the accepted field shape, bounds and conditional validation without knowing HTTP or SMTP.
+- `src/fastmail.js` translates one validated submission into the approved Fastmail SMTP configuration and message. Its injected send function keeps live delivery out of endpoint tests.
 
-These boundaries are proportionate. The server's use of pure markup from `home-page.js` avoids duplicating customer-facing content.
+These boundaries are proportionate. The server's use of pure markup from `home-page.js` avoids duplicating customer-facing content, while the two small server-side modules each hide a security or provider decision that should have one owner.
 
 ## M09 — Club Store presentation
 

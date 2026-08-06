@@ -2,7 +2,7 @@
 
 ## 1. System boundary
 
-Pivot is a dependency-free Node.js modular monolith serving four small experiences:
+Pivot is a small Node.js modular monolith serving four experiences. It uses one runtime dependency, Nodemailer, to keep authenticated Fastmail SMTP/TLS handling out of application code:
 
 1. The public Pivot website.
 2. The browser-local Pivot Design Studio trial.
@@ -15,7 +15,7 @@ It is not the production platform. Production identity, durable storage, supplie
 
 | Capability | Current repository coverage | Current owner |
 |---|---|---|
-| Main Website | Server-rendered initial markup with browser enhancement and a club-interest mail flow | `public/website/home-page.js`, `home-entry.js`, `club-interest-form.js`, `home.css` |
+| Main Website | Server-rendered initial markup, browser enhancement and an in-house club-interest endpoint with Fastmail SMTP delivery | `public/website/*`, `src/club-interest.js`, `src/fastmail.js`, composed by `src/server.js` |
 | Design Studio | Browser-local four-surface trial with direct template selection, preview, history and checks | `public/studio/*`, composed by `public/app.js` |
 | Workflow simulation | Fixture identities, design transitions and simulated administration | `public/app.js`, `src/domain.js`, `src/server.js`, `data/state.json` |
 | Uniform rules | Partial basketball baseline and server profile | `src/uniform-rules.js`, with browser checks in `public/studio/studio-state.js` |
@@ -34,6 +34,8 @@ flowchart TD
   HomeEntry[public/website/home-entry.js\nhome enhancement and initial routing]
   HomePage[public/website/home-page.js\nmarkup and enhancement boundary]
   Interest[public/website/club-interest-form.js]
+  InterestPolicy[src/club-interest.js\nvalidation and bounded intake]
+  Fastmail[src/fastmail.js\nSMTP delivery]
   StudioApp[public/app.js\nStudio/workflow composition]
   StudioModules[public/studio/*]
   Domain[src/domain.js]
@@ -49,6 +51,9 @@ flowchart TD
   Server --> Fixture
   Index --> HomeEntry
   HomeEntry --> HomePage --> Interest
+  Interest -->|POST /api/club-interest| Server
+  Server --> InterestPolicy
+  Server --> Fastmail
   HomeEntry -->|lazy import on Studio route| StudioApp
   StudioApp --> StudioModules
   StudioApp --> HomePage
@@ -82,7 +87,8 @@ The public Studio and workflow simulation still use different design representat
 
 ## 6. Delivery and styling
 
-- `src/server.js` serves static assets, injects initial homepage markup, applies security/cache headers and compression, and exposes the fixture API.
+- `src/server.js` serves static assets, injects initial homepage markup, applies security/cache headers and compression, exposes the fixture API, and composes the club-interest endpoint with its delivery function.
+- `src/club-interest.js` owns bounded club-interest field validation. `src/fastmail.js` owns the exact Fastmail SMTP configuration and message translation behind one injected send function.
 - `public/website/home.css` owns the website shell and homepage styling and is reused by the Club Store landing page.
 - `public/style.css` contains Studio/workflow presentation and is loaded only when a Studio route is selected.
 - Capability-specific Club Store styling remains under `public/club-store/`; the customer preview stores only its light/dark display preference in browser `localStorage`, while administration colour/theme controls remain unsaved.

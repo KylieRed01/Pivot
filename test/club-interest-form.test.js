@@ -1,6 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bindClubInterestForm, getAssociationsForSport, getGreaterBendigoLocalities } from '../public/website/club-interest-form.js';
+import { bindClubInterestForm, getAssociationsForSport, getGreaterBendigoLocalities, sendClubInterest } from '../public/website/club-interest-form.js';
+
+test('club-interest submission sends canonical JSON to the same-origin endpoint', async () => {
+  const requests = [];
+  const result = await sendClubInterest({ contactName: 'Alex', clubName: 'Bendigo Club' }, async (url, options) => {
+    requests.push({ url, options });
+    return { ok: true, json: async () => ({ ok: true }) };
+  });
+
+  assert.deepEqual(result, { ok: true });
+  assert.equal(requests[0].url, '/api/club-interest');
+  assert.equal(requests[0].options.method, 'POST');
+  assert.equal(requests[0].options.headers['content-type'], 'application/json');
+  assert.deepEqual(JSON.parse(requests[0].options.body), { contactName: 'Alex', clubName: 'Bendigo Club' });
+});
 
 test('club-interest form expands inline and can be cancelled', () => {
   const openListeners = {};

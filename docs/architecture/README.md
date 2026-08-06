@@ -13,7 +13,7 @@ The catalogue applies John Ousterhout's module-design questions in a scale-aware
 - Can callers use it without understanding its implementation?
 - Does decomposition reduce complexity rather than create shallow forwarding layers?
 
-Pivot remains a small, dependency-free modular monolith. New directories, layers and adapters should be introduced only when they hide meaningful complexity or establish a necessary single owner—not to make the tree resemble a larger system.
+Pivot remains a small modular monolith with minimal dependencies. New dependencies, directories, layers and adapters should be introduced only when they hide meaningful complexity or establish a necessary single owner—not to make the tree resemble a larger system. Nodemailer is the current deliberate runtime dependency for authenticated Fastmail SMTP/TLS delivery.
 
 ## Documents
 

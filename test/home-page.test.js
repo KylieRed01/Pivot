@@ -90,7 +90,8 @@ test('public home page renders the approved website experience', () => {
   assert.match(root.innerHTML, /Club suburb or town <b class="required-mark"/);
   assert.match(root.innerHTML, /Register My Club’s Interest/);
   assert.match(root.innerHTML, /class="linked-interest-fields"/);
-  assert.match(root.innerHTML, /mailto:hello@pivotteamwear\.com\?subject=Club%20Interest/);
+  assert.match(root.innerHTML, /action="\/api\/club-interest" method="post"/);
+  assert.doesNotMatch(root.innerHTML, /mailto:/);
   assert.match(root.innerHTML, /id="club-interest-sport"/);
   assert.match(root.innerHTML, /id="club-interest-association"/);
   assert.match(root.innerHTML, /id="club-interest-other-sport"/);

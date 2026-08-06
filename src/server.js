@@ -6,21 +6,35 @@ import { promisify } from 'node:util';
 import { brotliCompress as brotliCompressCallback, gzip as gzipCallback } from 'node:zlib';
 import { canAccessClub, publicProducts, transition } from './domain.js';
 import { uniformRuleProfile } from './uniform-rules.js';
+import { validateClubInterest } from './club-interest.js';
+import { createFastmailSender } from './fastmail.js';
 import { getHomePageMarkup } from '../public/website/home-page.js';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const stateFile = join(root, 'data/state.json');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.ttf':'font/ttf','.woff':'font/woff','.woff2':'font/woff2','.otf':'font/otf','.txt':'text/plain; charset=utf-8','.md':'text/markdown; charset=utf-8'};
 const compressible=new Set(['.html','.js','.css','.svg']);
 const brotliCompress=promisify(brotliCompressCallback);const gzip=promisify(gzipCallback);
-const securityHeaders={'content-security-policy':"default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self' mailto:; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'",'permissions-policy':'camera=(), geolocation=(), microphone=()','referrer-policy':'strict-origin-when-cross-origin','x-content-type-options':'nosniff'};
+const securityHeaders={'content-security-policy':"default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'",'permissions-policy':'camera=(), geolocation=(), microphone=()','referrer-policy':'strict-origin-when-cross-origin','x-content-type-options':'nosniff'};
 const load=async()=>JSON.parse(await readFile(stateFile,'utf8'));
 const save=s=>writeFile(stateFile,JSON.stringify(s,null,2));
 const send=(res,status,data,headers={})=>{res.writeHead(status,{...securityHeaders,'content-type':'application/json; charset=utf-8','cache-control':'no-store',...headers});res.end(JSON.stringify(data));};
 async function sendStatic(req,res,path,content){const extension=extname(path);let body=Buffer.isBuffer(content)?content:Buffer.from(content);const headers={...securityHeaders,'content-type':types[extension]||'application/octet-stream','cache-control':['.html','.js','.css'].includes(extension)?'no-cache':path.startsWith('/brand/')?'public, max-age=604800':'public, max-age=3600'};if(body.length>=1024&&compressible.has(extension)){headers.vary='Accept-Encoding';const accepted=req.headers['accept-encoding']||'';if(/\bbr\b/.test(accepted)){body=await brotliCompress(body);headers['content-encoding']='br';}else if(/\bgzip\b/.test(accepted)){body=await gzip(body);headers['content-encoding']='gzip';}}res.writeHead(200,headers);res.end(body);}
-async function body(req){let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>1e6)throw new Error('Request too large');}return raw?JSON.parse(raw):{};}
+async function body(req,maxBytes=1e6){let raw='';let bytes=0;for await(const chunk of req){bytes+=chunk.length;if(bytes>maxBytes)throw Object.assign(new Error('Request too large'),{code:'REQUEST_TOO_LARGE'});raw+=chunk;}if(!raw)return{};try{return JSON.parse(raw)}catch{throw Object.assign(new Error('Invalid JSON'),{code:'INVALID_JSON'})}}
 function user(req,state){const email=req.headers['x-demo-user'];return state.users.find(u=>u.email===email);}
-export function createApp(){return createServer(async(req,res)=>{try{
-  const url=new URL(req.url,'http://local'); const state=await load();
+export function createApp({sendClubInterest=createFastmailSender(),now=Date.now}={}){const interestAttempts=new Map();const takeInterestAttempt=req=>{const key=req.headers['fly-client-ip']||req.socket.remoteAddress||'unknown';const cutoff=now()-15*60*1000;const recent=(interestAttempts.get(key)||[]).filter(at=>at>cutoff);if(recent.length>=5)return false;recent.push(now());interestAttempts.set(key,recent);return true};return createServer(async(req,res)=>{try{
+  const url=new URL(req.url,'http://local');
+  if(url.pathname==='/api/club-interest'&&req.method==='POST'){
+    if(!/^application\/json\b/i.test(req.headers['content-type']||''))return send(res,415,{error:'JSON required',code:'UNSUPPORTED_MEDIA_TYPE'});
+    const origin=req.headers.origin;const expectedOrigin=`http://${req.headers.host}`;
+    if(origin&&origin!==expectedOrigin&&origin!==expectedOrigin.replace('http://','https://'))return send(res,403,{error:'Request not permitted',code:'ORIGIN_NOT_PERMITTED'});
+    const input=await body(req,16*1024);
+    if(typeof input.website==='string'&&input.website.trim())return send(res,200,{ok:true});
+    const result=validateClubInterest(input);if(!result.ok)return send(res,400,{error:'Check the required details',code:result.code});
+    if(!takeInterestAttempt(req))return send(res,429,{error:'Please wait before trying again',code:'RATE_LIMITED'},{'retry-after':'900'});
+    if(typeof sendClubInterest!=='function')return send(res,503,{error:'Form delivery is not configured',code:'DELIVERY_UNAVAILABLE'});
+    try{await sendClubInterest(result.submission)}catch{console.error(JSON.stringify({event:'club_interest_delivery',outcome:'failed'}));return send(res,502,{error:'We could not send your details',code:'DELIVERY_FAILED'})}console.log(JSON.stringify({event:'club_interest_delivery',outcome:'accepted'}));return send(res,200,{ok:true});
+  }
+  const state=await load();
   if(url.pathname.startsWith('/api/store/')){const result=publicProducts(state,url.pathname.split('/').pop());return result?send(res,200,result,{'x-robots-tag':'noindex, nofollow'}):send(res,404,{error:'Store not found'});}
   if(url.pathname==='/api/session'){const u=user(req,state);return send(res,u?200:401,u??{error:'Sign in required'});}
   if(url.pathname==='/api/uniform-rules'){return send(res,200,uniformRuleProfile);}
