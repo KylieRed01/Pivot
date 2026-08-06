@@ -1,9 +1,10 @@
 {
   "schemaVersion": "1.0",
-  "status": "research-only",
+  "status": "closed-abandoned",
   "capturedAt": "2026-08-05T09:24:21Z",
+  "closedAt": "2026-08-06",
   "candidateImageFilesDownloaded": true,
-  "notice": "After Director permission, FIR-001 through FIR-003 were sequentially downloaded to git-ignored, non-public local storage for controlled intake. FIR-001 and FIR-002 were rejected; FIR-003 passed preliminary intake but remains Pending. No derivative was created and no candidate is approved.",
+  "notice": "After Director permission, FIR-001 through FIR-003 were sequentially downloaded to git-ignored, non-public local storage for controlled intake. FIR-001 and FIR-002 were rejected. FIR-003 passed preliminary intake, but the Director abandoned the free/open image library initiative before any derivative or approval was created. FIR-004 and FIR-005 were abandoned before complete intake. No candidate is approved.",
   "policies": [
     {
       "institution": "Art Institute of Chicago",
@@ -143,7 +144,7 @@
     },
     {
       "researchId": "FIR-003",
-      "shortlistState": "pending-passed-preliminary-intake",
+      "shortlistState": "abandoned-after-preliminary-intake",
       "institution": "Art Institute of Chicago",
       "apiUrl": "https://api.artic.edu/api/v1/artworks/9415",
       "objectUrl": "https://www.artic.edu/artworks/9415",
@@ -181,19 +182,19 @@
         "storageQualification": "The .tmp path is git-ignored and non-public but is not durable controlled storage."
       },
       "intakeDecision": {
-        "state": "pending",
-        "studioAvailability": "unavailable pending derivative, supplier test and Director approval",
-        "garmentPrinting": "prohibited pending derivative, supplier test and Director approval",
+        "state": "abandoned",
+        "studioAvailability": "prohibited",
+        "garmentPrinting": "prohibited",
         "derivativeCreated": false,
         "preliminaryIntakePassed": true,
-        "reason": "The full-resolution file has clear repeated butterfly motifs, strong border structure, no visible text, logos or people, low apparent cultural risk and promising resolution for moderate full-colour placement. A controlled crop must remove only the external capture margin before print testing.",
-        "requiredDerivative": "PIR-008-D01 external-margin crop; lossless production master plus separate Studio preview",
+        "reason": "The full-resolution file passed preliminary intake, but the Director abandoned the free/open image library initiative on 2026-08-06 before derivative creation, supplier review or approval.",
+        "requiredDerivative": null,
         "localEvidenceManifest": ".tmp/image-assets/PIR-008/evidence/evidence-manifest.json"
       }
     },
     {
       "researchId": "FIR-004",
-      "shortlistState": "pending-context-review",
+      "shortlistState": "abandoned-before-intake",
       "institution": "Art Institute of Chicago",
       "apiUrl": "https://api.artic.edu/api/v1/artworks/1890",
       "objectUrl": "https://www.artic.edu/artworks/1890",
@@ -224,11 +225,17 @@
         "downloaded": false,
         "downloadDate": null,
         "sha256": null
+      },
+      "intakeDecision": {
+        "state": "abandoned",
+        "studioAvailability": "prohibited",
+        "garmentPrinting": "prohibited",
+        "reason": "The Director abandoned the free/open image library initiative on 2026-08-06 before exact-file intake or visual/context review."
       }
     },
     {
       "researchId": "FIR-005",
-      "shortlistState": "pending-rights-evidence",
+      "shortlistState": "abandoned-before-intake",
       "institution": "The Metropolitan Museum of Art",
       "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/56186",
       "objectUrl": "https://www.metmuseum.org/art/collection/search/56186",
@@ -264,7 +271,13 @@
         "sha256": null,
         "declaredWidthPixels": null,
         "declaredHeightPixels": null,
-        "blocker": "Retain current exact image-level CC0 evidence and inspect the exact response during controlled intake."
+        "blocker": "The initiative was abandoned before exact image-level rights evidence and controlled intake were completed."
+      },
+      "intakeDecision": {
+        "state": "abandoned",
+        "studioAvailability": "prohibited",
+        "garmentPrinting": "prohibited",
+        "reason": "The Director abandoned the free/open image library initiative on 2026-08-06 before rights-evidence recapture or exact-file intake."
       }
     }
   ],

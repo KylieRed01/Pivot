@@ -1,8 +1,10 @@
 # Free and open image research for garment printing
 
-**Status:** Research and controlled intake — no asset approved or added to the Studio
+**Status:** Closed — free/open image library initiative abandoned; no asset approved or added to the Studio
 
 **Research date:** 5 August 2026
+
+**Closure decision:** 6 August 2026 — Director
 
 **Owner:** Director
 
@@ -10,15 +12,15 @@
 
 ## 1. Decision summary
 
-No candidate currently satisfies Pivot's complete approval gate, but one has now passed controlled intake. Exact AIC files were assessed sequentially with dated rights evidence, source checksums and full-resolution inspection:
+The Director abandoned the free/open image library initiative on 6 August 2026. No researched candidate is approved for the Studio or garment printing, and no further derivative, supplier or intake work is authorised under this research record.
+
+Before closure, exact AIC files were assessed sequentially with dated rights evidence, source checksums and full-resolution inspection:
 
 1. *Botanical Specimen* was rejected because its subject is extremely faint and inseparable;
 2. *Roses in a Vase* was rejected because the flowers and vase are indistinct within a dense tonal field; and
-3. *Panel (Furnishing Fabric)* is the **first suitable candidate**. Its butterfly border is clear, decorative, low-risk and technically promising for a full-colour rectangular placement or border.
+3. *Panel (Furnishing Fabric)* passed preliminary intake, but was abandoned before any derivative or approval was created.
 
-The panel remains **Pending**, unavailable in the Studio and prohibited for manufacture until its external capture margin is removed in a controlled derivative, the derivative is checksummed and print-tested, the supplier accepts it and the Director approves the exact files and uses. No candidate has been placed under `public/` or added to the Studio.
-
-*Fragment* remains an uninspected reserve candidate. Hokusai's *Wave* remains second-line pending stronger Met image-specific rights evidence.
+*Fragment* and Hokusai's *Wave* were abandoned before complete intake. No candidate was placed under `public/` or added to the Studio. This document is retained only as a research and decision record.
 
 This is an operational rights screen, not legal advice. Ambiguous cultural, trademark, personality or supplier questions require appropriate specialist or legal review before Director approval.
 
@@ -66,7 +68,7 @@ Evidence was read on 5 August 2026 and is summarised below. Exact excerpts and a
 
 ### Technical assumptions
 
-FIR-001, FIR-002 and FIR-003 were downloaded and inspected. Calculations for the remaining candidates use dimensions declared by the source. “300 ppi” is a conservative raster-detail reference, not a supplier approval. Sublimation may tolerate lower effective resolution for some artwork, while DTG, DTF, transfer and screen-print separations have different requirements. Supplier acceptance remains mandatory.
+FIR-001, FIR-002 and FIR-003 were downloaded and inspected. Calculations for the remaining candidates use dimensions declared by the source. “300 ppi” is a conservative raster-detail reference, not a supplier approval. Sublimation may tolerate lower effective resolution for some artwork, while DTG, DTF, transfer and screen-print separations have different requirements. These historical estimates do not authorise Studio or production use, and no supplier acceptance or testing is required for the abandoned candidates.
 
 All candidate source files are JPEGs with opaque backgrounds. None is a ready-to-print transparent PNG or vector. Background removal, recolouring, vectorisation, repeats and restoration create controlled derivatives and must never overwrite the retained source.
 
@@ -148,9 +150,10 @@ All candidate source files are JPEGs with opaque backgrounds. None is a ready-to
 | Full-resolution inspection | Clear, recognisable repeated butterfly motifs; strong border structure; no visible text, signatures, logos or collection marks within the panel. Historic textile texture and minor age variation remain visible |
 | Print finding | Promising for sublimation and moderate full-colour DTG/DTF placement. Complex colours and fine detail make crude screen-print separation, broad recolouring and automatic vectorisation unsuitable. The narrow external capture margin and partial motifs at horizontal edges require a controlled crop |
 | Light/dark garments | Clear as a deliberate dark rectangular panel on light garments; promising on dark garments once the outer crop and black-background interaction are tested |
-| Required derivative | `PIR-008-D01`: crop only the external capture margin, retain the intentional historic border, embed the supplier-approved colour profile, export a lossless production master and separate Studio preview, then checksum and print-test both |
-| Prohibited initial treatment | No AI upscaling/restoration, generative fill, automatic vector tracing, unreviewed recolouring or isolated-butterfly extraction |
-| Research outcome | **Pending — first candidate to pass rights, visual, cultural and preliminary technical intake; suitable subject to derivative, supplier test and Director approval** |
+| Required derivative | None. The proposed `PIR-008-D01` external-margin crop was abandoned before creation |
+| Prohibited initial treatment | No derivative or other treatment is authorised under this closed research record |
+| Supplier dependency | None. The candidate was abandoned before supplier or production review |
+| Research outcome | **Prohibited — preliminary intake passed, but the Director abandoned the candidate before derivative creation or approval** |
 
 ### FIR-004 — Fragment
 
@@ -176,7 +179,7 @@ All candidate source files are JPEGs with opaque backgrounds. None is a ready-to
 | Trademarks/endorsement | No apparent protected mark from metadata; no implied AIC endorsement |
 | Cultural/content risk | Low to moderate until pattern is visually reviewed. Confirm it has no heraldic, religious or other context that cropping would misrepresent |
 | Technical finding | Potentially useful as a geometric/decorative panel. Inspect weave, damage, uneven lighting and colour separability. Do not claim a seamless repeat unless a controlled derivative is built and tested |
-| Research outcome | **Pending — conditional on visual/context review** |
+| Research outcome | **Prohibited — abandoned before visual/context review or exact-file intake** |
 
 ### FIR-005 — Wave (second-line candidate)
 
@@ -201,7 +204,7 @@ All candidate source files are JPEGs with opaque backgrounds. None is a ready-to
 | Trademarks/endorsement | No apparent logo from metadata. The wave is associated with a famous artist; avoid language implying collaboration or endorsement |
 | Cultural/content risk | Japanese cultural context must be retained accurately. Do not relabel it as Australian, Pacific or Indigenous imagery, or use it to imply cultural authority. Confirm that cropping does not remove marks or inscriptions in a misleading way |
 | Technical finding | Monochrome relief-print lines are promising for recolouring and screen-print separation. Paper background, age marks and fine line loss require inspection. A traced/vector version must be a controlled derivative and checked against the source |
-| Research outcome | **Pending — defer until Met image-rights evidence is recaptured** |
+| Research outcome | **Prohibited — abandoned before image-rights evidence recapture or exact-file intake** |
 
 ## 5. Cross-cutting rights and suitability findings
 
@@ -222,6 +225,8 @@ All candidate source files are JPEGs with opaque backgrounds. None is a ready-to
 
 ### Technical production
 
+These findings are retained for historical context only; they create no testing or production action for the abandoned candidates.
+
 - The inspected AIC panel has enough pixels for a moderate border placement, not automatically for all-over sublimation.
 - JPEG source files have no transparency. Every background-removed file is a derivative requiring its own filename, checksum, treatment record and approval scope.
 - Fine charcoal, woodblock and textile detail can close up, break or produce haloes. Test on light and dark garments and against supplier colour profiles.
@@ -231,19 +236,21 @@ All candidate source files are JPEGs with opaque backgrounds. None is a ready-to
 
 ## 6. Proposed Image Register entries
 
-These are proposals only. They should not be copied into the controlled table as Approved or Conditional until exact-file intake and Director review are complete.
+These entries record the final research disposition. They must not be copied into the controlled table as Approved or Conditional. A future decision to restart free/open image intake would require new evidence and Director review rather than reactivating these entries silently.
 
 | Proposed ID | Asset | Class | Studio availability | Garment printing | State | Required evidence/decision |
 |---|---|---|---|---|---|---|
 | PIR-006 | AIC *Botanical Specimen*, 1972.324 | Restricted reference | Unavailable | Prohibited | Prohibited | Exact file and rights evidence were captured and checksummed. Full-resolution inspection found the specimen too faint and inseparable for practical garment artwork. No derivative was created. Retain only as a rejection record |
 | PIR-007 | AIC *Roses in a Vase*, 1998.698 | Restricted reference | Unavailable | Prohibited | Prohibited | Exact file and evidence were captured and checksummed. Full-resolution inspection found insufficient subject clarity and poor production flexibility. No derivative created |
-| PIR-008 | AIC *Panel (Furnishing Fabric)*, 1958.762 | Pivot-approved open image candidate | Unavailable pending final approval | Prohibited pending final approval | Pending | Exact source and evidence captured; SHA-256 `aec40a5…cbe29`; visual/cultural intake passed. Create and checksum controlled margin-crop derivative D01, migrate from `.tmp`, print-test with supplier and obtain Director approval |
-| PIR-009 | AIC *Fragment*, 1895.654 | Pivot-approved open image candidate | Unavailable | Prohibited pending approval | Pending | Exact file/checksum; rights snapshot; visual cultural/heraldic screen; repeat treatment; supplier and Director approval |
-| PIR-010 | Met *Wave*, JP1863 | Pivot-approved open image candidate | Unavailable | Prohibited pending approval | Pending | Retain exact image-level CC0 evidence; exact file/checksum/dimensions; inscription/context review; separation/vector test; supplier and Director approval |
+| PIR-008 | AIC *Panel (Furnishing Fabric)*, 1958.762 | Restricted reference | Unavailable | Prohibited | Abandoned | Exact source and evidence were captured; SHA-256 `aec40a5…cbe29`; preliminary intake passed. No derivative was created. The Director abandoned the candidate before approval |
+| PIR-009 | AIC *Fragment*, 1895.654 | Restricted reference | Unavailable | Prohibited | Abandoned | Abandoned before download, checksum, visual/context review or Director approval |
+| PIR-010 | Met *Wave*, JP1863 | Restricted reference | Unavailable | Prohibited | Abandoned | Abandoned before exact image-rights evidence, download, inspection or Director approval |
 
 Approval should expressly list allowed operations rather than use an unrestricted “modification allowed” flag. Suggested operation fields are crop, background removal, tonal cleanup, recolour, repeat construction, raster resize and manual vectorisation.
 
-## 7. Director approval checklist
+## 7. Historical approval checklist
+
+No checklist action is required for the abandoned candidates. Retain this checklist only as a record of the controls that would need fresh review if the Director later authorises a new intake initiative.
 
 For each exact asset and each separately controlled production derivative:
 
@@ -268,7 +275,9 @@ For each exact asset and each separately controlled production derivative:
 - [ ] The Director approves the exact checksums, permitted transformations, Studio scope and production uses in a controlled record.
 - [ ] The Image Register has been updated only after that decision.
 
-## 8. Attribution handling recommendation
+## 8. Attribution handling recommendation if research restarts
+
+The following recommendations are inactive while the initiative remains abandoned:
 
 1. Keep attribution metadata attached to every asset even when CC0 makes display optional.
 2. Show a compact **Artwork details** panel in the Studio with creator, title, date, source institution, object link, rights label and “No endorsement implied”.
@@ -278,9 +287,9 @@ For each exact asset and each separately controlled production derivative:
 6. Where a derivative is shown, add `Adapted by Pivot from…` and name the operations without claiming the altered file is the museum's reproduction.
 7. Link the exact licence/version where applicable, but do not display an AIC, Met, Getty or Creative Commons logo without checking applicable trademark guidelines.
 
-## 9. Source and derivative storage recommendation
+## 9. Evidence retention and future storage recommendation
 
-Use controlled, non-public storage with immutable versions; do not put evidence or source masters under `public/`.
+Retain existing research evidence outside `public/`; it does not authorise Studio or production use. If research restarts, use controlled, non-public storage with immutable versions and do not put evidence or source masters under `public/`.
 
 Suggested record layout (logical rather than a required repository structure):
 
@@ -329,6 +338,6 @@ Never replace a source or derivative in place. A changed crop, recolour, trace, 
 | Indigenous, First Nations or ethnographic patterns selected only because they are public domain | Prohibited pending cultural authority | Copyright age does not resolve ICIP, sacred/restricted knowledge, community custodianship or appropriate commercial use |
 | Existing Unsplash pilot basketball photograph | Reject as selectable garment artwork | Visible manufacturer branding; stock-photo terms and property/trademark issues are less suitable than exact CC0 artwork. Its documented purpose is temporary sport-selection presentation, not garment merchandise |
 
-## 11. Next controlled action
+## 11. Closure action
 
-**FIR-003 — Panel (Furnishing Fabric)** is the first candidate to pass controlled intake. Before it can enter the Studio, create the recorded D01 external-margin crop using approved image-production software, retain a lossless production master and separate preview, calculate both checksums, complete supplier print testing on light and dark fabric, migrate the evidence package from `.tmp` to approved durable storage, obtain Director approval and update the Image Register. Stop sequential candidate intake here unless FIR-003 later fails production testing.
+No further action is authorised for FIR-001 through FIR-005. Do not create `PIR-008-D01`, download the deferred candidates, add any candidate to the Studio or release any candidate for manufacture. Retain this document and its evidence as a closed research record. Any future free/open image initiative requires a new Director decision, current rights evidence and a fresh controlled intake.
