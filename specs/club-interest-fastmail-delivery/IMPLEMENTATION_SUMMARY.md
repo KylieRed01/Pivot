@@ -31,7 +31,7 @@ Live delivery requires:
 - `FASTMAIL_SMTP_APP_PASSWORD`
 - optional `CLUB_INTEREST_RECIPIENT` (defaults to `hello@pivotteamwear.com`)
 
-The app password must be the dedicated Fastmail password named **Pivot website contact form**, not the normal account password. Add the values through the deployment secret manager/Fly secrets; never commit them.
+The app password must be the dedicated Fastmail password named **Pivot website contact form**, not the normal account password. Add the values through the approved deployment platform's secret manager; never commit them.
 
 ## Live verification remaining
 

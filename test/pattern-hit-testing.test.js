@@ -31,6 +31,17 @@ test('direct canvas selection distinguishes all mixed stripe and band colours', 
   assert.equal(targetAt('bands', 165, 172), 'third');
 });
 
+test('direct canvas selection distinguishes dots from their background', () => {
+  assert.equal(targetAt('halftone', 21, 3), 'accent');
+  assert.equal(targetAt('halftone', 0, 0), 'colour');
+  assert.equal(targetAt('dots-fine', 1, 7), 'accent');
+  assert.equal(targetAt('dots-fine', 5, 3), 'colour');
+  assert.equal(targetAt('dots-large', 21, 3), 'accent');
+  assert.equal(targetAt('dots-large', 0, 0), 'colour');
+  assert.equal(targetAt('dot-fade', 7, 7), 'accent');
+  assert.equal(targetAt('dot-fade', 0, 0), 'colour');
+});
+
 test('direct canvas selection distinguishes simple panel pattern colours', () => {
   assert.equal(targetAt('split', 100, 195), 'colour');
   assert.equal(targetAt('split', 230, 195), 'accent');

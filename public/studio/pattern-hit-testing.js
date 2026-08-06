@@ -1,4 +1,10 @@
 const modulo = (value, divisor) => ((value % divisor) + divisor) % divisor;
+const dotTarget = (point, cellSize, radiusRatio) => {
+  const cell = Math.max(1, cellSize);
+  const dx = modulo(point.x, cell) - cell / 2;
+  const dy = modulo(point.y, cell) - cell / 2;
+  return Math.hypot(dx, dy) <= cell * radiusRatio ? 'accent' : 'colour';
+};
 
 function rotatedPatternPoint({ x, y, width, height, angle }) {
   const radians = -(Number(angle) || 0) * Math.PI / 180;
@@ -23,7 +29,12 @@ export function resolvePatternColourTarget({ pattern, x, y, width, height, scale
     return 'colour';
   }
 
+  if (pattern === 'dot-fade') return dotTarget({ x, y }, 14, 0.28);
+
   const point = rotatedPatternPoint({ x, y, width, height, angle });
+  if (pattern === 'halftone') return dotTarget(point, scale, 0.32);
+  if (pattern === 'dots-fine') return dotTarget(point, 8, 0.22);
+  if (pattern === 'dots-large') return dotTarget(point, scale, 0.38);
   if (pattern === 'hoops') {
     const cycle = Math.max(1, scale) + 12;
     const distanceFromBottom = height * 1.6 - point.y;

@@ -112,7 +112,7 @@ The current modular-monolith architecture is proportionate. The approved onboard
 
 The first implementation specification should introduce the smallest coherent Club Administration owner for club identity, role-scoped access, Store setup state and exact approval snapshot. Existing fixture storage and `x-demo-user` identity are explicitly non-production and must not be evolved silently into production services.
 
-Production identity, persistence, email delivery and hosting/provider decisions require explicit approval because they handle customer records and establish operational dependencies.
+Production identity, persistence and hosting/provider decisions require explicit approval because they handle customer records and establish operational dependencies. Fastmail is Pivot's approved mail server across Pivot; individual email workflows still require approved purposes, recipients, content, personal-data handling and release boundaries.
 
 ## Fastmail dependency — resolved delivery direction
 
@@ -129,11 +129,11 @@ The current `mailto:hello@pivotteamwear.com` action is only an unconnected place
 - SMTP username: the full Fastmail login address;
 - SMTP password: the generated dedicated app password;
 - recipient: `hello@pivotteamwear.com`; and
-- add the SMTP username and app password only as server/deployment secrets, including Fly secrets when Fly is the deployment target.
+- add the SMTP username and app password only through the approved deployment platform's secret manager.
 
 The in-house form requires a same-origin server endpoint with server-side field validation, request and submission limits, anti-spam protection, safe delivery-error handling and clear success or recoverable failure states. Credentials must never enter browser code, source control or logs. Sensitive submitted values must not be unnecessarily logged.
 
-Before release, verify external delivery, failure handling and the reply path. Fastmail access is enough to create the app password; separate access is required to configure Fly or another deployment secret manager.
+Before release, verify external delivery, failure handling and the reply path. Fastmail access is enough to create the app password; separate access is required to configure the approved deployment secret manager.
 
 ## Recorded Director decisions
 
@@ -141,3 +141,5 @@ Before release, verify external delivery, failure handling and the reply path. F
 2. The commercial agreement and onboarding path must be online; clubs unable to use the online process are not a fit for Pivot.
 3. The agreed inactivity/failure alerts and privacy-minimised analytics are not deferred.
 4. Club-interest delivery is an in-house form connected server-side to Fastmail. `mailto:` is prohibited for release.
+5. Fastmail is Pivot's approved mail server across Pivot; approval of each email workflow's purpose, recipients, content, personal-data handling and release remains separate.
+6. Cloudflare is Pivot's approved web host and currently serves `pivotteamwear.com` until the Director approves a change. This does not approve additional Cloudflare products or services; unsupported or unknown hosting capabilities must be raised for decision rather than used to allocate another host.

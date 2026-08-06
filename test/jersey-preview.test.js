@@ -41,6 +41,15 @@ test('jersey preview renders the selected surface without exposing text as HTML'
   assert.match(html, /Preview only · placeholder template/);
 });
 
+test('basketball numbers render in an optically centred number box', () => {
+  const html = renderJerseyPreview(palette, {
+    ...design,
+    layers: [{ ...design.layers[0], id: 'number', role: 'number', text: '24', x: 50 }]
+  }, null);
+
+  assert.match(html, /class="art-layer number-layer /);
+});
+
 test('text alignment anchors content inside its selected position', () => {
   const left = renderJerseyPreview(palette, {
     ...design,

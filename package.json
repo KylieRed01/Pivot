@@ -8,7 +8,7 @@
     "start": "node src/server.js",
     "test": "node --test test/*.test.js",
     "test:unit": "node --test test/*.test.js",
-    "check": "node --check src/server.js && node --check src/domain.js && node --check src/club-interest.js && node --check src/fastmail.js && node --check public/app.js && node --check public/website/home-entry.js && node --check public/website/home-page.js && node --check public/website/club-interest-form.js && node --check public/studio/jersey-preview.js && node --check public/studio/font-catalog.js && node --check public/studio/studio-config.js && node --check public/studio/studio-state.js && node --check public/website/version-2-review.js && node --check public/club-store/version-2-club-store-review.js && node --check public/club-store/pivot/pivot-store.js"
+    "check": "node --check src/server.js && node --check src/domain.js && node --check src/club-interest.js && node --check src/fastmail.js && node --check src/studio-feedback.js && node --check src/studio-feedback-delivery.js && node --check public/app.js && node --check public/studio/studio-feedback-form.js && node --check public/website/home-entry.js && node --check public/website/home-page.js && node --check public/website/club-interest-form.js && node --check public/studio/jersey-preview.js && node --check public/studio/font-catalog.js && node --check public/studio/studio-config.js && node --check public/studio/studio-state.js && node --check public/website/version-2-review.js && node --check public/club-store/version-2-club-store-review.js && node --check public/club-store/pivot/pivot-store.js"
   },
   "engines": {
     "node": ">=20"

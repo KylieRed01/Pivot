@@ -61,11 +61,13 @@ test('initial public Studio state contains four 2D surfaces and required numbers
     assert.equal(surface.neck, '#092C71');
     assert.equal(surface.armTrim, '#092C71');
     assert.equal(surface.density, 100, `${key} keeps the approved pattern colours at full intensity`);
-    assert.equal(surface.layers.length, 2, `${key} starts with editable PIVOT text and the required number`);
+    assert.equal(surface.layers.length, key.endsWith('back') ? 1 : 2, `${key} starts without duplicated optional text`);
     const wordmark = surface.layers.find(layer => layer.role === 'wordmark');
-    assert.equal(wordmark.text, 'PIVOT');
-    assert.equal(wordmark.controlLevel, 'flexible');
-    assert.equal(wordmark.fontSize, 14);
+    if (key.endsWith('front')) {
+      assert.equal(wordmark.text, 'PIVOT');
+      assert.equal(wordmark.controlLevel, 'flexible');
+      assert.equal(wordmark.fontSize, 14);
+    } else assert.equal(wordmark, undefined);
     const number = surface.layers.find(layer => layer.role === 'number');
     assert.equal(number.text, '24');
     assert.equal(number.controlLevel, 'constrained');
@@ -75,6 +77,14 @@ test('initial public Studio state contains four 2D surfaces and required numbers
   }
   assert.equal(state.view.mode, '2d');
   assert.equal(state.meta.templateStatus, 'placeholder');
+});
+
+test('new basketball jerseys do not duplicate optional text onto the back', () => {
+  const state = createInitialStudioState();
+
+  assert.equal(state.surfaces['dark.front'].layers.some(layer => layer.role === 'wordmark'), true);
+  assert.equal(state.surfaces['dark.back'].layers.some(layer => layer.role === 'wordmark'), false);
+  assert.equal(state.surfaces['dark.back'].layers.some(layer => layer.role === 'number'), true);
 });
 
 test('serialized public state excludes workflow data while preserving browser-session artwork', () => {
@@ -102,6 +112,24 @@ test('serialized public state excludes workflow data while preserving browser-se
   assert.equal(image.file, undefined);
   assert.equal(image.name, 'logo.png');
   assert.equal(serialized.includes('admin@phoenix.test'), false);
+});
+
+test('legacy browser sessions migrate to linked jersey styling without the old duplicated back text', () => {
+  const legacy = createInitialStudioState();
+  legacy.version = 1;
+  legacy.setup.backDesignMode = undefined;
+  legacy.surfaces['dark.back'].pattern = 'clean';
+  legacy.surfaces['dark.back'].layers.unshift({
+    ...legacy.surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark'),
+    id: 'dark.back-wordmark'
+  });
+
+  const restored = restorePublicState(legacy);
+
+  assert.equal(restored.version, 2);
+  assert.equal(restored.setup.backDesignMode, 'linked');
+  assert.equal(restored.surfaces['dark.back'].pattern, restored.surfaces['dark.front'].pattern);
+  assert.equal(restored.surfaces['dark.back'].layers.some(layer => layer.role === 'wordmark'), false);
 });
 
 test('session store restores valid state and fails closed to a clean placeholder', () => {
@@ -138,6 +166,32 @@ test('starting another garment clears the previous browser design', () => {
   assert.equal(result.ok, true);
   assert.deepEqual(history.getState(), createInitialStudioState());
   assert.equal(cleared, true);
+});
+
+test('jersey styling stays linked between front and back until the back is manually separated', () => {
+  const initial = createInitialStudioState();
+
+  assert.equal(initial.setup.backDesignMode, 'linked');
+  assert.equal(initial.surfaces['dark.front'].pattern, initial.surfaces['dark.back'].pattern);
+
+  const linked = reduceStudioState(initial, {
+    type: 'updateSurface',
+    surface: 'dark.front',
+    patch: { pattern: 'hoops', base: '#123456', third: '#ABCDEF', scale: 60 }
+  });
+
+  assert.deepEqual(
+    { pattern: linked.state.surfaces['dark.back'].pattern, base: linked.state.surfaces['dark.back'].base, third: linked.state.surfaces['dark.back'].third, scale: linked.state.surfaces['dark.back'].scale },
+    { pattern: 'hoops', base: '#123456', third: '#ABCDEF', scale: 60 }
+  );
+
+  const separated = reduceStudioState(linked.state, { type: 'setBackDesignMode', mode: 'separate' });
+  const frontOnly = reduceStudioState(separated.state, {
+    type: 'updateSurface', surface: 'dark.front', patch: { pattern: 'clean' }
+  });
+
+  assert.equal(frontOnly.state.surfaces['dark.front'].pattern, 'clean');
+  assert.equal(frontOnly.state.surfaces['dark.back'].pattern, 'hoops');
 });
 
 test('surface and view selection do not mutate independent 2D surfaces', () => {
@@ -179,6 +233,24 @@ test('history updates one surface and provides deterministic undo and redo', () 
 
   assert.equal(history.redo().ok, true);
   assert.equal(history.getState().surfaces['dark.front'].layers.find(layer => layer.id === darkWordmark.id).text, 'DARK ONLY');
+});
+
+test('basketball number value stays the same on front and back without duplicating other text edits', () => {
+  const initial = createInitialStudioState();
+  const frontNumber = initial.surfaces['dark.front'].layers.find(layer => layer.role === 'number');
+  const frontText = initial.surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark');
+  const backText = addTestText(initial, 'dark.back', { text: 'BACK ONLY' });
+
+  const numbered = reduceStudioState(initial, {
+    type: 'updateLayer', surface: 'dark.front', layerId: frontNumber.id, patch: { text: '7' }
+  });
+  const worded = reduceStudioState(numbered.state, {
+    type: 'updateLayer', surface: 'dark.front', layerId: frontText.id, patch: { text: 'FRONT ONLY' }
+  });
+
+  assert.equal(worded.state.surfaces['dark.front'].layers.find(layer => layer.role === 'number').text, '7');
+  assert.equal(worded.state.surfaces['dark.back'].layers.find(layer => layer.role === 'number').text, '7');
+  assert.equal(worded.state.surfaces['dark.back'].layers.find(layer => layer.id === backText.id).text, 'BACK ONLY');
 });
 
 test('required basketball number rejects blank and non-numeric edits', () => {

@@ -286,7 +286,7 @@ Delivery outcome is recorded without logging message content or credentials. A d
 
 ### External gate
 
-The transactional notification provider and secret configuration require approval. The Fastmail SMTP decision for the public club-interest form does not silently authorise all account, signature or system-notification email.
+Fastmail is Pivot's approved mail server for transactional notifications across Pivot. Secret configuration and each account, signature or system-notification workflow still require approved purposes, recipients, content, personal-data handling and release boundaries.
 
 ## 15. Security and provider controls
 
@@ -341,7 +341,7 @@ Implementation may be planned provider-neutrally, but production behaviour is bl
 2. selected online signing/acceptance mechanism;
 3. selected production identity and recovery mechanism;
 4. approved durable data and asset storage providers with backup/retention decisions;
-5. approved transactional notification provider and templates;
+5. approved transactional notification workflows and templates, with Fastmail credentials configured through the approved deployment secret manager;
 6. approved analytics implementation and access model;
 7. separate Product Workflow specification; and
 8. authoritative Store usability/accessibility acceptance evidence for generated themes.

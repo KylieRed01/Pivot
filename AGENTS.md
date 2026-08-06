@@ -24,6 +24,17 @@ Keep Pivot as a capability-oriented modular monolith proportionate to its curren
 
 Preserve existing deep modules unless a simpler interface results, and update the architecture catalogue when module responsibility, public interface or dependency direction changes.
 
+## Non-negotiable vendor and provider authority
+
+The coding assistant has no authority to select, allocate or assume approval of any external vendor or provider.
+
+- Keep hosting, deployment, identity, storage, email, analytics, payments, signing, monitoring and other provider-dependent requirements provider-neutral until the user explicitly approves the named provider and its scope.
+- Do not create provider accounts, applications or projects; install provider CLIs, SDKs or dependencies; add provider-specific configuration, secrets, headers, adapters or documentation; or deploy to a provider before that explicit approval.
+- Tool availability, examples, conditional documentation, existing account access and prior use are not approval.
+- Approval for one provider use is limited to that recorded scope and must not be extended to another capability. Fastmail is approved as Pivot's mail server across Pivot. That vendor approval does not itself approve the purpose, recipients, content, personal-data handling or release of a particular email workflow.
+- Cloudflare is Pivot's approved web host and currently serves `pivotteamwear.com` until the user explicitly approves a change. This approval does not extend to additional Cloudflare products or services. Do not allocate or migrate to another web host because a requirement is unsupported or the incumbent platform is not yet understood; first establish its capabilities and present any constraint for decision.
+- Present options and their costs, risks, data handling and operational implications for decision; do not present an option as selected or required before approval.
+
 ## Non-negotiable tooling rule
 
 **Do not install, use or reintroduce Playwright or axe-core Playwright.**

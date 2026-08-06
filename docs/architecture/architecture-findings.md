@@ -59,7 +59,7 @@ If a new authoritative rule must be enforced in both places, give it one shared 
 
 **Priority:** Monitor
 
-`src/server.js` combines static delivery, the fixture API and the club-interest endpoint, but remains small and testable through one `createApp()` interface. The provider-specific Fastmail sender is injected, so SMTP/TLS complexity and credentials remain outside the HTTP composition code. Creating general transport, application and repository directories now would add structure without hiding enough complexity.
+`src/server.js` combines static delivery, the fixture API, club-interest and Studio-feedback endpoints, but remains small and testable through one `createApp()` interface. Provider-specific Fastmail senders are injected, so SMTP/TLS complexity and credentials remain outside the HTTP composition code. Creating general transport, application and repository directories now would add structure without hiding enough complexity.
 
 A new boundary becomes justified when production adapters are approved, route growth obscures behaviour, fixture writes need atomic operations, or a concern requires independent reuse/testing.
 

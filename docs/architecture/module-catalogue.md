@@ -19,12 +19,13 @@ File length alone is not a reason to extract a module.
 | M04 | Workflow fixture | `data/state.json` plus server load/save functions | Adequate for simulation | Explicitly non-production whole-file persistence |
 | M05 | Studio configuration | `public/studio/studio-config.js` | Developing | One placeholder factory appropriately keeps defaults together |
 | M06 | Studio state engine | `public/studio/studio-state.js` | Deep | Hides normalisation, commands, history, persistence and checks |
-| M07 | Studio/workflow browser application | `public/app.js` | Watch point | Large composition module with two design representations |
+| M07 | Studio/workflow browser application | `public/app.js` | Watch point | Large composition module with two design representations; delegates tester-feedback submission |
 | M08 | Main Website | `public/website/*`, `src/club-interest.js`, `src/fastmail.js` | Developing | Cohesive rendering, enhancement, bounded intake and Fastmail delivery modules |
 | M09 | Club Store presentation | `public/club-store/*` | Developing | Landing, customer-store preview and administration preview have distinct routes and responsibilities |
 | M10 | Presentation styles | `public/website/home.css`, `public/style.css` | Adequate at current scale | Homepage and Studio bundles are separated |
 | M11 | Temporary landing page | `public/temporary-landing.*` | Isolated | Correctly separate from release-page work |
 | M12 | Automated tests | `test/*.test.js` | Developing | Strong behavioural coverage with some deliberate governance checks |
+| M13 | Studio trial feedback | `public/studio/studio-feedback-form.js`, `src/studio-feedback.js`, `src/studio-feedback-delivery.js` | Developing | Small end-to-end boundary for minimal browser intake, bounded validation and approved Fastmail delivery |
 
 ## M01 — Workflow policy
 
@@ -40,7 +41,7 @@ File length alone is not a reason to extract a module.
 
 ## M03 — Node application
 
-`src/server.js` owns the HTTP entry point, static delivery, security/cache headers, compression, fixture API, club-interest endpoint and homepage markup injection. These are multiple responsibilities, but the implementation remains small and directly testable through `createApp()`. Live Fastmail delivery is injected, so endpoint tests do not require network access or credentials.
+`src/server.js` owns the HTTP entry point, static delivery, security/cache headers, compression, fixture API, club-interest and Studio-feedback endpoints, and homepage markup injection. These are multiple responsibilities, but the implementation remains small and directly testable through `createApp()`. Live Fastmail delivery is injected, so endpoint tests do not require network access or credentials.
 
 Splitting HTTP transport, static delivery and application operations now would create more interfaces than the repository needs. Fastmail protocol handling is the exception: it is isolated behind `createFastmailSender()` because SMTP/TLS and credentials are a provider-specific security boundary.
 
@@ -66,7 +67,7 @@ Preserve this boundary. Do not split history, validation or storage merely becau
 
 ## M07 — Studio/workflow browser application
 
-`public/app.js` composes direct Studio entry and template selection, preview, editing controls, browser APIs and the workflow simulation. The public trial delegates accepted changes to M06. Workflow mode still mutates a separate `primary`/`reverse` model and persists additional keys in `localStorage`.
+`public/app.js` composes direct Studio entry and template selection, preview, editing controls, browser APIs, tester-feedback presentation and the workflow simulation. The public trial delegates accepted changes to M06. Workflow mode still mutates a separate `primary`/`reverse` model and persists additional keys in `localStorage`.
 
 The file is a complexity hotspot, but arbitrary component extraction would not solve the duplicated design meaning. Keep it intact until a specific change can hide a complete decision or workflow.
 
@@ -100,3 +101,9 @@ The homepage no longer loads the large Studio stylesheet. `home.css` and `style.
 ## M12 — Automated tests
 
 The tests use Node's built-in runner and exercise meaningful public interfaces. Some repository-guardrail tests intentionally inspect exact files or CSS because they protect approved implementation constraints. New tests should prefer behaviour and stable outputs over private arrangement unless the arrangement itself is governed.
+
+## M13 — Studio trial feedback
+
+`public/studio/studio-feedback-form.js` owns the minimal browser payload and safe submission error. `src/studio-feedback.js` accepts only the approved bounded message, optional reply email and disclosed troubleshooting context. `src/studio-feedback-delivery.js` translates that validated shape into the separately approved Fastmail message without exposing SMTP details to the browser. The server composes these boundaries with same-origin, body-limit, honeypot and rate-limit controls.
+
+The three focused files are justified because they keep browser collection, trusted validation and provider-specific delivery decisions on the correct side of the server boundary. Do not broaden them into a feedback database, analytics owner or general notification framework without an approved need.

@@ -21,9 +21,11 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
   key,
   base: background,
   accent: key.startsWith('dark') ? '#F4951D' : '#0096D6',
-  pattern: key.endsWith('front') ? 'velocity' : 'clean',
+  third: '#092C71',
+  fourth: '#FFFFFF',
+  pattern: 'velocity',
   scale: 48,
-  angle: key.endsWith('front') ? -28 : 0,
+  angle: -28,
   density: 100,
   gradient: false,
   gradientColour: key.startsWith('dark') ? '#F4951D' : '#0096D6',
@@ -63,18 +65,19 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
       letterSpacing: 0,
       lineSpacing: 1,
       fontId: DEFAULT_BASKETBALL_NUMBER_FONT_ID
-    }] : []
+    }].filter(layer => !key.endsWith('back') || layer.role === 'number') : []
 });
 
 export function createPlaceholderStudioConfig(garment = 'basketball-jersey') {
   const basketball = garment === 'basketball-jersey';
   return {
-    version: 1,
+    version: 2,
     designName: 'Untitled browser design',
     setup: {
       sport: 'basketball',
       competition: 'bendigo-basketball-association',
-      garment
+      garment,
+      backDesignMode: 'linked'
     },
     view: {
       surface: 'dark.front',

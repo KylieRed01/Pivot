@@ -21,7 +21,7 @@ The existing in-house club-interest form submits to a same-origin Pivot server e
 - Password: dedicated app password named **Pivot website contact form**
 - Recipient: `hello@pivotteamwear.com`
 - Never use the normal Fastmail account password.
-- Store credentials only as server/deployment secrets, including Fly secrets when Fly is the deployment target.
+- Store credentials only through the approved deployment platform's secret manager.
 
 ## Requirements
 

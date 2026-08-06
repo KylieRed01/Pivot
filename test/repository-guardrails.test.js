@@ -4,6 +4,33 @@ import { access, readFile } from 'node:fs/promises';
 
 const exists = async path => access(path).then(() => true, () => false);
 
+test('external vendors remain unallocated until the user explicitly approves provider and scope', async () => {
+  const guardrails = await readFile('AGENTS.md', 'utf8');
+
+  assert.match(guardrails, /coding assistant has no authority to select, allocate or assume approval/i);
+  assert.match(guardrails, /provider-neutral until the user explicitly approves the named provider and its scope/i);
+  assert.match(guardrails, /Tool availability, examples, conditional documentation, existing account access and prior use are not approval/i);
+  assert.match(guardrails, /Fastmail is approved as Pivot's mail server across Pivot/i);
+  assert.match(guardrails, /does not itself approve the purpose, recipients, content, personal-data handling or release of a particular email workflow/i);
+  assert.match(guardrails, /Cloudflare is Pivot's approved web host and currently serves `pivotteamwear\.com` until the user explicitly approves a change/i);
+  assert.match(guardrails, /Do not allocate or migrate to another web host because a requirement is unsupported or the incumbent platform is not yet understood/i);
+});
+
+test('hosting remains provider-neutral until Pivot approves a deployment platform', async () => {
+  const [server, guide, audit, specification, summary] = await Promise.all([
+    readFile('src/server.js', 'utf8'),
+    readFile('docs/website/Website Implementation Guide.md', 'utf8'),
+    readFile('docs/Club Onboarding Proportionality Audit.md', 'utf8'),
+    readFile('specs/club-interest-fastmail-delivery/spec.md', 'utf8'),
+    readFile('specs/club-interest-fastmail-delivery/IMPLEMENTATION_SUMMARY.md', 'utf8')
+  ]);
+
+  assert.match(server, /const clientKey=req=>req\.socket\.remoteAddress\|\|'unknown'/);
+  for (const source of [guide, audit, specification, summary]) {
+    assert.match(source, /approved deployment platform's secret manager/);
+  }
+});
+
 test('Playwright remains prohibited from the repository toolchain', async () => {
   const manifest = JSON.parse(await readFile('package.json', 'utf8'));
   const packages = {
@@ -80,15 +107,16 @@ test('website navigation consistently uses the home route name', async () => {
   for (const source of sources) assert.doesNotMatch(source, /#store/);
   assert.match(sources[0], /href="\/#home">Home<\/a>/);
   assert.match(sources[1], /href="\/#home">Home<\/a>/);
-  assert.match(sources[2], /class="studio-home" href="#home" aria-label="Return to home"/);
+  assert.match(sources[2], /class="studio-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
   assert.match(sources[3], /<section class="pivot-hero" id="home">/);
 });
 
 test('Design Studio gives creation, canvas and guidance one distinct owner', async () => {
   const source = await readFile('public/app.js', 'utf8');
 
-  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title"><header><div class="guidance-design-row"><label class="design-name guidance-design-name">[\s\S]*?id="design-name"[\s\S]*?id="save-browser-design"[\s\S]*?>Save design<\/button>[\s\S]*?<small>Saved only in this browser<\/small>[\s\S]*?<h2 id="guidance-title">Design guidance<\/h2>/);
-  assert.match(source, /class="studio-logo-home" href="#home" aria-label="Return to home"/);
+  assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title"><header><div class="guidance-design-row"><label class="design-name guidance-design-name">[\s\S]*?id="design-name"[\s\S]*?id="save-design"[\s\S]*?class="save-icon-button locked-feature"[\s\S]*?aria-disabled="true"[\s\S]*?aria-label="Save design"[\s\S]*?title="Save design — club access required"[\s\S]*?class="lock-badge"[\s\S]*?<small>Trial changes are kept temporarily in this browser session<\/small>[\s\S]*?<h2 id="guidance-title">Design guidance<\/h2>/);
+  assert.doesNotMatch(source, /id="save-browser-design"|publicStore\?\.save\(publicState\)/);
+  assert.match(source, /class="studio-logo-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
   assert.match(source, /id="guidance-view"/);
   assert.match(source, /id="guidance-selection"/);
   assert.match(source, /id="open-design-checks"/);
@@ -120,14 +148,59 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /data-template="generic-hoodie"/);
   assert.match(source, /data-tool="library"/);
   assert.match(source, /libraryAssetId:'pivot-penguin'[\s\S]*?x:50,y:45,scale:1\.6,rotation:0/);
-  assert.match(source, /data-tool="club-images"[^>]*aria-label="Approved club images"/);
+  assert.match(source, /data-tool="club-images"[^>]*aria-label="Club assets — club access required"/);
   assert.match(source, /data-tool-panel="club-images"/);
-  assert.match(source, /Access is not connected in this trial/);
+  assert.match(source, /Club access is not connected in this trial/);
   assert.match(source, /data-tool="images"[^>]*aria-label="Upload image"/);
-  assert.match(source, /href="\/club-login\/index\.html"/);
+  assert.doesNotMatch(source, /href="\/club-login\/index\.html"/);
   assert.match(source, /authorised club users and club administrators/i);
   assert.doesNotMatch(source, /id="change-setup"/);
   assert.match(source, /el\.onpointerdown=e=>\{if\(viewMode==='3d'\)return;e\.preventDefault\(\);selectedId=el\.dataset\.layerId;if\(!workflowDemo\)dispatchPublic\(\{type:'selectLayer'/);
+  assert.match(source, /el\.onpointerdown=e=>\{[\s\S]*?const layer=sides\[side\]\.layers\.find\(x=>x\.id===selectedId\);if\(layer\?\.type==='text'\)activateTool\('artwork'\)/);
+});
+
+test('public Studio presents one jersey with an explicit control for separating the back design', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.doesNotMatch(source, /aria-label="Colourway"|data-side="primary"|data-side="reverse"/);
+  assert.match(source, /id="separate-back-design"[\s\S]*Design back separately/);
+});
+
+test('public Studio prints a branded trial preview with current front and back views', async () => {
+  const [source, styles] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(source, /id="print-trial-preview"[^>]*>Print trial preview<\/button>/);
+  assert.match(source, /class="trial-print-sheet"[\s\S]*?src="\/brand\/Pivot_Logo_Transparent\.svg"[\s\S]*?id="trial-print-name"[\s\S]*?id="trial-print-date"[\s\S]*?id="trial-print-front"[\s\S]*?id="trial-print-back"[\s\S]*?TRIAL PREVIEW — NOT AN ORDER OR PRODUCTION-READY DESIGN/);
+  assert.match(source, /querySelector\('#trial-print-front'\)\.innerHTML=renderJerseyPreview\(d,frontSides\[side\],null,activeSetup\.garment\)/);
+  assert.match(source, /querySelector\('#trial-print-back'\)\.innerHTML=renderJerseyPreview\(d,backSides\[side\],null,activeSetup\.garment\)/);
+  assert.match(source, /const printTrialPreview=\(\)=>\{[\s\S]*?window\.print\(\)\};document\.querySelectorAll\('\.print-trial-trigger'\)\.forEach\(button=>button\.onclick=printTrialPreview\)/);
+  assert.match(styles, /@media print\{[\s\S]*?\.trial-print-sheet\{display:block/);
+});
+
+test('public Studio reload restores temporary browser-session changes without calling it a saved design', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /createSessionStore\(sessionStorage\)/);
+  assert.match(source, /publicState = freshDesign[\s\S]*?publicStore\?\.load\(\);\s*if\(!workflowDemo\)activeSetup=\{garment:publicState\.setup\.garment\}/);
+  assert.match(source, /if \(location\.hash === '#studio'\) \{\s*await dashboard\(\);/);
+  assert.match(source, /id="save-label"[^>]*>[\s\S]*?Browser-session changes · not saved to Pivot/);
+  assert.match(source, /Trial changes are kept temporarily in this browser session/);
+  assert.doesNotMatch(source, /Saved only in this browser|Saved in this browser/);
+});
+
+test('public trial identifies club assets as a visible locked feature', async () => {
+  const [source, styles] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(source, /class="rail-item locked-feature" data-tool="club-images" aria-label="Club assets — club access required" title="Club assets — club access required"[\s\S]*?class="lock-badge"[\s\S]*?<small>Club assets<\/small>/);
+  assert.match(source, /data-tool-panel="club-images"[\s\S]*?<strong>Club access required<\/strong>[\s\S]*?not connected in this trial/);
+  assert.doesNotMatch(source, /href="\/club-login\/index\.html"/);
+  assert.match(styles, /\.rail-item\.locked-feature\{[^}]*color:color-mix\(in srgb,#FFFFFF 48%,#092C71\)[^}]*cursor:not-allowed/);
 });
 
 test('Studio text size controls share point values with canvas resizing', async () => {
@@ -153,6 +226,9 @@ test('Studio viewport keeps clear useful actions without technical pan fields', 
   assert.doesNotMatch(source, /id="pan-[xy]"/);
   assert.doesNotMatch(source, /querySelector\('#pan-[xy]'\)/);
   assert.doesNotMatch(styles, /\.viewport-field/);
+  assert.match(source, /class="studio-compact-actions"[\s\S]*?class="print-trial-button print-trial-trigger"[\s\S]*?class="save-icon-button locked-feature"/);
+  assert.match(styles, /\.studio-compact-actions\{display:none/);
+  assert.match(styles, /@media\(max-width:1050px\)\{[\s\S]*?\.studio-compact-actions\{display:flex/);
 });
 
 test('selected artwork explains deletion paths and required-number protection', async () => {
@@ -160,7 +236,9 @@ test('selected artwork explains deletion paths and required-number protection', 
   const styles = await readFile('public/style.css', 'utf8');
 
   assert.match(source, /class="text-selection-heading"><span>Selected text<\/span><strong id="selected-text-name">PIVOT<\/strong>/);
-  assert.match(source, /id="artwork"[^>]*><\/label><button id="delete-layer" class="text-remove-button">Remove selected text<\/button><p id="text-delete-help"/);
+  assert.match(source, /id="artwork"[^>]*><\/label><button id="text-colour-button"[\s\S]*?Choose text colour[\s\S]*?<button id="delete-layer" class="text-remove-button">Remove selected text<\/button><p id="text-delete-help"/);
+  assert.match(source, /querySelector\('#text-colour-button'\)\.onclick=\(\)=>openColourPalette\('layer','artwork'\)/);
+  assert.match(source, /el\.onclick=\(\)=>\{[\s\S]*?if\(layer\?\.type==='text'\)activateTool\('artwork'\)/);
   assert.match(source, /<details class="text-more-options">[\s\S]*?<div class="layer-actions text-secondary-actions"><button id="duplicate-layer">Duplicate selected text<\/button>/);
   assert.match(source, /id="image-delete-help" class="selection-delete-help" hidden>Press Delete or Backspace, right-click and choose Delete, or use Delete or Remove selected image\./);
   assert.match(source, /const requiredNumber=Boolean\(textSelected&&selected\.required&&selected\.role==='number'\)/);
@@ -277,7 +355,7 @@ test('pattern choices preview the colours selected for the current surface', asy
   const swatchesStart = css.indexOf('.pattern i{');
   const swatches = css.slice(swatchesStart, css.indexOf('.pattern-colours{', swatchesStart));
 
-  assert.match(source, /document\.querySelector\('\.patterns'\)\.style\.cssText=`--pattern-base:\$\{design\.base\};--pattern-accent:\$\{design\.accent\|\|d\.accent\};--pattern-third:\$\{d\.third\};--pattern-fourth:\$\{d\.fourth\}`/);
+  assert.match(source, /document\.querySelector\('\.patterns'\)\.style\.cssText=`--pattern-base:\$\{design\.base\};--pattern-accent:\$\{design\.accent\|\|d\.accent\};--pattern-third:\$\{design\.third\|\|d\.third\};--pattern-fourth:\$\{design\.fourth\|\|d\.fourth\}`/);
   assert.match(swatches, /var\(--pattern-base\)/);
   assert.match(swatches, /var\(--pattern-accent\)/);
   assert.match(swatches, /var\(--pattern-third\)/);
@@ -442,6 +520,42 @@ test('future homepage colours use approved bases and traceable supporting variat
   assert.match(homepageStyles, /\.interest-copy p\s*\{[^}]*max-width:\s*75ch;/);
 });
 
+test('public Studio lets invited testers submit feedback without leaving the Studio', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /data-tool="feedback" aria-label="Share feedback"[\s\S]*?<small>Feedback<\/small>/);
+  assert.match(source, /data-tool-panel="feedback"[\s\S]*?<h3>Share feedback<\/h3>[\s\S]*?<form id="studio-feedback-form"[\s\S]*?id="studio-feedback-message"[\s\S]*?id="studio-feedback-email"[\s\S]*?type="submit"[\s\S]*?id="studio-feedback-status"/);
+  assert.doesNotMatch(source, /name="category"|designName:publicState\.designName/);
+  assert.match(source, /import \{ describeStudioView, sendStudioFeedback \} from '\.\/studio\/studio-feedback-form\.js'/);
+  assert.match(source, /await sendStudioFeedback\(\{[\s\S]*?navigator\.userAgent/);
+  assert.match(source, /garment, current view and browser details will be included automatically/);
+  assert.doesNotMatch(source, /mailto:/i);
+});
+
+test('Studio feedback modules are included in the repository syntax gate', async () => {
+  const manifest = JSON.parse(await readFile('package.json', 'utf8'));
+
+  for (const module of [
+    'src/studio-feedback.js',
+    'src/studio-feedback-delivery.js',
+    'public/studio/studio-feedback-form.js'
+  ]) assert.match(manifest.scripts.check, new RegExp(`node --check ${module.replaceAll('.', '\\.')}`));
+});
+
+test('tester release exposes only the public Studio hash route', async () => {
+  const [entry, studio] = await Promise.all([
+    readFile('public/website/home-entry.js', 'utf8'),
+    readFile('public/app.js', 'utf8')
+  ]);
+
+  assert.match(entry, /const studioRoutes = new Set\(\['#studio'\]\)/);
+  assert.doesNotMatch(entry, /#workflow-demo|#admin/);
+  assert.doesNotMatch(studio, /location\.hash[\s\S]{0,100}#workflow-demo|location\.hash[\s\S]{0,100}#admin/);
+  assert.match(studio, /class="studio-logo-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
+  assert.match(studio, /class="studio-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
+  assert.doesNotMatch(studio, /class="studio-(?:logo-)?home" href="#home"/);
+});
+
 test('homepage defers Design Studio code and styles until a Studio route is selected', async () => {
   const [html, entry, homeCss] = await Promise.all([
     readFile('public/index.html', 'utf8'),
@@ -451,15 +565,15 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260805-10"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260806-11"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260806-19', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260807-1', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260806-12'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260807-1'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);

@@ -11,6 +11,10 @@ import {
 } from './font-catalog.js';
 
 const FONT_IDS = new Set(listFontChoices().map(choice => choice.id));
+const SURFACE_STYLE_KEYS = Object.freeze(['base', 'accent', 'third', 'fourth', 'pattern', 'scale', 'angle', 'density', 'neck', 'armTrim', 'gradient', 'gradientColour', 'gradientAngle']);
+const counterpartSurface = surfaceKey => surfaceKey?.endsWith('.front')
+  ? surfaceKey.replace(/\.front$/, '.back')
+  : surfaceKey?.endsWith('.back') ? surfaceKey.replace(/\.back$/, '.front') : null;
 
 export const TRIAL_TEXT_SIZE = Object.freeze({ min: 5, max: 96, step: 1 });
 
@@ -78,7 +82,8 @@ function normalize(candidate) {
     designName: String(candidate.designName ?? initial.designName).slice(0, 60),
     setup: {
       ...initial.setup,
-      ...(candidate.setup && typeof candidate.setup === 'object' ? candidate.setup : {})
+      ...(candidate.setup && typeof candidate.setup === 'object' ? candidate.setup : {}),
+      backDesignMode: candidate.setup?.backDesignMode === 'separate' ? 'separate' : 'linked'
     },
     view: {
       ...initial.view,
@@ -98,6 +103,8 @@ function normalize(candidate) {
       ...initial.surfaces[key],
       base: String(source.base ?? initial.surfaces[key].base),
       accent: String(source.accent ?? initial.surfaces[key].accent),
+      third: String(source.third ?? candidate.palette?.accent ?? initial.surfaces[key].third),
+      fourth: String(source.fourth ?? candidate.palette?.light ?? initial.surfaces[key].fourth),
       pattern: String(source.pattern ?? initial.surfaces[key].pattern),
       scale: Number.isFinite(source.scale) ? source.scale : initial.surfaces[key].scale,
       angle: Number.isFinite(source.angle) ? source.angle : initial.surfaces[key].angle,
@@ -109,6 +116,19 @@ function normalize(candidate) {
       gradientAngle: Number.isFinite(source.gradientAngle) ? source.gradientAngle : 135,
       layers: Array.isArray(source.layers) ? source.layers.map(safeLayer) : initial.surfaces[key].layers
     };
+  }
+
+  if (state.setup.backDesignMode === 'linked') {
+    for (const colourway of ['dark', 'light']) {
+      const front = state.surfaces[`${colourway}.front`];
+      const back = state.surfaces[`${colourway}.back`];
+      for (const key of SURFACE_STYLE_KEYS) back[key] = front[key];
+    }
+  }
+  if (Number(candidate.version ?? 1) < 2) {
+    for (const colourway of ['dark', 'light']) {
+      state.surfaces[`${colourway}.back`].layers = state.surfaces[`${colourway}.back`].layers.filter(layer => !(layer.role === 'wordmark' && layer.text === 'PIVOT'));
+    }
   }
 
   if (!SURFACE_KEYS.includes(state.view.surface)) state.view.surface = initial.view.surface;
@@ -243,6 +263,20 @@ export function reduceStudioState(current, action) {
     return { ok: true, state: next };
   }
 
+  if (action.type === 'setBackDesignMode') {
+    if (!['linked', 'separate'].includes(action.mode)) return failed(state, 'INVALID_BACK_DESIGN_MODE', 'Choose whether the back matches the front or is designed separately.');
+    const next = clone(state);
+    next.setup.backDesignMode = action.mode;
+    if (action.mode === 'linked') {
+      for (const colourway of ['dark', 'light']) {
+        const front = next.surfaces[`${colourway}.front`];
+        const back = next.surfaces[`${colourway}.back`];
+        for (const key of SURFACE_STYLE_KEYS) back[key] = front[key];
+      }
+    }
+    return { ok: true, state: next };
+  }
+
   if (action.type === 'setViewMode') {
     if (!['2d', '3d'].includes(action.mode)) return failed(state, 'INVALID_VIEW', 'Choose the 2D or indicative 3D view.');
     const next = clone(state);
@@ -281,8 +315,12 @@ export function reduceStudioState(current, action) {
     const next = clone(state);
     const surface = next.surfaces[surfaceKey];
     if (!surface) return failed(state, 'INVALID_SURFACE', 'Choose an available 2D surface.');
-    const allowed = new Set(['base', 'accent', 'pattern', 'scale', 'angle', 'density', 'neck', 'armTrim', 'gradient', 'gradientColour', 'gradientAngle']);
+    const allowed = new Set(SURFACE_STYLE_KEYS);
     for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key)) surface[key] = value;
+    if (next.setup.backDesignMode !== 'separate') {
+      const counterpart = next.surfaces[counterpartSurface(surfaceKey)];
+      if (counterpart) for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key)) counterpart[key] = value;
+    }
     return { ok: true, state: next };
   }
 
@@ -303,6 +341,12 @@ export function reduceStudioState(current, action) {
         continue;
       }
       layer[key] = value;
+    }
+    if (layer.role === 'number' && Object.hasOwn(patch, 'text')) {
+      for (const candidateSurface of Object.values(next.surfaces)) {
+        const requiredNumber = candidateSurface.layers.find(candidate => candidate.role === 'number' && candidate.required);
+        if (requiredNumber) requiredNumber.text = String(patch.text);
+      }
     }
     next.view.surface = surfaceKey;
     next.view.selectedLayerId = layer.id;
@@ -379,7 +423,7 @@ export function createStudioHistory(initialState = createInitialStudioState(), o
   let state = normalize(initialState);
   let past = [];
   let future = [];
-  const historyActions = new Set(['batch', 'setPalette', 'updateSurface', 'updateLayer', 'addLayer', 'duplicateLayer', 'reorderLayer', 'deleteLayer']);
+  const historyActions = new Set(['batch', 'setPalette', 'setBackDesignMode', 'updateSurface', 'updateLayer', 'addLayer', 'duplicateLayer', 'reorderLayer', 'deleteLayer']);
   const persist = () => {
     try {
       return store?.save ? store.save(state) !== false : true;
