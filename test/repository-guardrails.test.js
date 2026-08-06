@@ -106,7 +106,9 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /data-tool-panel="artwork"[\s\S]*?class="panel-help"[\s\S]*?id="add-text" class="add-text-primary"[\s\S]*?id="text-selection-empty"[\s\S]*?id="text-controls"[\s\S]*?<details class="text-more-options">/);
   assert.match(source, /<summary>More text options<\/summary>/);
   assert.match(source, /class="text-size-control"><span>Font size \(pt\)<\/span><input id="text-font-size-slider"[^>]*type="range"[^>]*min="5"[^>]*max="96"[^>]*step="1"[^>]*aria-label="Text size in points"><input id="text-font-size"[^>]*type="number"[^>]*min="5"[^>]*max="96"[^>]*step="1"/);
-  assert.match(source, /Trial range: 5–96 pt · to be reviewed against garment templates/);
+  assert.doesNotMatch(source, /Trial range/);
+  assert.match(source, /class="placement-presets"><span>Position across garment<\/span>/);
+  assert.match(source, /<summary>More text options<\/summary>[\s\S]*?Text alignment/);
   assert.doesNotMatch(source, /id="layer-scale"|id="text-size-value"|id="text-size-down"|id="text-size-up"|adjustTextSize/);
   assert.match(source, />Duplicate text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>[\s\S]*?>Remove text<\/button>/);
   assert.doesNotMatch(source, /Text layers|id="layer-list"/);
@@ -137,7 +139,6 @@ test('Studio text size controls share point values with canvas resizing', async 
   assert.match(source, /document\.querySelector\('#text-font-size-slider'\)\.oninput=updateTextPointSize;document\.querySelector\('#text-font-size'\)\.onchange=updateTextPointSize/);
   assert.match(source, /if\(layer\.type==='text'\)\{layer\.fontSize=clampTrialTextSize\(Math\.round\(startSize\*ratio\)\);[\s\S]*?syncTextSizeControls\(layer\.fontSize\)/);
   assert.match(styles, /\.text-size-control input\[type=range\]\{grid-column:1;width:100%;accent-color:#0096D6\}/);
-  assert.match(styles, /\.text-size-control small\{grid-column:1\/-1/);
 });
 
 test('selected artwork explains deletion paths and required-number protection', async () => {
