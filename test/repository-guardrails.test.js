@@ -135,6 +135,17 @@ test('Design guidance avoids a redundant section eyebrow', async () => {
   assert.doesNotMatch(source, /<aside class="design-guidance"[\s\S]*?<footer>/);
 });
 
+test('selected canvas text and images can be removed with the keyboard or visible actions', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /document\.onkeydown=e=>\{if\(!\['Delete','Backspace'\]\.includes\(e\.key\)/);
+  assert.match(source, /\['INPUT','TEXTAREA','SELECT'\]\.includes\(document\.activeElement\?\.tagName\)/);
+  assert.match(source, /const layer=sides\[side\]\.layers\.find\(item=>item\.id===selectedId\);if\(!layer\|\|layer\.required\|\|layer\.controlLevel==='fixed'\)return;e\.preventDefault\(\);deleteSelectedLayer\(\)/);
+  assert.match(source, /data-context-action="delete" class="danger"/);
+  assert.match(source, /id="delete-layer"[^>]*>Remove text<\/button>/);
+  assert.match(source, /id="image-delete">Delete<\/button>/);
+});
+
 test('Pivot penguin library action is clear and provides visible removal', async () => {
   const [source, css] = await Promise.all([
     readFile('public/app.js', 'utf8'),
@@ -185,6 +196,13 @@ test('choosing another pattern preserves the current design colours', async () =
   assert.doesNotMatch(canvasPatterns, /#F4951D/i, 'canvas patterns must use selected colour variables rather than a Pivot default');
   assert.match(canvasPatterns, /pattern-chevron:after\{[^}]*var\(--third\)/);
   assert.match(canvasPatterns, /pattern-burst:after\{[^}]*var\(--third\)/);
+});
+
+test('canvas pattern clicks resolve the visible stripe or panel colour', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /import \{ resolvePatternColourTarget \} from '\.\/studio\/pattern-hit-testing\.js'/);
+  assert.match(source, /resolvePatternColourTarget\(\{pattern:design\.pattern,x:e\.clientX-rect\.left,y:e\.clientY-rect\.top,width:rect\.width,height:rect\.height,scale:design\.scale,angle:design\.angle\}\)/);
 });
 
 test('pattern colour controls show only slots used by the selected pattern', async () => {
