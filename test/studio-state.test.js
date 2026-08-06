@@ -241,6 +241,21 @@ test('history reports persistence failure while retaining accepted in-memory edi
   assert.equal(history.getState().surfaces['dark.front'].layers.find(candidate => candidate.id === layer.id).text, 'IN MEMORY');
 });
 
+test('text point sizes stay within the approved trial range through the state boundary', () => {
+  const initial = createInitialStudioState();
+  const layer = addTestText(initial);
+
+  const aboveMaximum = reduceStudioState(initial, {
+    type: 'updateLayer', surface: 'dark.front', layerId: layer.id, patch: { fontSize: 120 }
+  });
+  const belowMinimum = reduceStudioState(aboveMaximum.state, {
+    type: 'updateLayer', surface: 'dark.front', layerId: layer.id, patch: { fontSize: 2 }
+  });
+
+  assert.equal(aboveMaximum.state.surfaces['dark.front'].layers.at(-1).fontSize, 96);
+  assert.equal(belowMinimum.state.surfaces['dark.front'].layers.at(-1).fontSize, 5);
+});
+
 test('text controls preserve supplier-independent properties through history', () => {
   const initial = createInitialStudioState();
   const layer = addTestText(initial);

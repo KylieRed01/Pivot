@@ -12,6 +12,9 @@ import {
 
 const FONT_IDS = new Set(listFontChoices().map(choice => choice.id));
 
+export const TRIAL_TEXT_SIZE = Object.freeze({ min: 5, max: 96, step: 1 });
+
+const clampTrialTextSize = value => Math.max(TRIAL_TEXT_SIZE.min, Math.min(TRIAL_TEXT_SIZE.max, value));
 const clone = value => structuredClone(value);
 
 export function createInitialStudioState(garment = 'basketball-jersey') {
@@ -49,8 +52,8 @@ function safeLayer(layer) {
   } else {
     safe.scale = 1;
     safe.fontSize = Number.isFinite(layer.fontSize)
-      ? Math.max(5, layer.fontSize)
-      : Math.max(5, Math.round((Number.isFinite(layer.scale) ? layer.scale : 1) * 14));
+      ? clampTrialTextSize(layer.fontSize)
+      : clampTrialTextSize(Math.round((Number.isFinite(layer.scale) ? layer.scale : 1) * 14));
     safe.text = String(layer.text ?? '');
     safe.colour = String(layer.colour ?? '#FFFFFF');
     safe.alignment = ['left', 'center', 'right'].includes(layer.alignment) ? layer.alignment : 'center';
@@ -296,7 +299,7 @@ export function reduceStudioState(current, action) {
     for (const [key, value] of Object.entries(patch)) {
       if (protectedKeys.has(key) || (layer.type === 'text' && key === 'scale')) continue;
       if (layer.type === 'text' && key === 'fontSize') {
-        if (Number.isFinite(value)) layer.fontSize = Math.max(5, value);
+        if (Number.isFinite(value)) layer.fontSize = clampTrialTextSize(value);
         continue;
       }
       layer[key] = value;
