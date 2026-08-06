@@ -107,8 +107,8 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /<summary>More text options<\/summary>/);
   assert.match(source, /class="text-size-control"><span>Font size \(pt\)<\/span><input id="text-font-size-slider"[^>]*type="range"[^>]*min="5"[^>]*max="96"[^>]*step="1"[^>]*aria-label="Text size in points"><input id="text-font-size"[^>]*type="number"[^>]*min="5"[^>]*max="96"[^>]*step="1"/);
   assert.doesNotMatch(source, /Trial range/);
-  assert.match(source, /class="placement-presets"><span>Position across garment<\/span>/);
-  assert.match(source, /<summary>More text options<\/summary>[\s\S]*?Text alignment/);
+  assert.match(source, /class="placement-presets"><span>Move text across garment<\/span>/);
+  assert.match(source, /<summary>More text options<\/summary>[\s\S]*?<label>Align text at its position <select id="text-alignment"/);
   assert.doesNotMatch(source, /id="layer-scale"|id="text-size-value"|id="text-size-down"|id="text-size-up"|adjustTextSize/);
   assert.match(source, />Duplicate text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>[\s\S]*?>Remove text<\/button>/);
   assert.doesNotMatch(source, /Text layers|id="layer-list"/);
