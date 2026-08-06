@@ -147,9 +147,9 @@ test('Studio viewport keeps clear useful actions without technical pan fields', 
     readFile('public/style.css', 'utf8')
   ]);
 
-  assert.match(source, /id="fit-view"[^>]*>Fit<\/button>/);
+  assert.match(source, /id="fit-view" class="fit-view-button" aria-label="Fit garment to view">Fit garment<\/button>/);
   assert.match(source, /id="reset-session" class="reset-design-button" aria-label="Reset design">Reset design<\/button>/);
-  assert.match(styles, /\.view-tools \.reset-design-button\{[^}]*border:1px solid #092C71[^}]*background:#fff[^}]*font-weight:900/);
+  assert.match(styles, /\.view-tools \.fit-view-button,\.view-tools \.reset-design-button\{[^}]*border:1px solid #092C71[^}]*background:#fff[^}]*font-weight:900/);
   assert.doesNotMatch(source, /id="pan-[xy]"/);
   assert.doesNotMatch(source, /querySelector\('#pan-[xy]'\)/);
   assert.doesNotMatch(styles, /\.viewport-field/);
@@ -453,10 +453,10 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260806-17', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260806-18', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260806-10'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260806-11'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);
