@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="8080" height="1380" viewBox="0 0 8080 1380" role="img" aria-labelledby="title desc">
+  <title id="title">Club onboarding journey</title>
+  <desc id="desc">A left-to-right operational workflow with equal-height swimlanes for the Club contact or Office Bearer, Pivot, System, Club Administrator and Club Users.</desc>
+  <defs>
+    <style>
+      .title{font:700 46px 'Century Gothic',Arial,sans-serif;fill:#092C71}.subtitle{font:22px Calibri,Arial,sans-serif;fill:#34465e}
+      .phase{font:700 23px 'Century Gothic',Arial,sans-serif;fill:#fff;text-anchor:middle}.phase-dark{fill:#092C71}.lane-title{font:700 21px 'Century Gothic',Arial,sans-serif;fill:#fff;text-anchor:middle}.lane-title-dark{fill:#092C71}
+      .node-title{font:700 18px 'Century Gothic',Arial,sans-serif;fill:#092C71;text-anchor:middle}.node-copy{font:16px Calibri,Arial,sans-serif;fill:#34465e;text-anchor:middle}
+      .edge-label{font:700 16px Calibri,Arial,sans-serif;fill:#092C71;text-anchor:middle}.note{font:17px Calibri,Arial,sans-serif;fill:#34465e}.legend{font:16px Calibri,Arial,sans-serif;fill:#34465e}
+      .lane{stroke:#CAD6E5;stroke-width:2}.lane-office{fill:#F7F9FC}.lane-pivot{fill:#F5FBFE}.lane-system{fill:#FFFAF3}.lane-admin{fill:#F7F7F7}.lane-users{fill:#FAFAFA}
+      .lane-label-office{fill:#092C71}.lane-label-pivot{fill:#0096D6}.lane-label-system{fill:#F4951D}.lane-label-admin{fill:#000}.lane-label-users{fill:#666}
+      .process{fill:#fff;stroke:#0096D6;stroke-width:3}.manual{fill:#fff;stroke:#0096D6;stroke-width:3}.decision{fill:#FFF7EB;stroke:#F4951D;stroke-width:3}
+      .startend{fill:#E8F7FC;stroke:#092C71;stroke-width:3}.predefined{fill:#EAF1F9;stroke:#092C71;stroke-width:3;cursor:pointer}
+      .role-office{fill:#EAF1F9;stroke:#092C71}.role-pivot{fill:#E8F7FC;stroke:#0096D6}.role-system{fill:#FFF3E3;stroke:#F4951D}.role-admin{fill:#F2F2F2;stroke:#000}.role-user{fill:#F5F5F5;stroke:#666}
+      .flow{fill:none;stroke:#092C71;stroke-width:3;marker-end:url(#arrow)}.optional{fill:none;stroke:#666;stroke-width:2.5;stroke-dasharray:9 7;marker-end:url(#arrow-grey)}
+      .phase-divider{stroke:#9FB2CA;stroke-width:2;stroke-dasharray:8 7}.phase-commercial{fill:#092C71}.phase-onboarding{fill:#0096D6}.phase-products{fill:#F4951D}.phase-publication{fill:#092C71}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#092C71"/></marker>
+    <marker id="arrow-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker>
+  </defs>
+
+  <rect width="8080" height="1380" fill="#fff"/>
+  <text x="40" y="58" class="title">Club onboarding journey</text>
+  <text x="40" y="94" class="subtitle">How a club moves from commercial acceptance through setup to its first published Club Store.</text>
+
+  <!-- Phase headers: operational flow is consistently left to right -->
+  <rect x="260" y="125" width="2220" height="64" class="phase-commercial"/>
+  <rect x="2480" y="125" width="2320" height="64" class="phase-onboarding"/>
+  <rect x="4800" y="125" width="420" height="64" class="phase-products"/>
+  <rect x="5220" y="125" width="2820" height="64" class="phase-publication"/>
+  <text x="1370" y="166" class="phase">1. Commercial Agreement</text>
+  <text x="3640" y="166" class="phase">2. Onboarding</text>
+  <text x="5010" y="166" class="phase phase-dark">3. Products</text>
+  <text x="6630" y="166" class="phase">4. Club Store Publication</text>
+
+  <!-- Equal-height actor swimlanes -->
+  <rect x="20" y="205" width="220" height="180" class="lane lane-label-office"/><rect x="260" y="205" width="7780" height="180" class="lane lane-office"/>
+  <rect x="20" y="395" width="220" height="180" class="lane lane-label-pivot"/><rect x="260" y="395" width="7780" height="180" class="lane lane-pivot"/>
+  <rect x="20" y="585" width="220" height="180" class="lane lane-label-system"/><rect x="260" y="585" width="7780" height="180" class="lane lane-system"/>
+  <rect x="20" y="775" width="220" height="180" class="lane lane-label-admin"/><rect x="260" y="775" width="7780" height="180" class="lane lane-admin"/>
+  <rect x="20" y="965" width="220" height="180" class="lane lane-label-users"/><rect x="260" y="965" width="7780" height="180" class="lane lane-users"/>
+  <text x="130" y="278" class="lane-title">Club contact /</text><text x="130" y="307" class="lane-title">Office Bearer</text>
+  <text x="130" y="493" class="lane-title">Pivot</text>
+  <text x="130" y="683" class="lane-title lane-title-dark">System</text>
+  <text x="130" y="848" class="lane-title">Club</text><text x="130" y="877" class="lane-title">Administrator</text>
+  <text x="130" y="1038" class="lane-title">Club</text><text x="130" y="1067" class="lane-title">Users</text>
+
+  <line x1="2480" y1="189" x2="2480" y2="1145" class="phase-divider"/>
+  <line x1="4800" y1="189" x2="4800" y2="1145" class="phase-divider"/>
+  <line x1="5220" y1="189" x2="5220" y2="1145" class="phase-divider"/>
+
+  <!-- 1. Commercial Agreement -->
+  <rect x="300" y="257" width="190" height="76" rx="38" class="startend role-office"/>
+  <text x="395" y="286" class="node-title">Enquiry received</text><text x="395" y="312" class="node-copy">Website form or email</text>
+
+  <rect x="560" y="647" width="190" height="76" rx="10" class="process role-system"/>
+  <text x="655" y="676" class="node-title">Route enquiry</text><text x="655" y="702" class="node-copy">Notify Pivot</text>
+  <path d="M490 295H525V685H560" class="flow"/>
+
+  <polygon points="820,457 1010,457 990,533 840,533" class="manual role-pivot"/>
+  <text x="915" y="486" class="node-title">Meet and discuss</text><text x="915" y="512" class="node-copy">Club needs</text>
+  <path d="M750 685H785V495H830" class="flow"/>
+
+  <rect x="1060" y="457" width="190" height="76" rx="10" class="process role-pivot"/>
+  <text x="1155" y="486" class="node-title">Confirm fit</text><text x="1155" y="512" class="node-copy">Requirements + capacity</text>
+  <path d="M1000 495H1060" class="flow"/>
+
+  <rect x="1300" y="447" width="190" height="96" rx="10" class="process role-pivot"/>
+  <text x="1395" y="476" class="node-title">Prepare package</text><text x="1395" y="502" class="node-copy">Quote + agreement</text><text x="1395" y="526" class="node-copy">Exact versions</text>
+  <path d="M1250 495H1300" class="flow"/>
+
+  <rect x="1540" y="647" width="190" height="76" rx="10" class="process role-system"/>
+  <text x="1635" y="676" class="node-title">Send package</text><text x="1635" y="702" class="node-copy">Record delivery</text>
+  <path d="M1490 495H1515V685H1540" class="flow"/>
+
+  <polygon points="1780,247 1990,247 1970,343 1800,343" class="manual role-office"/>
+  <text x="1885" y="276" class="node-title">Accept package</text><text x="1885" y="302" class="node-copy">Select administrator</text><text x="1885" y="326" class="node-copy">Office bearer</text>
+  <path d="M1730 685H1755V295H1790" class="flow"/>
+
+  <rect x="2040" y="637" width="190" height="96" rx="10" class="process role-system"/>
+  <text x="2135" y="666" class="node-title">Record acceptance</text><text x="2135" y="692" class="node-copy">Versions + authority</text><text x="2135" y="716" class="node-copy">Administrator selection</text>
+  <path d="M1980 295H2015V685H2040" class="flow"/>
+
+  <rect x="2290" y="457" width="190" height="76" rx="10" class="process role-pivot"/>
+  <text x="2385" y="486" class="node-title">Countersign</text><text x="2385" y="512" class="node-copy">Agreement</text>
+  <path d="M2230 685H2260V495H2290" class="flow"/>
+
+  <!-- 2. Onboarding -->
+  <rect x="2530" y="637" width="190" height="96" rx="10" class="process role-system"/>
+  <text x="2625" y="666" class="node-title">Start onboarding</text><text x="2625" y="692" class="node-copy">Create account</text><text x="2625" y="716" class="node-copy">Send invitation</text>
+  <path d="M2480 495H2505V685H2530" class="flow"/>
+
+  <polygon points="2790,837 2980,837 2960,913 2810,913" class="manual role-admin"/>
+  <text x="2885" y="866" class="node-title">Activate account</text><text x="2885" y="892" class="node-copy">Individual access</text>
+  <path d="M2720 685H2755V875H2800" class="flow"/>
+
+  <polygon points="3030,837 3220,837 3200,913 3050,913" class="manual role-admin"/>
+  <text x="3125" y="866" class="node-title">Confirm details</text><text x="3125" y="892" class="node-copy">Reuse verified data</text>
+  <path d="M2970 875H3040" class="flow"/>
+
+  <polygon points="3270,827 3470,827 3450,923 3290,923" class="manual role-admin"/>
+  <text x="3370" y="856" class="node-title">Add Store identity</text><text x="3370" y="882" class="node-copy">Logo + colours</text><text x="3370" y="906" class="node-copy">Other assets optional</text>
+  <path d="M3210 875H3280" class="flow"/>
+
+  <rect x="3520" y="637" width="200" height="96" rx="10" class="process role-system"/>
+  <text x="3620" y="666" class="node-title">Generate setup</text><text x="3620" y="692" class="node-copy">Themes + checks</text><text x="3620" y="716" class="node-copy">Built-in guidance</text>
+  <path d="M3460 875H3495V685H3520" class="flow"/>
+
+  <polygon points="3770,827 3970,827 3950,923 3790,923" class="manual role-admin"/>
+  <text x="3870" y="856" class="node-title">Review and resolve</text><text x="3870" y="882" class="node-copy">Private preview</text><text x="3870" y="906" class="node-copy">Action required items</text>
+  <path d="M3720 685H3745V875H3780" class="flow"/>
+
+  <polygon points="4020,837 4210,837 4190,913 4040,913" class="manual role-admin"/>
+  <text x="4115" y="866" class="node-title">Approve setup</text><text x="4115" y="892" class="node-copy">Exact Store version</text>
+  <path d="M3960 875H4030" class="flow"/>
+
+  <rect x="4260" y="637" width="190" height="96" rx="10" class="process role-system"/>
+  <text x="4355" y="666" class="node-title">Complete onboarding</text><text x="4355" y="692" class="node-copy">Private Store preview</text><text x="4355" y="716" class="node-copy">Enable Products</text>
+  <path d="M4200 875H4235V685H4260" class="flow"/>
+
+  <polygon points="4260,827 4450,827 4430,923 4280,923" class="manual role-admin"/>
+  <text x="4355" y="856" class="node-title">Manage users</text><text x="4355" y="882" class="node-copy">Optional now or later</text><text x="4355" y="906" class="node-copy">Up to two</text>
+  <path d="M4115 913V940H4355V923" class="optional"/>
+
+  <rect x="4510" y="1047" width="190" height="76" rx="10" class="process role-user"/>
+  <text x="4605" y="1076" class="node-title">Activate invitation</text><text x="4605" y="1102" class="node-copy">Individual user access</text>
+  <path d="M4440 875H4475V1085H4510" class="optional"/>
+
+  <!-- 3. Products: clickable predefined process, not a swimlane -->
+  <a href="Product%20Workflow.md" target="_top" aria-label="Open Product Workflow">
+    <rect x="4840" y="842" width="330" height="106" rx="8" class="predefined"/>
+    <line x1="4856" y1="842" x2="4856" y2="948" stroke="#092C71" stroke-width="3"/>
+    <line x1="5154" y1="842" x2="5154" y2="948" stroke="#092C71" stroke-width="3"/>
+    <text x="5005" y="878" class="node-title">Open Product Workflow →</text>
+    <text x="5005" y="906" class="node-copy">Predefined process</text>
+    <text x="5005" y="930" class="node-copy">Output: approved product</text>
+  </a>
+  <path d="M4450 685H4740V895H4840" class="flow"/>
+  <path d="M4700 1085H4760V930H4840" class="optional"/>
+
+  <!-- 4. Club Store Publication -->
+  <rect x="5260" y="637" width="210" height="116" rx="10" class="process role-system"/>
+  <text x="5365" y="666" class="node-title">Add first product</text><text x="5365" y="692" class="node-copy">Mark Store ready</text><text x="5365" y="716" class="node-copy">Notify administrator</text><text x="5365" y="740" class="node-copy">Email + in-app</text>
+  <path d="M5170 895H5215V695H5260" class="flow"/>
+
+  <polygon points="5520,827 5720,827 5700,923 5540,923" class="manual role-admin"/>
+  <text x="5620" y="856" class="node-title">Review Store</text><text x="5620" y="882" class="node-copy">Correct if needed</text><text x="5620" y="906" class="node-copy">Private preview</text>
+  <path d="M5470 695H5495V875H5530" class="flow"/>
+
+  <polygon points="5780,837 5970,837 5950,913 5800,913" class="manual role-admin"/>
+  <text x="5875" y="866" class="node-title">Submit Store</text><text x="5875" y="892" class="node-copy">Exact version</text>
+  <path d="M5710 875H5790" class="flow"/>
+
+  <rect x="6030" y="637" width="200" height="96" rx="10" class="process role-system"/>
+  <text x="6130" y="666" class="node-title">Record submission</text><text x="6130" y="692" class="node-copy">Lock exact version</text><text x="6130" y="716" class="node-copy">Alert Pivot</text>
+  <path d="M5960 875H6000V685H6030" class="flow"/>
+
+  <rect x="6290" y="447" width="200" height="96" rx="10" class="process role-pivot"/>
+  <text x="6390" y="476" class="node-title">Review Store</text><text x="6390" y="502" class="node-copy">Completeness</text><text x="6390" y="526" class="node-copy">+ presentation</text>
+  <path d="M6230 685H6260V495H6290" class="flow"/>
+
+  <polygon points="6600,425 6670,495 6600,565 6530,495" class="decision role-pivot"/>
+  <text x="6600" y="488" class="node-title">Ready?</text>
+  <path d="M6490 495H6530" class="flow"/>
+
+  <rect x="6800" y="457" width="190" height="76" rx="10" class="process role-pivot"/>
+  <text x="6895" y="486" class="node-title">Publish Store</text><text x="6895" y="512" class="node-copy">Exact version</text>
+  <path d="M6670 495H6800" class="flow"/>
+  <text x="6735" y="481" class="edge-label">Yes</text>
+
+  <rect x="6800" y="647" width="190" height="76" rx="10" class="process role-system"/>
+  <text x="6895" y="676" class="node-title">Return reason</text><text x="6895" y="702" class="node-copy">Keep Store private</text>
+  <path d="M6600 565V685H6800" class="flow"/>
+  <text x="6620" y="625" class="edge-label">No</text>
+
+  <polygon points="7050,837 7240,837 7220,913 7070,913" class="manual role-admin"/>
+  <text x="7145" y="866" class="node-title">Correct + resubmit</text><text x="7145" y="892" class="node-copy">New exact version</text>
+  <path d="M6990 685H7020V875H7060" class="flow"/>
+
+  <rect x="7300" y="447" width="200" height="96" rx="10" class="process role-pivot"/>
+  <text x="7400" y="476" class="node-title">Re-review + publish</text><text x="7400" y="502" class="node-copy">When ready</text><text x="7400" y="526" class="node-copy">Exact version</text>
+  <path d="M7230 875H7270V495H7300" class="flow"/>
+
+  <rect x="7550" y="637" width="210" height="96" rx="10" class="process role-system"/>
+  <text x="7655" y="666" class="node-title">Confirm publication</text><text x="7655" y="692" class="node-copy">Notify administrator</text><text x="7655" y="716" class="node-copy">+ active users</text>
+  <path d="M6990 495H7520V685H7550" class="flow"/>
+  <path d="M7500 495H7520" class="flow"/>
+
+  <rect x="7830" y="647" width="190" height="76" rx="38" class="startend role-system"/>
+  <text x="7925" y="676" class="node-title">Store published</text><text x="7925" y="702" class="node-copy">Journey complete</text>
+  <path d="M7760 685H7830" class="flow"/>
+
+  <!-- concise process-map legend -->
+  <text x="40" y="1218" class="note">Future approved products are added automatically; initial Store submission is not repeated.</text>
+  <rect x="40" y="1250" width="140" height="54" rx="27" class="startend"/><text x="200" y="1283" class="legend">Start / End</text>
+  <rect x="340" y="1250" width="140" height="54" rx="10" class="process"/><text x="500" y="1283" class="legend">Process</text>
+  <polygon points="650,1250 704,1277 650,1304 596,1277" class="decision"/><text x="725" y="1283" class="legend">Decision</text>
+  <polygon points="900,1250 1040,1250 1026,1304 914,1304" class="manual"/><text x="1060" y="1283" class="legend">Manual input / operation</text>
+  <rect x="1350" y="1250" width="160" height="54" rx="8" class="predefined"/><line x1="1363" y1="1250" x2="1363" y2="1304" stroke="#092C71" stroke-width="3"/><line x1="1497" y1="1250" x2="1497" y2="1304" stroke="#092C71" stroke-width="3"/><text x="1530" y="1283" class="legend">Predefined process</text>
+  <text x="8040" y="1338" class="legend" text-anchor="end">Pivot Teamwear process baseline</text>
+</svg>
