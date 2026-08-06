@@ -110,7 +110,7 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /class="placement-presets"><span>Move text across garment<\/span>/);
   assert.match(source, /<summary>More text options<\/summary>[\s\S]*?<label>Align text at its position <select id="text-alignment"/);
   assert.doesNotMatch(source, /id="layer-scale"|id="text-size-value"|id="text-size-down"|id="text-size-up"|adjustTextSize/);
-  assert.match(source, />Duplicate text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>[\s\S]*?>Remove text<\/button>/);
+  assert.match(source, />Remove selected text<\/button>[\s\S]*?<details class="text-more-options">[\s\S]*?>Duplicate selected text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>/);
   assert.doesNotMatch(source, /Text layers|id="layer-list"/);
   assert.doesNotMatch(source, /sideName\+'-pivot-text'|'back-'\+sideName\+'-pivot-text'/);
   assert.match(source, /if\(b\.dataset\.tool==='artwork'&&!sides\[side\]\.layers\.some\(layer=>layer\.id===selectedId&&layer\.type==='text'\)\)/);
@@ -159,15 +159,18 @@ test('selected artwork explains deletion paths and required-number protection', 
   const source = await readFile('public/app.js', 'utf8');
   const styles = await readFile('public/style.css', 'utf8');
 
-  assert.match(source, /id="text-delete-help" class="selection-delete-help"/);
+  assert.match(source, /class="text-selection-heading"><span>Selected text<\/span><strong id="selected-text-name">PIVOT<\/strong>/);
+  assert.match(source, /id="artwork"[^>]*><\/label><button id="delete-layer" class="text-remove-button">Remove selected text<\/button><p id="text-delete-help"/);
+  assert.match(source, /<details class="text-more-options">[\s\S]*?<div class="layer-actions text-secondary-actions"><button id="duplicate-layer">Duplicate selected text<\/button>/);
   assert.match(source, /id="image-delete-help" class="selection-delete-help" hidden>Press Delete or Backspace, right-click and choose Delete, or use Delete or Remove selected image\./);
   assert.match(source, /const requiredNumber=Boolean\(textSelected&&selected\.required&&selected\.role==='number'\)/);
   assert.match(source, /requiredNumber\?'Required basketball number'/);
-  assert.match(source, /requiredNumber\?'This required number cannot be removed\.'/);
-  assert.match(source, /textDeleteHelp\.textContent=requiredNumber\?'This required number cannot be removed\.':'Press Delete or Backspace, right-click and choose Delete, or use Remove text\.'/);
+  assert.match(source, /selectedTextName\.textContent=requiredNumber\?'Required number':selected\.text\|\|'Untitled text'/);
+  assert.match(source, /deleteTextButton\.textContent=requiredNumber\?'Required number cannot be removed':'Remove selected text'/);
+  assert.match(source, /textDeleteHelp\.textContent=requiredNumber\?'This required number cannot be removed\.':'Remove this selected text with the button, Delete or Backspace, or right-click\.'/);
   assert.match(source, /document\.querySelector\('#image-delete-help'\)\.hidden=!imageSelected/);
   assert.match(styles, /\.selection-delete-help\[hidden\]\{display:none\}/);
-  assert.match(styles, /\.selection-delete-help\{[^}]*border-left:4px solid #0096D6/);
+  assert.match(styles, /\.text-remove-button\{[^}]*width:100%[^}]*border:1px solid/);
 });
 
 test('Design guidance avoids a redundant section eyebrow', async () => {
@@ -185,7 +188,7 @@ test('selected canvas text and images can be removed with the keyboard or visibl
   assert.match(source, /\['INPUT','TEXTAREA','SELECT'\]\.includes\(document\.activeElement\?\.tagName\)/);
   assert.match(source, /const layer=sides\[side\]\.layers\.find\(item=>item\.id===selectedId\);if\(!layer\|\|layer\.required\|\|layer\.controlLevel==='fixed'\)return;e\.preventDefault\(\);deleteSelectedLayer\(\)/);
   assert.match(source, /data-context-action="delete" class="danger"/);
-  assert.match(source, /id="delete-layer"[^>]*>Remove text<\/button>/);
+  assert.match(source, /id="delete-layer"[^>]*>Remove selected text<\/button>/);
   assert.match(source, /id="image-delete">Delete<\/button>/);
 });
 
@@ -453,10 +456,10 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260806-18', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260806-19', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260806-11'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260806-12'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);
