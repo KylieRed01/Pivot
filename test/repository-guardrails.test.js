@@ -127,8 +127,116 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /el\.onpointerdown=e=>\{if\(viewMode==='3d'\)return;e\.preventDefault\(\);selectedId=el\.dataset\.layerId;if\(!workflowDemo\)dispatchPublic\(\{type:'selectLayer'/);
 });
 
-test('Design Studio combines visible pattern colours with the exact HEX control', async () => {
+test('Pivot penguin library action is clear and provides visible removal', async () => {
   const [source, css] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(source, /class="library-asset-preview"><img src="\/brand\/Pivot_Icon\.svg" alt=""><\/span><span><strong>Add Pivot penguin<\/strong>/);
+  assert.doesNotMatch(source, /Play with the Pivot penguin/);
+  assert.match(source, /id="library-image-delete"[^>]*>Remove selected image<\/button>/);
+  assert.match(source, /document\.querySelector\('#library-image-delete'\)\.disabled=!imageSelected/);
+  assert.match(source, /document\.querySelector\('#library-image-delete'\)\.onclick=deleteSelectedImage/);
+  assert.match(source, /libraryAssetId:'pivot-penguin'[\s\S]*cropZoom:2\.15/);
+  assert.match(css, /\.library-asset-preview\{[^}]*overflow:hidden/);
+  assert.match(css, /\.library-asset-preview img\{width:88px;height:88px;[^}]*transform:scale\(2\.15\)/);
+});
+
+test('Design Studio upload instructions match the enforced one-megabyte limit', async () => {  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /Uploaded artwork stays in this browser\. Use PNG, JPEG or WebP up to 1 MB\./);
+  assert.match(source, /PNG, JPEG or WebP · max 1 MB/);
+  assert.doesNotMatch(source, /up to 5 MB|max 5 MB/);
+});
+
+test('Design Studio reports an upload rejected by the cumulative artwork limit', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /const result=dispatchPublic\(\{type:'addLayer',surface:currentSurfaceKey\(\),layer\}\);if\(!result\.ok\)\{message\.textContent=result\.error\.message;e\.target\.value='';return\}/);
+});
+
+test('Design Studio reports an image duplication rejected by the artwork limit', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /const result=dispatchPublic\(\{type:'duplicateLayer',surface:currentSurfaceKey\(\),layerId:selectedId,newLayerId\}\);if\(!result\.ok\)\{document\.querySelector\('#upload-message'\)\.textContent=result\.error\.message;return\}/);
+});
+
+test('choosing another pattern preserves the current design colours', async () => {
+  const [source, css] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+  const patternHandlerStart = source.lastIndexOf("document.querySelectorAll('[data-pattern]').forEach");
+  const patternHandler = source.slice(patternHandlerStart, source.indexOf("[['pattern-scale','scale']", patternHandlerStart));
+  const canvasPatternsStart = css.indexOf('.jersey.pattern-velocity:after');
+  const canvasPatterns = css.slice(canvasPatternsStart, css.indexOf('.jersey:before', canvasPatternsStart));
+
+  assert.match(patternHandler, /patch:\{pattern:key,scale:sides\[side\]\.scale,angle:sides\[side\]\.angle,density:100\}/);
+  assert.doesNotMatch(patternHandler, /d\.colour=|d\.accent=|d\.third=|d\.fourth=|base:surface|setPalette/);
+  assert.doesNotMatch(canvasPatterns, /#F4951D/i, 'canvas patterns must use selected colour variables rather than a Pivot default');
+  assert.match(canvasPatterns, /pattern-chevron:after\{[^}]*var\(--third\)/);
+  assert.match(canvasPatterns, /pattern-burst:after\{[^}]*var\(--third\)/);
+});
+
+test('pattern colour controls show only slots used by the selected pattern', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /const threeColourPatterns=new Set\(\['velocity','chevron','burst','gradient-three','stripes-mixed','bands','double-sash'\]\)/);
+  assert.match(source, /const patternColourCount=pattern=>pattern==='clean'\?1:threeColourPatterns\.has\(pattern\)\?3:2/);
+  assert.match(source, /data-pattern-colour-index="1"/);
+  assert.match(source, /data-pattern-colour-index="4"/);
+  assert.match(source, /data-pattern-colour-index="4"[\s\S]*class="pattern-controls"[\s\S]*id="pattern-scale"[\s\S]*id="pattern-angle"[\s\S]*id="pattern-density"[\s\S]*<\/fieldset>/);
+  assert.match(source, /const scalablePatterns=new Set\(\[/);
+  assert.match(source, /const rotatablePatterns=new Set\(\[/);
+  assert.match(source, /document\.querySelector\('#pattern-scale'\)\.closest\('label'\)\.hidden=!scalablePatterns\.has\(design\.pattern\)/);
+  assert.match(source, /document\.querySelector\('#pattern-angle'\)\.closest\('label'\)\.hidden=!rotatablePatterns\.has\(design\.pattern\)/);
+  assert.match(source, /document\.querySelector\('#pattern-density'\)\.closest\('label'\)\.hidden=design\.pattern==='clean'/);
+  assert.match(source, /button\.hidden=Number\(button\.dataset\.patternColourIndex\)>patternColourCount\(design\.pattern\)/);
+  const css = await readFile('public/style.css', 'utf8');
+  assert.match(css, /\.pattern-colours button\[hidden\]\{display:none\}/);
+  assert.match(css, /\.pattern-controls label\[hidden\]\{display:none\}/);
+});
+
+test('pattern choices preview the colours selected for the current surface', async () => {  const [source, css] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+  const swatchesStart = css.indexOf('.pattern i{');
+  const swatches = css.slice(swatchesStart, css.indexOf('.pattern-colours{', swatchesStart));
+
+  assert.match(source, /document\.querySelector\('\.patterns'\)\.style\.cssText=`--pattern-base:\$\{design\.base\};--pattern-accent:\$\{design\.accent\|\|d\.accent\};--pattern-third:\$\{d\.third\};--pattern-fourth:\$\{d\.fourth\}`/);
+  assert.match(swatches, /var\(--pattern-base\)/);
+  assert.match(swatches, /var\(--pattern-accent\)/);
+  assert.match(swatches, /var\(--pattern-third\)/);
+  assert.doesNotMatch(swatches, /#092C71|#0096D6|#F4951D/);
+});
+
+test('pattern colour choices open beside Patterns and return after selection', async () => {
+  const [source, css] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(source, /openColourPalette\(button\.dataset\.patternColourTarget,'patterns'\)/);
+  assert.match(source, /if\(returnTool==='patterns'\)\{activateTool\('patterns'\);document\.querySelector\('\[data-tool-panel="colours"\]'\)\.classList\.add\('active','pattern-context-colour-picker'\)\}else activateTool\('colours'\)/);
+  assert.match(source, /const restoreColourContext=\(\)=>\{if\(!colourReturnTool\)return;const tool=colourReturnTool;colourReturnTool=null;document\.querySelector\('\[data-tool-panel="colours"\]'\)\.classList\.remove\('pattern-context-colour-picker'\);activateTool\(tool\)\}/);
+  assert.match(source, /document\.querySelectorAll\('\[data-swatch\]'\)\.forEach\(b=>b\.onclick=\(\)=>\{applyColour\(b\.dataset\.swatch\);restoreColourContext\(\)\}\)/);
+  assert.match(source, /document\.querySelectorAll\('\[data-pattern\]'\)\.forEach\(b => b\.onclick = \(\) => \{\s*if\(colourReturnTool==='patterns'\)restoreColourContext\(\);/);
+  assert.match(css, /\.pattern-context-colour-picker\{position:fixed/);
+  assert.match(css, /\.pattern-context-colour-picker \.palette-target\{display:none\}/);
+});
+
+test('Colours tool prioritises controls without an introductory description', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+  const coloursPanelStart = source.indexOf('<section class="tool-section" data-tool-panel="colours">');
+  const coloursPanel = source.slice(coloursPanelStart, source.indexOf('</section>', coloursPanelStart));
+
+  assert.doesNotMatch(coloursPanel, /class="panel-help"/);
+  assert.doesNotMatch(coloursPanel, /Choose what to colour/);
+});
+
+test('Design Studio combines visible pattern colours with the exact HEX control', async () => {  const [source, css] = await Promise.all([
     readFile('public/app.js', 'utf8'),
     readFile('public/style.css', 'utf8')
   ]);

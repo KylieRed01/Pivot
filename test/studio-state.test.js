@@ -293,6 +293,8 @@ test('approved Pivot penguin can be added for Studio experimentation', () => {
 test('public artwork validation permits raster formats and rejects active or oversized files', () => {
   assert.deepEqual(validatePublicArtwork({ name: 'logo.png', type: 'image/png', size: 1024 }), { ok: true });
   assert.deepEqual(validatePublicArtwork({ name: 'photo.webp', type: 'image/webp', size: 2048 }), { ok: true });
+  assert.deepEqual(validatePublicArtwork({ name: 'limit.jpg', type: 'image/jpeg', size: 1024 * 1024 }), { ok: true });
+  assert.equal(validatePublicArtwork({ name: 'over-limit.jpg', type: 'image/jpeg', size: 1024 * 1024 + 1 }).error.code, 'UPLOAD_TOO_LARGE');
   assert.equal(validatePublicArtwork({ name: 'logo.svg', type: 'image/svg+xml', size: 500 }).error.code, 'UNSUPPORTED_UPLOAD');
   assert.equal(validatePublicArtwork({ name: 'proof.pdf', type: 'application/pdf', size: 500 }).error.code, 'UNSUPPORTED_UPLOAD');
   assert.equal(validatePublicArtwork({ name: 'huge.jpg', type: 'image/jpeg', size: 6 * 1024 * 1024 }).error.code, 'UPLOAD_TOO_LARGE');
@@ -347,6 +349,26 @@ test('flexible image layers can be added, transformed, duplicated and reordered'
   assert.equal(image.flipY, true);
   assert.equal(history.getState().surfaces['dark.front'].layers.some(layer => layer.id === 'image-copy'), true);
   assert.equal(serializePublicState(history.getState()).includes('blob:browser-only'), false);
+});
+
+test('duplicating artwork keeps the copy inside the editable placement bounds', () => {
+  const history = createStudioHistory(createInitialStudioState('generic-t-shirt'));
+  history.dispatch({
+    type: 'addLayer', surface: 'dark.front',
+    layer: {
+      id: 'edge-text', type: 'text', role: 'artwork', controlLevel: 'flexible',
+      text: 'EDGE', x: 94, y: 90, fontSize: 14
+    }
+  });
+
+  const result = history.dispatch({
+    type: 'duplicateLayer', surface: 'dark.front', layerId: 'edge-text', newLayerId: 'edge-copy'
+  });
+
+  assert.equal(result.ok, true);
+  const copy = history.getState().surfaces['dark.front'].layers.find(layer => layer.id === 'edge-copy');
+  assert.equal(copy.x, 95);
+  assert.equal(copy.y, 92);
 });
 
 test('palette edits are included in undo and redo history', () => {

@@ -334,7 +334,7 @@ export function reduceStudioState(current, action) {
       const validation = validatePublicArtwork({ type: source.mime, size: source.size }, publicArtworkBytes(state));
       if (!validation.ok) return { ...validation, state: clone(state) };
     }
-    const copy = safeLayer({ ...source, id: action.newLayerId, x: Math.min(95, source.x + 5), y: Math.min(95, source.y + 5) });
+    const copy = safeLayer({ ...source, id: action.newLayerId, x: Math.min(95, source.x + 5), y: Math.min(92, source.y + 5) });
     if (!copy.id) return failed(state, 'INVALID_LAYER', 'The duplicate layer needs an identifier.');
     surface.layers.push(copy);
     next.view.selectedLayerId = copy.id;
