@@ -132,6 +132,7 @@ test('Design guidance avoids a redundant section eyebrow', async () => {
 
   assert.match(source, /<h2 id="guidance-title">Design guidance<\/h2>/);
   assert.doesNotMatch(source, />Design support</);
+  assert.doesNotMatch(source, /<aside class="design-guidance"[\s\S]*?<footer>/);
 });
 
 test('Pivot penguin library action is clear and provides visible removal', async () => {
