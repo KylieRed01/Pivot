@@ -31,10 +31,11 @@
   - A multi-club data model exists, with Phoenix as the sole enabled pilot club.
   - Club administrators can access only their club's data and administration.
   - Pivot administrators can access all clubs and override club access.
-  - A club has one nominated primary approver and may have additional administrators.
-  - The club manages its own additional administrator accounts.
-  - Club administrator sign-in uses passwordless email links.
-  - Pivot administrator access requires multi-factor authentication.
+  - A club has one Club Administrator and may have up to two Club Users.
+  - The Club Administrator manages Club User invitations, revocation and replacement.
+  - Club Users may participate but cannot exercise the Club Administrator's approval authority.
+  - Club access uses individual authenticated accounts appropriate to each role; the production sign-in mechanism remains an implementation decision.
+  - Pivot administrator access requires strong multi-factor authentication.
 
 ## Execution window 2 — Guided club design and approval
 
@@ -43,10 +44,10 @@
 - **Type:** AFK
 - **Blocked by:** 2
 - **User stories covered:** 1
-- **Outcome:** Phoenix administrators can create a controlled design from approved templates.
+- **Outcome:** Phoenix users can create a fully customisable visual design within an approved garment product and supplier-validated production geometry.
 - **Acceptance criteria:**
-  - Administrators can select approved product templates and permitted options.
-  - The workspace provides guided creative freedom without unrestricted freeform editing.
+  - Users can select approved garment products and work within supplier-validated production geometry.
+  - The workspace provides fully customisable visual design without enabling unrestricted physical garment construction.
   - Pivot can preload club and sponsor artwork.
   - Administrators can upload club and sponsor artwork for Pivot review.
   - The workspace records a versioned design state.
@@ -60,7 +61,7 @@
 - **User stories covered:** 3, 4
 - **Outcome:** Phoenix approves a specific design version before Pivot reviews it.
 - **Acceptance criteria:**
-  - The nominated primary approver can submit final club approval for a design version.
+  - The Club Administrator can submit final club approval for a design version; Club Users cannot exercise that authority.
   - Pivot can approve a club-approved design or return it for revision.
   - Publication and manufacture submission are blocked until both approvals are complete.
   - The system records design changes, approval events and publication events with actor, version and timestamp.

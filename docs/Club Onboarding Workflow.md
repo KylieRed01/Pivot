@@ -131,6 +131,6 @@ This workflow occurs only for the first product and initial Store publication. F
 | First product makes Store ready for publication | Club Administrator only |
 | Initial Store published | Club Administrator and all active Club Users |
 
-## Required follow-up: proportionality audit
+## Proportionality audit
 
-Before implementation specification, perform the separately agreed repository-wide proportionality audit against the Business Plan and Operating Model. Review maintained requirements for enterprise-scale, speculative, duplicated or volunteer-hostile controls while preserving genuine club-isolation, authority, audit, Pivot approval and production-quality requirements.
+The required repository-wide audit is recorded in [Club Onboarding Proportionality Audit](./Club%20Onboarding%20Proportionality%20Audit.md). Its recorded Director decisions preserve the agreed online journey, one Club Administrator plus up to two Club Users, onboarding alerts and privacy-minimised analytics while constraining implementation to proportionate capability-owned modules.

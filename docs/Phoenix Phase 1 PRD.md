@@ -12,9 +12,9 @@ The phase 1 pilot covers sponsor-funded U10 jerseys and coach polos. Its primary
 
 ## Solution
 
-Provide a Phoenix-branded, link-accessible club store and a guided Pivot design tool.
+Provide a Phoenix-branded, link-accessible club store and the Pivot Design Studio.
 
-Phoenix administrators can work from approved product templates, use available club and sponsor artwork or upload artwork, view their design in both 2D and 3D, and submit it for approval. The club approves first; Pivot then reviews and approves before the design may be published or supplied for manufacture.
+Phoenix users can create fully customisable visual designs within approved garment products and supplier-validated production geometry, use available club and sponsor artwork or upload artwork, view their design in both 2D and 3D, and submit it for approval. The club approves first; Pivot then reviews and approves before the design may be published or supplied for manufacture.
 
 The store is non-transactional in phase 1. It displays approved products without prices and includes coach-polo sizing charts. Batch sizes and supplier orders remain manual.
 
@@ -22,11 +22,11 @@ The store is non-transactional in phase 1. It displays approved products without
 
 ### 1. Phoenix club administrator designs approved products
 
-As a Phoenix club administrator, I want to customise an approved jersey or coach-polo template using guided options, so I can create a club design without using a complex freeform editor.
+As a Phoenix Club Administrator or Club User, I want to create a visual design within an approved jersey or club-polo product, so I can express the club's identity without changing the controlled physical garment construction.
 
 **Acceptance criteria**
-- The administrator can work only with approved templates and permitted customisation options.
-- The experience supports meaningful creative freedom without unconstrained element editing.
+- The user can work only within approved garment products and supplier-validated production geometry.
+- The experience supports fully customisable visual design without unrestricted physical garment construction.
 - The administrator can use Pivot-provided artwork and, if desired, upload club or sponsor artwork.
 - Uploaded artwork is subject to Pivot review.
 - The design workspace presents a controlled 2D editing view and a 3D garment preview.
@@ -42,12 +42,13 @@ As a Phoenix club administrator, I want to inspect the design on a 3D model, so 
 
 ### 3. Phoenix approves a design before Pivot review
 
-As Phoenix's nominated primary approver, I want to give final club approval to a design, so Pivot receives a clear approved version for operational review.
+As Phoenix's Club Administrator, I want to give final club approval to a design, so Pivot receives a clear approved version for operational review.
 
 **Acceptance criteria**
-- A club can have multiple administrators and one nominated primary approver.
-- The club manages its own additional administrator access.
-- Club approval occurs before Pivot approval.
+- A club has one Club Administrator and may have up to two Club Users.
+- The Club Administrator manages Club User invitations, revocation and replacement.
+- Club Users may participate but do not replace the Club Administrator's approval authority.
+- Club Administrator approval occurs before Pivot approval.
 - Approval records identify the approver, artwork version and timestamp.
 
 ### 4. Pivot reviews and approves the club-approved design
@@ -91,9 +92,9 @@ As Pivot, I want club administrators isolated to their own club while customers 
 - Supplier selection follows sample evaluation and is outside this product scope.
 - Development may establish the design-tool framework before supplier selection. The selected supplier's approved 2D template and exact 3D garment model are added after selection.
 - The design tool is a Pivot-owned capability. If it cannot meet the Phoenix readiness deadline, a white-label customiser may be used for the pilot, provided Pivot retains its club, design and approval records and can replace the tool later.
-- Club administrator sign-in is passwordless by email link.
-- Pivot administrator accounts require multi-factor authentication.
-- Customer data, uploaded artwork, database backups and audit records must remain in Australia in production. Hosting decisions are deferred.
+- Club access uses individual authenticated accounts appropriate to each role; the production identity provider and sign-in mechanism remain an implementation decision.
+- Pivot administrator accounts require strong multi-factor authentication.
+- Providers may process information in Australia or overseas only under the Constitution 1.09 risk-based assessment, minimisation, disclosure and provider-oversight controls. Hosting decisions are deferred.
 - Approval records are retained for the life of the related product and order, plus seven years.
 
 ## Testing Decisions
@@ -101,7 +102,7 @@ As Pivot, I want club administrators isolated to their own club while customers 
 Test the following behaviours before Phoenix use:
 
 - A Phoenix administrator can access only Phoenix administration.
-- A primary approver can approve a version; another club administrator cannot access it from another club context.
+- The Club Administrator can approve a version; Club Users cannot exercise that authority and users from another club context cannot access it.
 - Pivot can review, approve or return a club-approved design.
 - Publication and manufacture submission remain blocked until both approvals exist.
 - The audit record captures design changes, publication and both approval events with actor, version and timestamp.
@@ -110,7 +111,7 @@ Test the following behaviours before Phoenix use:
 - The selected supplier's template and 3D model are used before final production approval.
 - The Phoenix store is accessible by link, not indexed, shows no pricing, and contains coach-polo sizing charts.
 - The store has no checkout, payment, order, expression-of-interest or size-submission flow.
-- Club administrators can manage their own additional administrator accounts; Pivot can override access.
+- The Club Administrator can manage up to two Club User accounts; Pivot can override access.
 
 ## Out of Scope
 
@@ -124,7 +125,7 @@ Test the following behaviours before Phoenix use:
 - Search-engine marketing or store indexing.
 - Other clubs in production.
 - Pricing display.
-- A fully unconstrained freeform design editor.
+- Unrestricted physical garment construction outside approved products and supplier-validated production geometry.
 - Native mobile applications.
 
 ## Further Notes
