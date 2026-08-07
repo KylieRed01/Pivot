@@ -182,6 +182,62 @@ This list preserves the numbering and wording supplied by Kylie on 2026-08-08. N
 
 Automated evidence currently recorded by the handover includes a 164-test full Node run before the final copy-only adjustment, a passing `npm run check` afterward, passing focused feedback/repository tests, 41 passing repository guardrails against an isolated committed snapshot, and verified local HTTP assets plus `noindex,nofollow`. These results are not manual acceptance, deployment authorisation or tester readiness.
 
+## Club Stores
+
+**Repository checkpoint:** Club Store separation was implemented in commit `6b960f6` (`feat: separate customer and club admin previews`). That commit is an ancestor of the current `pivot-v2-architecture` branch. Its committed snapshot recorded 77 passing tests and passing syntax checks. This evidence is not manual acceptance, production readiness or deployment approval.
+
+### Approved preview boundaries
+
+| Area | Route | Approved current state | Remaining acceptance / work |
+|---|---|---|---|
+| Club Stores landing | `/club-store/index.html` | One normal desktop viewport; compact Midnight Blue masthead with approved Pivot logo; H1 **Club Stores**; one **Pivot Club Store** entry; status **Preview only**; description **Explore how approved teamwear could look in a dedicated club-branded store.**; action **Explore the store →**; discreet text-link **Club login**. Kylie confirmed the one-screen approach works. | Manually confirm the homepage **Home** link scroll position. Do not turn **Club login** into a pill button without a new decision. |
+| Public customer store | `/club-store/pivot/index.html` | Separate customer-facing Pivot preview with playing-uniform and club-apparel placeholders; customer-selectable light/dark themes remembered in browser `localStorage`; clearly preview-only and non-transactional; no administration, ordering, checkout or payment controls. The landing entry opens this route. | Decide public-store FAQ/help placement. Any transactional capability requires separate scope and approval. |
+| Club administration preview | `/club-store/version-2-club-store-review.html` | Local preview of the future authorised Club User/Club Administrator experience: controlled light/dark theme preview, club-colour controls, placeholder products and an explicit statement that authentication, saving and approvals are not connected. No fake Save or Approve actions. | Decide the exact Club Administration information architecture and approval controls before functional implementation. The local **Club login** link currently bypasses authentication and opens this preview only for testing. |
+| Future club login | `/club-login/index.html` | Retained future passwordless-login page. Its email form is disabled and clearly marked as not connected; local navigation currently bypasses it. | Functional authentication remains unapproved and unimplemented. Do not imply that this route currently protects the administration preview. |
+
+### Settled club roles and authority
+
+Do not reopen these decisions without an explicit Director decision:
+
+- Each club has one appointed **Club Administrator**.
+- Each club may have up to two individually identified **Club Users**.
+- Club Users may prepare assets, colours, designs and store branding but cannot formally approve.
+- The Club Administrator manages Club Users and approves club decisions.
+- Public members, families and supporters are shoppers, not Club Users.
+- Pivot independently reviews and controls publication and release to manufacture.
+- Club approval alone cannot publish or release work to manufacture.
+
+### Known fixture mismatch
+
+Do not build functional approval or authentication capability on the current fixture model without a separately scoped correction:
+
+- `src/domain.js` still defines the superseded `primary_approver` role.
+- `data/state.json` still contains a primary-approver fixture.
+- `docs/Phoenix Phase 1 PRD.md` now records the settled model of one Club Administrator and up to two Club Users; the handover statement that this PRD remained stale is superseded.
+
+### Future secure-authentication direction
+
+No provider or mechanism has been selected. Any future proposal must remain provider-neutral until explicitly approved and must address:
+
+- invitation-only individual accounts;
+- passwordless, short-lived, single-use email links;
+- fresh authentication for approvals and access changes;
+- secure server-side sessions;
+- role and club isolation on every protected request;
+- strong multi-factor authentication for Pivot administrators;
+- audit records, notifications and rapid revocation.
+
+### Unresolved Club Store decisions
+
+- Exact Club Administration information architecture and approval controls.
+- Public-store and administration FAQ/help placement.
+- Functional authentication, durable saving and approval records.
+- Whether to add a generic trial tee before using an exact AS Colour product.
+- AS Colour imagery, colours and sizing resources exist, but no public supplier-approved production template has been confirmed. Do not make an exact-product or production-geometry claim without authoritative evidence and approval.
+- Manual confirmation of the homepage **Home** link scroll position.
+
+**Working protocol:** Inspect and explain current state before editing Club Stores; propose exactly one specific change; wait for explicit approval; avoid adjacent UX decisions; report exactly what changed; and do not push or deploy without explicit instruction.
+
 ## Club dashboard
 
 | ID | Area | Observation | Wanted outcome | Priority | Status | Decision/test evidence |
