@@ -27,3 +27,32 @@ export function pointInSafeArea({ clientX, clientY, rect } = {}) {
     y: clampPercent((clientY - rect.top) / rect.height * 100)
   };
 }
+
+export function rectangleOverflow({ boundary, content } = {}) {
+  const values = [boundary?.left, boundary?.top, boundary?.right, boundary?.bottom, content?.left, content?.top, content?.right, content?.bottom];
+  if (!values.every(Number.isFinite)) return Number.POSITIVE_INFINITY;
+  return Math.max(
+    0,
+    boundary.left - content.left,
+    content.right - boundary.right,
+    boundary.top - content.top,
+    content.bottom - boundary.bottom
+  );
+}
+
+export function positionAnchorPercent({ objectWidth, boundaryWidth, alignment = 'center', position } = {}) {
+  if (!finitePositive(objectWidth) || !finitePositive(boundaryWidth) || objectWidth > boundaryWidth + 0.5) return null;
+  if (position === 'centre') return 50;
+  const widthPercent = objectWidth / boundaryWidth * 100;
+  if (position === 'left') {
+    if (alignment === 'left') return 0;
+    if (alignment === 'right') return widthPercent;
+    return widthPercent / 2;
+  }
+  if (position === 'right') {
+    if (alignment === 'left') return 100 - widthPercent;
+    if (alignment === 'right') return 100;
+    return 100 - widthPercent / 2;
+  }
+  return null;
+}

@@ -409,10 +409,18 @@ export function reduceStudioState(current, action) {
     const surface = next.surfaces[surfaceKey];
     if (!surface) return failed(state, 'INVALID_SURFACE', 'Choose an available 2D surface.');
     const allowed = new Set(SURFACE_STYLE_KEYS);
-    for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key)) surface[key] = value;
+    const sharedTrim = new Set(['neck', 'armTrim']);
+    for (const [key, value] of Object.entries(action.patch ?? {})) {
+      if (!allowed.has(key)) continue;
+      if (sharedTrim.has(key)) {
+        for (const candidate of Object.values(next.surfaces)) candidate[key] = value;
+      } else {
+        surface[key] = value;
+      }
+    }
     if (next.setup.backDesignMode !== 'separate') {
       const counterpart = next.surfaces[counterpartSurface(surfaceKey)];
-      if (counterpart) for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key)) counterpart[key] = value;
+      if (counterpart) for (const [key, value] of Object.entries(action.patch ?? {})) if (allowed.has(key) && !sharedTrim.has(key)) counterpart[key] = value;
     }
     return { ok: true, state: next };
   }

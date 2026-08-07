@@ -287,6 +287,22 @@ test('jersey styling stays linked between front and back until the back is manua
   assert.equal(frontOnly.state.surfaces['dark.back'].pattern, 'hoops');
 });
 
+test('neck and armhole trim colours stay independently shared across every reversible surface', () => {
+  const initial = createInitialStudioState();
+  const separated = reduceStudioState(initial, { type: 'setBackDesignMode', mode: 'separate' });
+  const changed = reduceStudioState(separated.state, {
+    type: 'updateSurface',
+    surface: 'light.back',
+    patch: { neck: '#123456', armTrim: '#ABCDEF' }
+  });
+
+  assert.equal(changed.ok, true);
+  for (const surface of Object.values(changed.state.surfaces)) {
+    assert.equal(surface.neck, '#123456');
+    assert.equal(surface.armTrim, '#ABCDEF');
+  }
+});
+
 test('surface and view selection do not mutate independent 2D surfaces', () => {
   const initial = createInitialStudioState();
   const darkBefore = structuredClone(initial.surfaces['dark.front']);

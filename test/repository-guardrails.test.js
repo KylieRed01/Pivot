@@ -164,8 +164,9 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /<summary>More text options<\/summary>/);
   assert.match(source, /class="text-size-control"><span>Font size \(pt\)<\/span><input id="text-font-size-slider"[^>]*type="range"[^>]*min="5"[^>]*max="96"[^>]*step="1"[^>]*aria-label="Text size in points"><input id="text-font-size"[^>]*type="number"[^>]*min="5"[^>]*max="96"[^>]*step="1"/);
   assert.doesNotMatch(source, /Trial range/);
-  assert.match(source, /class="placement-presets"><span>Move text across garment<\/span>/);
-  assert.match(source, /<summary>More text options<\/summary>[\s\S]*?<label>Align text at its position <select id="text-alignment"/);
+  assert.match(source, /class="placement-presets"><span>Position<\/span><button data-place="left">Left<\/button><button data-place="centre">Centre<\/button><button data-place="right">Right<\/button>/);
+  assert.match(source, /<label>Text alignment <select id="text-alignment"><option value="left">Align left<\/option><option value="center">Align centre<\/option><option value="right">Align right<\/option><\/select><\/label>/);
+  assert.match(source, /<summary>More text options<\/summary>[\s\S]*?<label>Text alignment <select id="text-alignment"/);
   assert.doesNotMatch(source, /id="layer-scale"|id="text-size-value"|id="text-size-down"|id="text-size-up"|adjustTextSize/);
   assert.match(source, />Remove selected text<\/button>[\s\S]*?<details class="text-more-options">[\s\S]*?>Duplicate selected text<\/button>[\s\S]*?>Send backward<\/button>[\s\S]*?>Bring forward<\/button>/);
   assert.doesNotMatch(source, /Text layers|id="layer-list"/);
@@ -185,8 +186,41 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /authorised club users and club administrators/i);
   assert.doesNotMatch(source, /id="change-setup"/);
   assert.match(source, /el\.onpointerdown=e=>\{if\(viewMode==='3d'\|\|e\.target\.closest\('\.art-layer-text\[contenteditable\]'\)\)return;e\.preventDefault\(\);pointerMoved=false;selectedId=el\.dataset\.layerId;if\(!workflowDemo\)dispatchPublic\(\{type:'selectLayer'/);
-  assert.doesNotMatch(source, /el\.onpointerdown=e=>\{[\s\S]*?activateTool\('artwork'\)/);
-  assert.match(source, /el\.onclick=\(\)=>\{[\s\S]*?startInlineTextEditing\(renderedElement,layer\)/);
+  assert.match(source, /positionAnchorPercent\(\{objectWidth:layerElement\.getBoundingClientRect\(\)\.width,boundaryWidth:boundary\.getBoundingClientRect\(\)\.width,alignment:layer\.alignment,position:b\.dataset\.place\}\)/);
+  assert.match(source, /el\.onclick=e=>\{[\s\S]*?layer\?\.type==='text'[\s\S]*?activateTool\('artwork'\)/);
+  assert.doesNotMatch(source, /el\.onclick=e=>\{[\s\S]*?startInlineTextEditing\(renderedElement,layer\)/);
+});
+
+test('Studio tool panels close reliably and locked controls stay visually neutral', async () => {
+  const [source, styles] = await Promise.all([
+    readFile('public/app.js', 'utf8'),
+    readFile('public/style.css', 'utf8')
+  ]);
+
+  assert.match(source, /const activateTool=tool=>\{document\.querySelector\('\.tools'\)\.hidden=false;/);
+  assert.match(source, /document\.querySelector\('#close-tools'\)\.onclick=\(\)=>document\.querySelector\('\.tools'\)\.hidden=true/);
+  assert.doesNotMatch(source, /🔒/);
+  assert.match(source, /class="lock-badge"[^>]*><svg[^>]*viewBox="0 0 16 16"/);
+  assert.match(source, /data-tool="feedback" aria-label="Share feedback"><span aria-hidden="true"><svg class="rail-menu-icon feedback-menu-icon"/);
+  assert.doesNotMatch(source, /data-tool="feedback"[^>]*>[\s\S]*?<span>\?<\/span>/);
+  assert.match(styles, /\.save-icon-button\{[^}]*border:1px solid #CBD0D6[^}]*background:#F1F3F5[^}]*color:#66707A/);
+  assert.match(styles, /\.rail\{[^}]*gap:18px/);
+  assert.match(styles, /\.workspace:before\{[^}]*top:78px[^}]*width:100%[^}]*height:4px[^}]*background:#0096D6/);
+  assert.doesNotMatch(styles, /\.editor-top\{[^}]*border-bottom:/);
+  assert.doesNotMatch(styles, /\.design-guidance header\{[^}]*border-top:/);
+  assert.match(styles, /\.rail-item\{[^}]*height:58px[^}]*color:#FFFFFF/);
+  assert.doesNotMatch(styles, /\.rail-item:first-child\{[^}]*margin-top:/);
+  assert.match(styles, /\.rail-item small\{[^}]*line-height:1\.15/);
+  assert.match(styles, /\.design-stage:before\{[^}]*width:5px[^}]*linear-gradient\(#0096D6 0 55%,#F4951D 55%\)/);
+  assert.match(styles, /\.separate-back-control\{[^}]*border:1px solid #0096D6!important[^}]*background:color-mix\(in srgb,#0096D6 12%,#FFFFFF\)[^}]*color:#092C71/);
+  assert.match(styles, /\.separate-back-control:hover\{[^}]*background:color-mix\(in srgb,#0096D6 20%,#FFFFFF\)/);
+  assert.match(styles, /\.separate-back-control\.active\{[^}]*background:#092C71[^}]*color:#FFFFFF/);
+  assert.match(styles, /\.rail-item:hover,\.rail-item:focus-visible\{[^}]*color:#F4951D/);
+  assert.match(styles, /\.rail-menu-icon\{[^}]*width:20px[^}]*height:20px/);
+  assert.match(styles, /\.rail-feature-icon \.lock-badge\{[^}]*color:#B7BEC8/);
+  assert.match(styles, /\.save-icon-button \.lock-badge\{[^}]*border:0[^}]*background:transparent[^}]*color:#66707A/);
+  assert.doesNotMatch(styles, /\.save-icon-button \.lock-badge\{[^}]*(?:border-radius|background:#66707A|color:#FFFFFF)/);
+  assert.doesNotMatch(styles, /\.save-icon-button(?: \.lock-badge)?\{[^}]*(?:#092C71|#0096D6|#F4951D)/);
 });
 
 test('canvas text and basketball numbers support quiet live editing in their rendered typography', async () => {
@@ -200,10 +234,12 @@ test('canvas text and basketball numbers support quiet live editing in their ren
   assert.match(source, /const textElement=layerElement\.querySelector\('\.art-layer-text'\)/);
   assert.match(source, /textElement\.contentEditable='plaintext-only'/);
   assert.match(source, /textElement\.oninput=/);
+  assert.match(source, /boundaryRect=layerElement\?\.closest\('\.print-boundary'\)\?\.getBoundingClientRect\(\),contentRect=layerElement\?\.getBoundingClientRect\(\)/);
+  assert.match(source, /rectangleOverflow\(\{boundary:boundaryRect,content:contentRect\}\)/);
   assert.match(source, /const overflow=renderedTextOverflow\(layerElement\);if\(overflow>lastOverflow\+0\.5\)/);
   assert.match(source, /event\.key==='Enter'[\s\S]*?event\.key==='Escape'/);
   assert.match(source, /e\.key==='Enter'\|\|e\.key==='F2'/);
-  assert.match(source, /startInlineTextEditing\(renderedElement,layer\)/);
+  assert.match(source, /el\.ondblclick=e=>\{[\s\S]*?startInlineTextEditing\(el,layer\)/);
   assert.match(styles, /\.print-boundary\{[^}]*overflow:hidden/);
   assert.match(styles, /\.jersey\.garment-generic-t-shirt \.print-boundary\{inset:70px 74px 25px\}/);
   assert.match(styles, /\.jersey\.garment-generic-hoodie \.print-boundary\{inset:105px 80px 25px\}/);
@@ -265,11 +301,21 @@ test('public trial identifies club assets as a visible locked feature', async ()
     readFile('public/style.css', 'utf8')
   ]);
 
-  assert.match(source, /class="rail-item locked-explainer" data-tool="club-images" aria-label="Club assets — locked" title="Club assets — locked; open for details"[\s\S]*?class="lock-badge"[\s\S]*?<small>Club assets <b class="locked-label">Locked<\/b><\/small>/);
+  assert.match(source, /class="rail-item locked-explainer" data-tool="club-images" aria-label="Club assets — locked" title="Club assets — locked; open for details"[\s\S]*?class="lock-badge"[\s\S]*?<small>Club assets<\/small>/);
+  assert.doesNotMatch(source, /<small>Club assets <b class="locked-label">Locked<\/b><\/small>/);
   assert.match(source, /data-tool-panel="club-images"[\s\S]*?<strong>Club access required<\/strong>[\s\S]*?not connected in this trial/);
   assert.doesNotMatch(source, /href="\/club-login\/index\.html"/);
   assert.match(styles, /\.rail-item\.locked-explainer\{[^}]*cursor:pointer/);
   assert.doesNotMatch(styles, /\.rail-item\.locked-explainer\{[^}]*cursor:not-allowed/);
+});
+
+test('public trial identifies club approved products as a locked feature below club assets', async () => {
+  const source = await readFile('public/app.js', 'utf8');
+
+  assert.match(source, /data-tool="club-images"[\s\S]*?data-tool="club-products" aria-label="Club approved products — locked"/);
+  assert.match(source, /data-tool="club-products"[\s\S]*?class="rail-feature-icon"[\s\S]*?<svg class="rail-menu-icon jersey-menu-icon"[\s\S]*?<small>Club approved products<\/small>/);
+  assert.doesNotMatch(source, /<small>Club approved products <b class="locked-label">Locked<\/b><\/small>/);
+  assert.match(source, /data-tool-panel="club-products"[\s\S]*?<strong>Club access required<\/strong>[\s\S]*?<h3 id="club-products-title">Club approved products<\/h3>[\s\S]*?not connected in this trial/);
 });
 
 test('Studio text size controls share point values with canvas resizing', async () => {
@@ -320,9 +366,11 @@ test('selected artwork explains deletion paths and required-number protection', 
   const styles = await readFile('public/style.css', 'utf8');
 
   assert.match(source, /class="text-selection-heading"><span>Selected text<\/span><strong id="selected-text-name">PIVOT<\/strong>/);
-  assert.match(source, /id="artwork"[^>]*><\/label><button id="delete-layer" class="text-remove-button">Remove selected text<\/button><p id="text-delete-help"/);
-  assert.doesNotMatch(source, /text-colour-button|Choose text colour/);
-  assert.match(source, /el\.onclick=\(\)=>\{[\s\S]*?startInlineTextEditing\(renderedElement,layer\)/);
+  assert.match(source, /id="artwork"[^>]*><\/label><button id="text-colour-button" class="text-colour-button" type="button"><i aria-hidden="true"><\/i><span>Text colour<\/span><\/button><button id="delete-layer" class="text-remove-button">Remove selected text<\/button><p id="text-delete-help"/);
+  assert.match(source, /document\.querySelector\('#text-colour-button'\)\.onclick=\(\)=>openColourPalette\('layer','artwork'\)/);
+  assert.match(source, /document\.querySelector\('#text-colour-button i'\)\.style\.setProperty\('--selected-text-colour',selected\.colour\|\|'#FFFFFF'\)/);
+  assert.match(source, /el\.onclick=e=>\{[\s\S]*?layer\?\.type==='text'[\s\S]*?activateTool\('artwork'\)/);
+  assert.doesNotMatch(source, /el\.onclick=e=>\{[^\n]*startInlineTextEditing/);
   assert.match(source, /<details class="text-more-options">[\s\S]*?<div class="layer-actions text-secondary-actions"><button id="duplicate-layer">Duplicate selected text<\/button>/);
   assert.match(source, /id="image-delete-help" class="selection-delete-help" hidden>Press Delete or Backspace, right-click and choose Delete, or use Delete or Remove selected image\./);
   assert.match(source, /const requiredNumber=Boolean\(textSelected&&selected\.required&&selected\.role==='number'\)/);
@@ -333,6 +381,7 @@ test('selected artwork explains deletion paths and required-number protection', 
   assert.match(source, /document\.querySelector\('#image-delete-help'\)\.hidden=!imageSelected/);
   assert.match(styles, /\.selection-delete-help\[hidden\]\{display:none\}/);
   assert.match(styles, /\.text-remove-button\{[^}]*width:100%[^}]*border:1px solid/);
+  assert.match(styles, /\.text-colour-button\{[^}]*width:100%[^}]*display:flex[^}]*background:#fff/);
 });
 
 test('Design guidance avoids a redundant section eyebrow', async () => {
@@ -411,6 +460,9 @@ test('canvas pattern clicks resolve the visible stripe or panel colour', async (
 
   assert.match(source, /import \{ resolvePatternColourTarget \} from '\.\/studio\/pattern-hit-testing\.js'/);
   assert.match(source, /resolvePatternColourTarget\(\{pattern:design\.pattern,x:e\.clientX-rect\.left,y:e\.clientY-rect\.top,width:rect\.width,height:rect\.height,scale:design\.scale,angle:design\.angle\}\)/);
+  assert.match(source, /if\(markedArea\)openColourPalette\(markedArea\);else if\(design\.pattern==='clean'\)openColourPalette\('colour'\);else openColourPalette\(area,'patterns'\)/);
+  assert.match(source, /<option value="colour">Main garment colour<\/option>/);
+  assert.match(source, /<option value="neck">Neck trim \(both sides\)<\/option><option value="armTrim">Armhole trim \(both sides\)<\/option>/);
 });
 
 test('pattern colour controls show only slots used by the selected pattern', async () => {
@@ -667,15 +719,15 @@ test('homepage defers Design Studio code and styles until a Studio route is sele
 
   assert.match(html, /href="\/website\/home\.css\?v=20260805-5"/);
   assert.doesNotMatch(html, /href="\/style\.css/);
-  assert.match(html, /src="\/website\/home-entry\.js\?v=20260807-20"/);
+  assert.match(html, /src="\/website\/home-entry\.js\?v=20260808-36"/);
   assert.match(homeCss, /#home\s*\{\s*scroll-margin-top:\s*72px;\s*\}/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*#home\s*\{\s*scroll-margin-top:\s*200px;\s*\}/);
   assert.doesNotMatch(html, /src="\/app\.js/);
   assert.match(entry, /studioRoutes\.has\(location\.hash\)/);
-  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260807-19', 'data-studio-styles'\)/);
+  assert.match(entry, /loadStylesheet\('\/style\.css\?v=20260808-30', 'data-studio-styles'\)/);
   assert.match(entry, /loadStylesheet\('\/studio\/fonts\.css\?v=20260805-1', 'data-studio-fonts'\)/);
   assert.match(entry, /await loadStudioStyles\(\)\.catch/);
-  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260807-19'\)/);
+  assert.match(entry, /await import\('\.\.\/app\.js\?v=20260808-27'\)/);
   assert.doesNotMatch(homeCss, /\.design-setup|\.workspace|\.editor-body/);
   assert.match(homeCss, /@media \(max-width: 720px\)[\s\S]*nav \{[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: center;/);
   assert.doesNotMatch(homeCss, /overflow-x:\s*auto/);
