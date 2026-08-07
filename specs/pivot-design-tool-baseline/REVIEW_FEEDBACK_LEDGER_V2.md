@@ -182,6 +182,42 @@ This list preserves the numbering and wording supplied by Kylie on 2026-08-08. N
 
 Automated evidence currently recorded by the handover includes a 164-test full Node run before the final copy-only adjustment, a passing `npm run check` afterward, passing focused feedback/repository tests, 41 passing repository guardrails against an isolated committed snapshot, and verified local HTTP assets plus `noindex,nofollow`. These results are not manual acceptance, deployment authorisation or tester readiness.
 
+## Deferred Design Studio work — excluded from the testing-release gate
+
+These items intentionally sit beyond the current browser-local Design Studio trial or are deferred cleanup/UX decisions. They must not block release for user testing while the trial boundary below remains truthful. Reopening an item requires its own scope, governing-document review, TDD slice and applicable approval; do not absorb it into unrelated trial remediation.
+
+### Deferred cleanup and UX decisions
+
+| ID | Deferred item | Boundary / future decision |
+|---|---|---|
+| `STUDIO-DEFER-01` | Remove obsolete Studio setup CSS | The removed setup chooser still has unused selectors in `public/style.css`; runtime searches found no current consumer. Remove separately with repository-guardrail coverage. |
+| `STUDIO-DEFER-02` | Review Pattern colour 4 | No current pattern uses Colour 4, but it may remain in the main Colours target dropdown. Decide separately whether to remove it or filter colour targets dynamically. |
+| `STUDIO-DEFER-03` | Review duplicate gradient concepts | The pattern catalogue contains gradient patterns while a separate **Gradient jersey base** section also exists. Decide whether these are distinct useful workflows or should be combined. |
+| `STUDIO-DEFER-04` | Consider broader direct pattern hit-testing | Coordinate-based direct selection covers stripe, band, split and panel patterns. Other complex patterns may continue using explicit Pattern options colour chips; expand direct targeting only if testing demonstrates value. |
+| `STUDIO-DEFER-05` | Optional required-number workflow | The seeded basketball number remains protected from deletion. Any future deletion capability must also provide an explicit **Add basketball number** action and retain blocking design checks; never remove protection by itself. |
+
+### Deferred production dependencies
+
+| ID | Deferred dependency | Boundary / prerequisite |
+|---|---|---|
+| `STUDIO-DEFER-06` | Supplier-authoritative garment geometry | Current garment shapes and editable boundaries are placeholders. Replace only when validated supplier geometry is available. |
+| `STUDIO-DEFER-07` | Accurate side and 3D views | Left/right views are indicative rotated previews, not production-authoritative garment surfaces. |
+| `STUDIO-DEFER-08` | Physical basketball sizing validation | Point sizes support trial interaction only and establish neither printed dimensions nor competition compliance. |
+| `STUDIO-DEFER-09` | Production font approval | Development garment fonts remain evaluation-only. Licensing, supplier rendering and basketball-number suitability require approval. |
+| `STUDIO-DEFER-10` | Production-ready T-shirt and hoodie templates | These remain generic testing garments. Supplier products and authoritative geometry are prerequisites. |
+| `STUDIO-DEFER-11` | Authenticated approved club images | Authentication and club-scoped asset access are not connected. Real club assets must not be exposed through the public trial. |
+| `STUDIO-DEFER-12` | Production save, approval and submission | Public designs remain browser-local. Durable records, authentication, approval audit history and production release are future capabilities. |
+
+### Testing-release boundary
+
+The deferred items may remain open provided the Studio continues to state clearly and truthfully that it is:
+
+- a browser-local trial;
+- not an order or submitted design;
+- not production-ready;
+- based on placeholder garment geometry; and
+- unable to expose real authenticated club assets.
+
 ## Club Stores
 
 **Repository checkpoint:** Club Store separation was implemented in commit `6b960f6` (`feat: separate customer and club admin previews`). That commit is an ancestor of the current `pivot-v2-architecture` branch. Its committed snapshot recorded 77 passing tests and passing syntax checks. This evidence is not manual acceptance, production readiness or deployment approval.
