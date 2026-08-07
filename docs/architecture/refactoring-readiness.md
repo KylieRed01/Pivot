@@ -1,7 +1,7 @@
 # Refactoring readiness
 
 **Status:** Scale-aware maintenance guide
-**Reviewed:** 5 August 2026
+**Reviewed:** 7 August 2026
 
 ## Purpose
 
@@ -11,12 +11,12 @@ This guide records when structural change would reduce complexity and when it wo
 
 | Measure | Current observation |
 |---|---:|
-| `public/app.js` size | Approximately 51 KB |
-| `querySelector*` references in `public/app.js` | Approximately 150 |
+| `public/app.js` size | Approximately 75 KB |
+| `querySelector*` references in `public/app.js` | Approximately 182 |
 | `workflowDemo` references | Approximately 66 |
 | `localStorage` references | 13 |
 | Public Studio storage boundary | One `sessionStorage`-compatible adapter |
-| Automated tests | More than 70 passing Node tests |
+| Automated tests | 171 passing Node tests at the current checkpoint |
 | External runtime dependencies | One (`nodemailer`, limited to Studio-feedback SMTP/TLS delivery); club-interest JMAP uses native `fetch` |
 
 Counts are navigation aids, not quality targets.
