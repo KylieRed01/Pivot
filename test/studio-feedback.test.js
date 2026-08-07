@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createApp } from '../src/server.js';
 import { validateStudioFeedback } from '../src/studio-feedback.js';
 import { createStudioFeedbackSender } from '../src/studio-feedback-delivery.js';
-import { describeStudioView, sendStudioFeedback } from '../public/studio/studio-feedback-form.js';
+import { describeStudioView, feedbackFailureMessage, sendStudioFeedback } from '../public/studio/studio-feedback-form.js';
 
 const validSubmission = {
   message: 'I could not tell which colour area I had selected.',
@@ -18,6 +18,14 @@ test('Studio feedback describes the tester’s current 2D or indicative side vie
   assert.equal(describeStudioView({ viewMode: '2d', garmentView: 'back', sideView: 'left' }), 'back');
   assert.equal(describeStudioView({ viewMode: '3d', garmentView: 'front', sideView: 'left' }), 'left-side preview');
   assert.equal(describeStudioView({ viewMode: '3d', garmentView: 'back', sideView: 'right' }), 'right-side preview');
+});
+
+test('Studio feedback failures give concise next steps without exposing delivery details', () => {
+  assert.equal(feedbackFailureMessage({ code: 'INVALID_SUBMISSION' }), 'Check your feedback and optional email, then try again.');
+  assert.equal(feedbackFailureMessage({ code: 'RATE_LIMITED' }), 'Too many feedback attempts. Wait 15 minutes, then try again.');
+  assert.equal(feedbackFailureMessage({ code: 'DELIVERY_UNAVAILABLE' }), 'Feedback cannot be sent right now. Your entries are still here; please try again later.');
+  assert.equal(feedbackFailureMessage({ code: 'DELIVERY_FAILED' }), 'Feedback could not be delivered. Your entries are still here; please try again.');
+  assert.equal(feedbackFailureMessage({ code: 'UNKNOWN', message: 'SMTP authentication failed' }), 'Something went wrong. Your entries are still here; please try again.');
 });
 
 test('Studio feedback browser helper sends only the easy tester form and troubleshooting context', async () => {

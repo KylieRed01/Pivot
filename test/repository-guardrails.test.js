@@ -107,7 +107,8 @@ test('website navigation consistently uses the home route name', async () => {
   for (const source of sources) assert.doesNotMatch(source, /#store/);
   assert.match(sources[0], /href="\/#home">Home<\/a>/);
   assert.match(sources[1], /href="\/#home">Home<\/a>/);
-  assert.match(sources[2], /class="studio-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
+  assert.match(sources[2], /class="studio-logo-brand"[^>]*><img src="\/brand\/Pivot_Icon\.svg" alt="Pivot Teamwear">/);
+  assert.doesNotMatch(sources[2], /Return to home|studio-home-disabled/);
   assert.match(sources[3], /<section class="pivot-hero" id="home">/);
 });
 
@@ -116,7 +117,7 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
 
   assert.match(source, /<aside class="design-guidance" aria-labelledby="guidance-title"><header><div class="guidance-design-row"><label class="design-name guidance-design-name">[\s\S]*?id="design-name"[\s\S]*?id="save-design"[\s\S]*?class="save-icon-button locked-feature"[\s\S]*?aria-disabled="true"[\s\S]*?aria-label="Save design"[\s\S]*?title="Save design — club access required"[\s\S]*?class="lock-badge"[\s\S]*?<small>Trial changes are kept temporarily in this browser session<\/small>[\s\S]*?<h2 id="guidance-title">Design guidance<\/h2>/);
   assert.doesNotMatch(source, /id="save-browser-design"|publicStore\?\.save\(publicState\)/);
-  assert.match(source, /class="studio-logo-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
+  assert.match(source, /class="studio-logo-brand"[^>]*><img src="\/brand\/Pivot_Icon\.svg" alt="Pivot Teamwear">/);
   assert.match(source, /id="guidance-view"/);
   assert.match(source, /id="guidance-selection"/);
   assert.match(source, /id="open-design-checks"/);
@@ -148,7 +149,7 @@ test('Design Studio gives creation, canvas and guidance one distinct owner', asy
   assert.match(source, /data-template="generic-hoodie"/);
   assert.match(source, /data-tool="library"/);
   assert.match(source, /libraryAssetId:'pivot-penguin'[\s\S]*?x:50,y:45,scale:1\.6,rotation:0/);
-  assert.match(source, /data-tool="club-images"[^>]*aria-label="Club assets — club access required"/);
+  assert.match(source, /data-tool="club-images"[^>]*aria-label="Club assets — locked"/);
   assert.match(source, /data-tool-panel="club-images"/);
   assert.match(source, /Club access is not connected in this trial/);
   assert.match(source, /data-tool="images"[^>]*aria-label="Upload image"/);
@@ -197,10 +198,11 @@ test('public trial identifies club assets as a visible locked feature', async ()
     readFile('public/style.css', 'utf8')
   ]);
 
-  assert.match(source, /class="rail-item locked-feature" data-tool="club-images" aria-label="Club assets — club access required" title="Club assets — club access required"[\s\S]*?class="lock-badge"[\s\S]*?<small>Club assets<\/small>/);
+  assert.match(source, /class="rail-item locked-explainer" data-tool="club-images" aria-label="Club assets — locked" title="Club assets — locked; open for details"[\s\S]*?class="lock-badge"[\s\S]*?<small>Club assets <b class="locked-label">Locked<\/b><\/small>/);
   assert.match(source, /data-tool-panel="club-images"[\s\S]*?<strong>Club access required<\/strong>[\s\S]*?not connected in this trial/);
   assert.doesNotMatch(source, /href="\/club-login\/index\.html"/);
-  assert.match(styles, /\.rail-item\.locked-feature\{[^}]*color:color-mix\(in srgb,#FFFFFF 48%,#092C71\)[^}]*cursor:not-allowed/);
+  assert.match(styles, /\.rail-item\.locked-explainer\{[^}]*cursor:pointer/);
+  assert.doesNotMatch(styles, /\.rail-item\.locked-explainer\{[^}]*cursor:not-allowed/);
 });
 
 test('Studio text size controls share point values with canvas resizing', async () => {
@@ -526,9 +528,10 @@ test('public Studio lets invited testers submit feedback without leaving the Stu
   assert.match(source, /data-tool="feedback" aria-label="Share feedback"[\s\S]*?<small>Feedback<\/small>/);
   assert.match(source, /data-tool-panel="feedback"[\s\S]*?<h3>Share feedback<\/h3>[\s\S]*?<form id="studio-feedback-form"[\s\S]*?id="studio-feedback-message"[\s\S]*?id="studio-feedback-email"[\s\S]*?type="submit"[\s\S]*?id="studio-feedback-status"/);
   assert.doesNotMatch(source, /name="category"|designName:publicState\.designName/);
-  assert.match(source, /import \{ describeStudioView, sendStudioFeedback \} from '\.\/studio\/studio-feedback-form\.js'/);
+  assert.match(source, /import \{ describeStudioView, feedbackFailureMessage, sendStudioFeedback \} from '\.\/studio\/studio-feedback-form\.js'/);
   assert.match(source, /await sendStudioFeedback\(\{[\s\S]*?navigator\.userAgent/);
-  assert.match(source, /garment, current view and browser details will be included automatically/);
+  assert.match(source, /catch\(error\)\{status\.className='feedback-error';status\.textContent=feedbackFailureMessage\(error\)\}/);
+  assert.match(source, /Your feedback will help us improve this trial\. Garment, current view and browser details are included automatically\. Add your email only if you’d like a reply\./);
   assert.doesNotMatch(source, /mailto:/i);
 });
 
@@ -551,9 +554,8 @@ test('tester release exposes only the public Studio hash route', async () => {
   assert.match(entry, /const studioRoutes = new Set\(\['#studio'\]\)/);
   assert.doesNotMatch(entry, /#workflow-demo|#admin/);
   assert.doesNotMatch(studio, /location\.hash[\s\S]{0,100}#workflow-demo|location\.hash[\s\S]{0,100}#admin/);
-  assert.match(studio, /class="studio-logo-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
-  assert.match(studio, /class="studio-home studio-home-disabled" type="button" disabled aria-disabled="true"/);
-  assert.doesNotMatch(studio, /class="studio-(?:logo-)?home" href="#home"/);
+  assert.match(studio, /class="studio-logo-brand"[^>]*><img src="\/brand\/Pivot_Icon\.svg" alt="Pivot Teamwear">/);
+  assert.doesNotMatch(studio, /Return to home|studio-home-disabled|class="studio-(?:logo-)?home"/);
 });
 
 test('homepage defers Design Studio code and styles until a Studio route is selected', async () => {
