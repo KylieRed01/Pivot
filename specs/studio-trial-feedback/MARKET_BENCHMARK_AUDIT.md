@@ -1,6 +1,6 @@
 # Pivot Design Studio market benchmark audit
 
-**Status:** Recovered historical audit; use `AUDIT_STATUS.md` for current finding status  
+**Status:** Recovered historical audit; use `../pivot-design-tool-baseline/REVIEW_FEEDBACK_LEDGER_V2.md#outstanding-market-benchmark-audit-work` for current finding status
 **Original audit date:** 6 August 2026  
 **Recovered:** 7 August 2026 from the original Pi session transcript  
 **Preservation note:** The audit below is preserved as written. Historical provider references do not represent current approval or authority.
