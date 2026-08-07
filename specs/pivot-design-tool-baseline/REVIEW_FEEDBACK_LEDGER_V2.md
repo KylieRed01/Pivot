@@ -218,6 +218,41 @@ The deferred items may remain open provided the Studio continues to state clearl
 - based on placeholder garment geometry; and
 - unable to expose real authenticated club assets.
 
+## Club Onboarding workflow updates
+
+**Work type:** Development. Follow `AGENTS.md`, Pivot's governing documents, `docs/Club Onboarding Workflow.md`, `docs/Phoenix Phase 1 PRD.md` and `docs/Club Onboarding Proportionality Audit.md`. Pivot repository instructions and governing documents control this work; do not import CoachCW-specific Fastify, React, Prisma, athlete or session rules from shared material. Preserve unrelated concurrent Studio, documentation and club-interest work.
+
+**Clarification protocol:** Review one finding at a time. First classify it as **(1) derivable from approved documents**, **(2) deliberately deferred or gated**, or **(3) a genuine unresolved business decision**. Ask Kylie only about category 3, using plain language. Do not reopen settled authority, pre-empt the Product Workflow design phase or use unexplained technical terminology.
+
+### Clarification progress
+
+| Finding | Classification and settled direction | Remaining work |
+|---|---|---|
+| Authoritative lifecycle transitions | **Approved in principle / derivable from the agreed workflow.** `docs/Club Onboarding Workflow.md` remains authoritative and its normal path must not be redesigned. A submitted Store version is locked. The Club Administrator must explicitly withdraw before editing; withdrawal prevents publication; editing creates a draft requiring resubmission; submission and withdrawal history remains immutable. Submission and withdrawal belong to the Club Administrator under the existing authority model. Concurrent withdrawal and Pivot decision resolve deterministically: the first completed authoritative action wins and the other makes no change. | Add enforceable transition requirements and requirement-to-test traceability without creating a general workflow engine. Do not ask again which role withdraws. |
+| **Product approved for Store** hand-off | **Deliberately gated.** This is unrelated to the commercial agreement. The Product Workflow is separately owned and still in design. Club Onboarding may state only that it expects the future **Product approved for Store** output already named by the agreed workflow; it must not invent the output schema or internal Product Workflow. | Keep functional integration gated until the Product Workflow specification defines its authoritative output. Reconcile any onboarding requirement that currently implies an invented hand-off contract. |
+| Administrator replacement | **Not yet classified as a genuine business decision.** Existing documents establish one active Club Administrator, prospective revocation/replacement without rewriting history, office-bearer appointment at commercial acceptance, and a legal-review gate for final authority wording. | Before asking Kylie anything, determine whether those controls already derive replacement authority and evidence or deliberately gate them to legal review. Do not invent replacement authority or repeat an obvious role question. |
+
+### Remaining findings to filter
+
+| Finding | Initial classification direction before any user question |
+|---|---|
+| Pending invitation and user-position accounting | Start as **derivable** from one active Club Administrator, at most two active Club Users, single-recipient invitations and atomic enforcement. Determine deterministic pending-invitation handling technically before treating anything as a business choice. |
+| Concurrent automatic-save and draft conflicts | Start as **derivable** from truthful durable saving and exact-version approval. Define deterministic conflict handling without asking a product question unless approved documents leave a user-visible choice. |
+| Exact Store-version composition | First derive the minimum immutable content from the exact Store setup and publication records. Do not ask Kylie for a technical data schema; surface only a genuine product-content choice. |
+| Notification retries and deduplication | **Derivable implementation requirement:** delivery failures are visible and repeated processing must not create uncontrolled duplicates or falsely advance dependent workflow. |
+| Deterministic alert definitions | Preserve the agreed triggers. Configurable thresholds are an operational configuration boundary, not permission for a general rules engine. Ask only if a business threshold is genuinely absent and required now. |
+| Asset-upload security | **Derivable** from Constitution data protection, club isolation, minimisation, validation and provider gates. Do not turn security controls into optional UX questions. |
+| Explicit Phoenix-only production restriction | **Derivable and closed:** the Phoenix PRD permits a multi-club foundation but Phoenix alone is enabled in production during the pilot. |
+| Deterministic analytics | **Derivable:** structured setup events and issue codes only, no personal information or club name, stable opaque `clubId`, and authorised auditable support resolution. |
+| Correction-report lifecycle | First derive the boundary that accepted commercial identity is not silently changed. Treat final commercial/legal resolution as gated; ask only if a remaining customer-facing business decision is proven. |
+| Support/security restriction behaviour | **Derivable:** access may be restricted without erasing underlying state, authority history or required evidence. |
+| Authoritative accessibility evidence | **Deliberately gated** to documented manual acceptance and applicable Store usability evidence; automated checks alone are insufficient. |
+| Requirement-to-test traceability | **Derivable development control:** map every enforceable requirement and gate to automated or documented manual evidence. |
+
+**Current document state:** `docs/Club Onboarding Workflow.md`, `docs/Product Workflow.md` and `specs/club-onboarding/spec.md` already contain concurrent uncommitted changes. Do not overwrite, revert or commit those changes as part of handover consolidation. The Product Workflow now records agreed boundaries and terminology but still states that all other internal steps remain undesigned.
+
+**Interaction lesson:** Do not treat agreed behaviour as unresolved, ask questions answered by role authority, define the Product Workflow inside Club Onboarding, or substitute technical jargon for a plain explanation. Present only the next proven category-3 decision and explain briefly why approved documents do not answer it.
+
 ## Club Stores
 
 **Repository checkpoint:** Club Store separation was implemented in commit `6b960f6` (`feat: separate customer and club admin previews`). That commit is an ancestor of the current `pivot-v2-architecture` branch. Its committed snapshot recorded 77 passing tests and passing syntax checks. This evidence is not manual acceptance, production readiness or deployment approval.
