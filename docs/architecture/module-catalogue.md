@@ -14,7 +14,7 @@ File length alone is not a reason to extract a module.
 | ID | Module | Primary path | Assessment | Main observation |
 |---|---|---|---|---|
 | M01 | Workflow policy | `src/domain.js` | Developing | Useful transition/access boundary; several small policies remain together |
-| M02 | Uniform rules | `src/uniform-rules.js` | Developing | Coherent profile, but Studio checks duplicate part of the rule meaning |
+| M02 | Uniform rules | `docs/BBA Basketball Jersey Guidelines.md`, `src/uniform-rules.js` | Developing | Adopted BBA profile has one documented owner, but Studio checks duplicate part of the rule meaning |
 | M03 | Node application | `src/server.js` | Adequate at current scale | One visible composition root for a small server with injected mail delivery |
 | M04 | Workflow fixture | `data/state.json` plus server load/save functions | Adequate for simulation | Explicitly non-production whole-file persistence |
 | M05 | Studio configuration | `public/studio/studio-config.js` | Developing | One placeholder factory appropriately keeps defaults together |
@@ -35,7 +35,7 @@ File length alone is not a reason to extract a module.
 
 ## M02 — Uniform rules
 
-`src/uniform-rules.js` records the partial basketball baseline and validates configured numbers. The browser consumes profile metadata through the API, while `public/studio/studio-state.js` independently enforces number syntax and required-layer checks.
+`docs/BBA Basketball Jersey Guidelines.md` owns the adopted BBA requirement baseline. `src/uniform-rules.js` exposes that profile and validates the BBA competition number set. The browser consumes profile metadata through the API, while `public/studio/studio-state.js` independently enforces number syntax and required-layer checks.
 
 **Watch point:** avoid adding the same new enforceable rule in both places. A shared policy becomes justified when a real rule must be enforced by both server and Studio.
 

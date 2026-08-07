@@ -51,11 +51,11 @@ Only entries marked **Approved** or **Conditional** may appear as selectable gar
 
 Pivot must maintain at least one separately controlled font for basketball player numbers. The selected numeral font is a production control, not merely a visual preference.
 
-The current repository records a partial FIBA 2024 baseline:
+The repository adopts the BBA September 2021 baseline recorded in `docs/BBA Basketball Jersey Guidelines.md`:
 
 - front number minimum height: 10 cm;
 - back number minimum height: 20 cm;
-- minimum stroke width: 2 cm;
+- minimum number width: 2 cm, retaining the BBA wording without reinterpreting it as stroke width;
 - logos and advertising at least 5 cm clear;
 - contrasting number colour required;
 - front and back numbers required; and
@@ -68,10 +68,10 @@ A typeface name alone cannot establish compliance. Before PFR-004 can be approve
 3. permission for web/application use, customer-generated designs and commercial garment printing;
 4. permission to rasterise or convert text to outlines for production;
 5. rendered samples of every digit from 0 to 9 and the two-digit value 00;
-6. measured front and back number height and minimum stroke width on the supplier-approved production template;
+6. measured front and back number height and minimum number width on the supplier-approved production template;
 7. required logo and advertising clearance;
 8. acceptable colour contrast on each garment surface;
-9. confirmation against current Bendigo Basketball Association, Basketball Victoria and Basketball Australia requirements;
+9. review against the adopted BBA baseline and any replacement rules published before production release;
 10. manufacturer acceptance of the outlined production artwork; and
 11. Director approval of the exact font, style, production size and treatment.
 

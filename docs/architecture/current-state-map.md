@@ -18,7 +18,7 @@ It is not the production platform. Production identity, durable storage, supplie
 | Main Website | Server-rendered initial markup, browser enhancement and an in-house club-interest endpoint with Fastmail SMTP delivery | `public/website/*`, `src/club-interest.js`, `src/fastmail.js`, composed by `src/server.js` |
 | Design Studio | Browser-local four-surface trial with direct template selection, preview, history, checks and an in-house tester-feedback endpoint with Fastmail delivery | `public/studio/*`, `src/studio-feedback.js`, `src/studio-feedback-delivery.js`, composed by `public/app.js` and `src/server.js` |
 | Workflow simulation | Fixture identities, design transitions and simulated administration | `public/app.js`, `src/domain.js`, `src/server.js`, `data/state.json` |
-| Uniform rules | Partial basketball baseline and server profile | `src/uniform-rules.js`, with browser checks in `public/studio/studio-state.js` |
+| Uniform rules | Adopted BBA basketball-jersey baseline and server profile | `docs/BBA Basketball Jersey Guidelines.md`, `src/uniform-rules.js`, with browser checks in `public/studio/studio-state.js` |
 | Club Store | Static landing, separate non-transactional customer and administration previews, plus fixture-backed store projection API | `public/club-store/*`, `src/domain.js`, `src/server.js` |
 | Temporary Website | Isolated temporary landing page | `public/temporary-landing.html`, `public/temporary-landing.css` |
 

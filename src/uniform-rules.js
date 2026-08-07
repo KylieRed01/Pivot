@@ -1,47 +1,57 @@
 export const uniformRuleProfile = Object.freeze({
-  id: 'basketball-fiba-2024-baseline',
-  status: 'partial',
-  effectiveDate: '2024-10-01',
+  id: 'basketball-bba-2021-adopted-baseline',
+  status: 'adopted-baseline',
+  adoptedDate: '2026-08-07',
+  sourceDate: '2021-09',
   source: {
-    authority: 'FIBA',
-    document: 'Official Basketball Rules 2024',
-    section: 'Article 4.3.3 — Uniforms',
-    url: 'https://www.fiba.basketball/documents'
+    authority: 'Bendigo Basketball Association',
+    document: 'General By-Laws, September 2021',
+    section: 'Section 20 — Player Uniforms',
+    url: 'https://bendigobasketball.com.au/wp-content/uploads/2021/09/BBA_By-Laws-2021-September.pdf'
   },
   authorityOrder: [
     'Bendigo Basketball Association competition rules',
-    'Basketball Victoria requirements',
-    'Basketball Australia rules',
-    'FIBA Official Basketball Rules',
+    'FIBA Official Basketball Rules where BBA has not made a local modification',
+    'Applicable club restrictions captured for the jersey',
     'Supplier garment constraints'
   ],
+  garment: {
+    format: 'single-reversible-jersey',
+    faces: ['light', 'dark'],
+    lightFacePreference: 'white',
+    samePlayerNumberAcrossFaces: true,
+    eachFaceMustComply: true
+  },
   number: {
-    allowed: ['0', '00', ...Array.from({ length: 99 }, (_, index) => String(index + 1))],
+    competitionAllowed: ['0', '00', ...Array.from({ length: 99 }, (_, index) => String(index + 1))],
     frontMinimumHeightCm: 10,
     backMinimumHeightCm: 20,
-    minimumStrokeWidthCm: 2,
+    minimumWidthCm: 2,
+    widthMeaning: 'BBA wording: numbers shall be at least 2 cm wide; not interpreted as stroke width',
     minimumLogoAndAdvertisingClearanceCm: 5,
+    plainSolidColourRequired: true,
     contrastingColourRequired: true,
-    frontAndBackRequired: true
+    frontAndBackRequired: true,
+    uniqueWithinTeamRequired: true
   },
   enforcement: {
-    allowedNumber: 'enforced',
+    competitionAllowedNumber: 'enforced',
+    clubNumberRestrictions: 'product-workflow-required',
     physicalDimensions: 'supplier-template-required',
     placement: 'manual-review-required',
     contrast: 'manual-review-required'
   },
-  missingAuthorities: [
-    'Current Bendigo Basketball Association competition bylaws and uniform policy',
-    'Current Basketball Victoria uniform requirements',
-    'Current Basketball Australia uniform requirements',
-    'Supplier template dimensions, print scale and number-safe zones'
+  reviewTriggers: [
+    'Bendigo Basketball Association publishes replacement competition or uniform rules',
+    'FIBA changes a corresponding uniform requirement',
+    'The approved jersey product or supplier template changes'
   ]
 });
 
 export function validateUniformNumber(value) {
   const number = String(value).trim();
   return {
-    valid: uniformRuleProfile.number.allowed.includes(number),
+    valid: uniformRuleProfile.number.competitionAllowed.includes(number),
     number,
     profileId: uniformRuleProfile.id
   };

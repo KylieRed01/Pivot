@@ -131,12 +131,12 @@ Anton must remain Evaluation-only and blocked from production until Pivot and th
 1. retain the verified binary metadata and SHA-256 for Anton Regular v2.116 in the controlled record;
 2. render the verified glyphs `0 1 2 3 4 5 6 7 8 9` and the composed value `00` at the locked production settings;
 3. actual visible glyph height—not CSS box or nominal font size—of at least 10 cm front and 20 cm back;
-4. minimum numeral stroke/element width of at least 2 cm at both placements, clarifying the by-law's “numbers ... at least 2 cm wide” measurement with BBA if necessary;
+4. numeral width of at least 2 cm at both placements, retaining the by-law's exact “numbers ... at least 2 cm wide” requirement without reinterpreting it as stroke width;
 5. at least 5 cm clearance from every logo and advertisement, measured on the curved/seamed supplier template;
 6. plain, solid number colour with documented contrast on every underlying garment panel; “looks contrasting” is not enough;
 7. no clipping, seam collision, panel distortion, illegible counter or ambiguous digit in sizes used by the U10 cohort;
 8. supplier acceptance of the exact outlined geometry and colour treatment;
-9. current written confirmation from Bendigo Basketball Association and, where applicable, Basketball Victoria/Basketball Australia or the actual competition organiser; and
+9. review against Pivot's adopted BBA baseline in `docs/BBA Basketball Jersey Guidelines.md` and any replacement rules BBA publishes before production release; and
 10. separate club and Pivot/Director approvals of the rendered production version.
 
 There is currently **no selected supplier or supplier-approved production template** in the PRD. Production compliance therefore cannot yet be established.
@@ -166,7 +166,7 @@ The exact development font artifacts and their OFL notices are retained under `p
 - Bebas Neue has similarly named open and commercial relatives. Only the exact v2.000 open-source Regular artifact is covered by this entry.
 - OFL permission does not establish rights in customer-entered words, club marks or sponsor assets.
 - OFL permission does not establish legibility, colour, competition, supplier or manufacturing compliance.
-- The BBA by-laws located are dated September 2021 and are no longer linked from the current Forms & Information page. Obtain current written BBA confirmation before production.
+- The BBA by-laws located are dated September 2021 and are no longer linked from the current Forms & Information page. Pivot has adopted them as the controlling baseline until BBA publishes a replacement; written BBA confirmation is not a production dependency.
 - No separate current uniform specification was located from Basketball Victoria or Basketball Australia that overrides the competition/FIBA geometry. Confirm the exact competition pathway rather than assuming their general endorsement.
 
 ## 8. Font Register controls
@@ -178,7 +178,7 @@ The exact development font artifacts and their OFL notices are retained under `p
 3. Add a source commit/release, SHA-256 and internal-version field to the approval record.
 4. Add an “accepted character set and unsupported-glyph behaviour” field.
 5. Add a fixed/static-instance field and prohibit silent variable-axis or upstream version changes.
-6. Record the BBA September 2021 by-law as the source of the stricter 10/20/2/5 baseline, flag it for current written confirmation, and note FIBA 2024's 16/8/2/4 baseline.
+6. Record the BBA September 2021 by-law as the adopted source of the stricter 10/20/2/5 baseline until BBA publishes a replacement, and note FIBA 2024's 16/8/2/4 baseline.
 7. Add FIBA 2026's 1 October 2026 effective date as a mandatory review trigger.
 8. Record that manufacturer font-file sharing is licence-permitted only with OFL notices but operationally prohibited unless expressly authorised; outlined immutable artwork remains the default.
 9. Keep all ten families **Evaluation** and visibly labelled in the non-production Studio. Do not permit publication or manufacture until the affected exact entry becomes Approved or Conditional.
