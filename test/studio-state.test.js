@@ -4,11 +4,13 @@ import {
   createInitialStudioState,
   createSessionStore,
   createStudioHistory,
+  getCustomerDesignChecks,
   reduceStudioState,
   resetStudioState,
   restorePublicState,
   runIndicativeChecks,
   serializePublicState,
+  summariseIndicativeChecks,
   validatePublicArtwork
 } from '../public/studio/studio-state.js';
 
@@ -36,11 +38,15 @@ const addTestText = (state, surface = 'dark.front', overrides = {}) => {
   return layer;
 };
 
-test('generic trial garments start without basketball number requirements', () => {
+test('generic trial garments start as complete Pivot-branded previews without basketball requirements', () => {
   for (const garment of ['generic-t-shirt', 'generic-hoodie']) {
     const state = createInitialStudioState(garment);
     assert.equal(state.setup.garment, garment);
-    assert.equal(Object.values(state.surfaces).every(surface => surface.layers.length === 0), true);
+    for (const surface of Object.values(state.surfaces)) {
+      assert.equal(surface.layers.length, 1);
+      assert.equal(surface.layers[0].libraryAssetId, 'pivot-logo');
+      assert.equal(surface.layers[0].src, '/brand/Pivot_Logo_Transparent.svg');
+    }
     assert.equal(runIndicativeChecks(state).some(check => check.code === 'REQUIRED_NUMBER'), false);
   }
 });
@@ -50,41 +56,47 @@ test('initial public Studio state contains four 2D surfaces and required numbers
 
   assert.deepEqual(surfaceKeys(state), ['dark.back', 'dark.front', 'light.back', 'light.front']);
   assert.deepEqual(state.palette, {
-    primary: '#0096D6',
+    primary: '#092C71',
     secondary: '#F4951D',
     accent: '#092C71',
     light: '#FFFFFF'
   });
   for (const [key, surface] of Object.entries(state.surfaces)) {
-    assert.equal(surface.base, key.startsWith('dark') ? '#0096D6' : '#F4951D');
-    assert.equal(surface.accent, key.startsWith('dark') ? '#F4951D' : '#0096D6');
+    assert.equal(surface.base, key.startsWith('dark') ? '#092C71' : '#FFFFFF', `${key} uses the adopted reversible dark/light baseline`);
+    assert.equal(surface.pattern, 'clean', `${key} starts from a plain testing baseline rather than obscuring the branding`);
+    assert.equal(surface.accent, '#0096D6');
     assert.equal(surface.neck, '#092C71');
     assert.equal(surface.armTrim, '#092C71');
     assert.equal(surface.density, 100, `${key} keeps the approved pattern colours at full intensity`);
-    assert.equal(surface.layers.length, key.endsWith('back') ? 1 : 2, `${key} starts without duplicated optional text`);
-    const wordmark = surface.layers.find(layer => layer.role === 'wordmark');
-    if (key.endsWith('front')) {
-      assert.equal(wordmark.text, 'PIVOT');
-      assert.equal(wordmark.controlLevel, 'flexible');
-      assert.equal(wordmark.fontSize, 14);
-    } else assert.equal(wordmark, undefined);
+    assert.equal(surface.layers.length, 2, `${key} starts as a complete branded basketball preview`);
+    const logo = surface.layers.find(layer => layer.libraryAssetId === 'pivot-logo');
+    assert.equal(logo.src, '/brand/Pivot_Logo_Transparent.svg');
+    assert.equal(logo.controlLevel, 'flexible');
+    assert.equal(logo.y, key.endsWith('back') ? 14 : 20);
+    assert.equal(logo.scale, 1.1);
+    assert.equal(logo.cropZoom, 1);
     const number = surface.layers.find(layer => layer.role === 'number');
     assert.equal(number.text, '24');
     assert.equal(number.controlLevel, 'constrained');
     assert.equal(number.required, true);
+    assert.equal(number.x, 50, `${key} centres the required number horizontally`);
+    assert.equal(number.y, key.endsWith('back') ? 58 : 62, `${key} keeps the number below the Pivot branding`);
     assert.equal(number.scale, 1, `${key} does not expose an internal text scale multiplier`);
-    assert.equal(number.fontSize, key.endsWith('back') ? 42 : 21, `${key} preserves the indicative 20 cm back / 10 cm front BBA trial ratio as a point size`);
+    assert.equal(number.colour, key.startsWith('dark') ? '#FFFFFF' : '#092C71', `${key} starts with a contrasting solid number colour`);
+    assert.equal(number.fontSize, key.endsWith('back') ? 84 : 42, `${key} maps the adopted 10 cm front and 20 cm back minimums to an indicative two-to-one preview`);
   }
   assert.equal(state.view.mode, '2d');
   assert.equal(state.meta.templateStatus, 'placeholder');
 });
 
-test('new basketball jerseys do not duplicate optional text onto the back', () => {
+test('new basketball jerseys carry approved Pivot artwork and required numbers on both views', () => {
   const state = createInitialStudioState();
 
-  assert.equal(state.surfaces['dark.front'].layers.some(layer => layer.role === 'wordmark'), true);
-  assert.equal(state.surfaces['dark.back'].layers.some(layer => layer.role === 'wordmark'), false);
-  assert.equal(state.surfaces['dark.back'].layers.some(layer => layer.role === 'number'), true);
+  for (const surface of Object.values(state.surfaces)) {
+    assert.equal(surface.layers.some(layer => layer.libraryAssetId === 'pivot-logo'), true);
+    assert.equal(surface.layers.some(layer => layer.role === 'number'), true);
+    assert.equal(surface.layers.some(layer => layer.role === 'wordmark'), false);
+  }
 });
 
 test('serialized public state excludes workflow data while preserving browser-session artwork', () => {
@@ -114,22 +126,103 @@ test('serialized public state excludes workflow data while preserving browser-se
   assert.equal(serialized.includes('admin@phoenix.test'), false);
 });
 
-test('legacy browser sessions migrate to linked jersey styling without the old duplicated back text', () => {
+test('legacy browser sessions migrate to the simpler branded template without the retired base gradient', () => {
   const legacy = createInitialStudioState();
   legacy.version = 1;
   legacy.setup.backDesignMode = undefined;
   legacy.surfaces['dark.back'].pattern = 'clean';
-  legacy.surfaces['dark.back'].layers.unshift({
-    ...legacy.surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark'),
-    id: 'dark.back-wordmark'
+  for (const surface of Object.values(legacy.surfaces)) {
+    surface.layers = surface.layers.filter(layer => layer.libraryAssetId !== 'pivot-logo');
+    surface.gradient = true;
+    surface.gradientColour = '#00FF00';
+    surface.gradientAngle = 180;
+  }
+  legacy.surfaces['dark.front'].layers.unshift({
+    id: 'legacy-wordmark', type: 'text', role: 'wordmark', controlLevel: 'flexible',
+    text: 'PIVOT', colour: '#FFFFFF', x: 50, y: 38, scale: 1, rotation: 0
   });
 
   const restored = restorePublicState(legacy);
 
-  assert.equal(restored.version, 2);
+  assert.equal(restored.version, 10);
   assert.equal(restored.setup.backDesignMode, 'linked');
   assert.equal(restored.surfaces['dark.back'].pattern, restored.surfaces['dark.front'].pattern);
-  assert.equal(restored.surfaces['dark.back'].layers.some(layer => layer.role === 'wordmark'), false);
+  for (const surface of Object.values(restored.surfaces)) {
+    assert.equal(surface.layers.some(layer => layer.libraryAssetId === 'pivot-logo'), true);
+    assert.equal(surface.layers.some(layer => layer.role === 'wordmark' && layer.text === 'PIVOT'), false);
+    assert.equal('gradient' in surface, false);
+    assert.equal('gradientColour' in surface, false);
+    assert.equal('gradientAngle' in surface, false);
+    const number = surface.layers.find(layer => layer.role === 'number');
+    assert.equal(number.fontSize, surface.key.endsWith('back') ? 84 : 42);
+    assert.equal(number.x, 50);
+  }
+});
+
+test('version 6 sessions receive the adopted BBA reversible-colour and number-preview baseline', () => {
+  const saved = createInitialStudioState();
+  saved.version = 6;
+  for (const surface of Object.values(saved.surfaces)) {
+    surface.base = '#0096D6';
+    surface.pattern = 'velocity';
+    const number = surface.layers.find(layer => layer.role === 'number');
+    number.fontSize = surface.key.endsWith('back') ? 84 : 42;
+  }
+
+  const restored = restorePublicState(saved);
+
+  assert.equal(restored.version, 10);
+  for (const surface of Object.values(restored.surfaces)) {
+    assert.equal(surface.base, surface.key.startsWith('dark') ? '#092C71' : '#FFFFFF');
+    assert.equal(surface.pattern, 'clean');
+    const number = surface.layers.find(layer => layer.role === 'number');
+    assert.equal(number.colour, surface.key.startsWith('dark') ? '#FFFFFF' : '#092C71');
+    assert.equal(number.fontSize, surface.key.endsWith('back') ? 84 : 42);
+  }
+});
+
+test('version 7 sessions restore the BBA-sized number preview without resetting design colours', () => {
+  const saved = createInitialStudioState();
+  saved.version = 7;
+  saved.surfaces['dark.front'].base = '#520713';
+  saved.surfaces['dark.front'].pattern = 'hoops';
+  for (const surface of Object.values(saved.surfaces)) {
+    surface.layers.find(layer => layer.role === 'number').fontSize = surface.key.endsWith('back') ? 48 : 24;
+  }
+
+  const restored = restorePublicState(saved);
+
+  assert.equal(restored.version, 10);
+  assert.equal(restored.surfaces['dark.front'].base, '#520713');
+  assert.equal(restored.surfaces['dark.front'].pattern, 'hoops');
+  for (const surface of Object.values(restored.surfaces)) {
+    const number = surface.layers.find(layer => layer.role === 'number');
+    assert.equal(number.fontSize, surface.key.endsWith('back') ? 84 : 42);
+  }
+});
+
+test('older sessions restore a balanced Pivot penguin default without changing custom sizes', () => {
+  const saved = createInitialStudioState();
+  saved.version = 8;
+  saved.surfaces['dark.front'].layers.push(
+    {
+      id: 'old-penguin', type: 'image', role: 'artwork', controlLevel: 'flexible',
+      libraryAssetId: 'pivot-penguin', name: 'Pivot penguin', mime: 'image/svg+xml', size: 0,
+      src: '/brand/Pivot_Icon.svg', x: 50, y: 45, scale: 1.6, rotation: 0, cropZoom: 2.15
+    },
+    {
+      id: 'resized-penguin', type: 'image', role: 'artwork', controlLevel: 'flexible',
+      libraryAssetId: 'pivot-penguin', name: 'Pivot penguin', mime: 'image/svg+xml', size: 0,
+      src: '/brand/Pivot_Icon.svg', x: 30, y: 35, scale: 1.2, rotation: 0, cropZoom: 2.15
+    }
+  );
+
+  const restored = restorePublicState(saved);
+  const layers = restored.surfaces['dark.front'].layers;
+
+  assert.equal(restored.version, 10);
+  assert.equal(layers.find(layer => layer.id === 'old-penguin').scale, 1.8);
+  assert.equal(layers.find(layer => layer.id === 'resized-penguin').scale, 1.2);
 });
 
 test('session store restores valid state and fails closed to a clean placeholder', () => {
@@ -238,7 +331,7 @@ test('history updates one surface and provides deterministic undo and redo', () 
 test('basketball number value stays the same on front and back without duplicating other text edits', () => {
   const initial = createInitialStudioState();
   const frontNumber = initial.surfaces['dark.front'].layers.find(layer => layer.role === 'number');
-  const frontText = initial.surfaces['dark.front'].layers.find(layer => layer.role === 'wordmark');
+  const frontText = addTestText(initial, 'dark.front', { text: 'FRONT START' });
   const backText = addTestText(initial, 'dark.back', { text: 'BACK ONLY' });
 
   const numbered = reduceStudioState(initial, {
@@ -253,11 +346,11 @@ test('basketball number value stays the same on front and back without duplicati
   assert.equal(worded.state.surfaces['dark.back'].layers.find(layer => layer.id === backText.id).text, 'BACK ONLY');
 });
 
-test('required basketball number rejects blank and non-numeric edits', () => {
+test('required basketball number rejects values outside the adopted BBA set', () => {
   const initial = createInitialStudioState();
   const number = initial.surfaces['dark.front'].layers.find(layer => layer.role === 'number');
 
-  for (const text of ['', 'PLAYER']) {
+  for (const text of ['', 'PLAYER', '01']) {
     const result = reduceStudioState(initial, {
       type: 'updateLayer',
       surface: 'dark.front',
@@ -534,9 +627,76 @@ test('indicative checks distinguish blocking errors, warnings and unresolved gui
   assert.equal(JSON.stringify(checks).toLowerCase().includes('production ready'), false);
 });
 
-test('clean basketball placeholder remains blocked by the development font gate and unresolved dependencies', () => {
+test('BBA checks explain identical reversible faces and numbers with no colour contrast', () => {
+  const state = createInitialStudioState();
+  state.surfaces['dark.front'].base = '#FFD100';
+  state.surfaces['light.front'].base = '#FFD100';
+  state.surfaces['dark.front'].layers.find(layer => layer.role === 'number').colour = '#FFD100';
+
+  const checks = runIndicativeChecks(state);
+  const alternative = checks.find(check => check.code === 'BBA_ALTERNATIVE_COLOUR');
+  const numberContrast = checks.find(check => check.code === 'BBA_NUMBER_CONTRAST' && check.surface === 'dark.front');
+
+  assert.equal(alternative.blocking, true);
+  assert.match(alternative.message, /Both reversible sides use the same main colour\./);
+  assert.match(alternative.message, /Keep it on the light side and choose a different, darker main colour for the dark side\./);
+  assert.equal(numberContrast.blocking, true);
+  assert.match(numberContrast.message, /number uses the same colour as the dark side of the jersey, so it blends into the background/i);
+});
+
+test('indicative check messages use clear customer language', () => {
+  const state = createInitialStudioState();
+  addTestText(state, 'dark.front', { x: 101 });
+  state.surfaces['dark.front'].layers.find(layer => layer.role === 'number').colour = state.surfaces['dark.front'].base;
+  const copy = runIndicativeChecks(state).map(check => check.message).join(' ');
+
+  assert.doesNotMatch(copy, /production infrastructure|manufacturing integration|supplier geometry|adopted BBA baseline|dark\.front|light\.front|dark front view|light front view/i);
+  assert.match(copy, /The number uses the same colour as the dark side of the jersey, so it blends into the background\. Choose a different number colour\./);
+  assert.match(copy, /Move this item further inside the editable area\./);
+  assert.match(copy, /Pivot still needs to confirm the number size and spacing/);
+});
+
+test('customer design checks exclude supplier, font and release gates from the trial experience', () => {
+  assert.deepEqual(getCustomerDesignChecks(createInitialStudioState()), []);
+
+  const state = createInitialStudioState();
+  addTestText(state, 'dark.front', { text: '' });
+  const visible = getCustomerDesignChecks(state);
+
+  assert.equal(visible.length, 1);
+  assert.equal(visible[0].code, 'EMPTY_TEXT');
+  assert.equal(visible[0].item, 'Text');
+});
+
+test('checks identify the item a customer should review', () => {
+  const state = createInitialStudioState();
+  addTestText(state, 'dark.front', { text: '' });
+  addTestText(state, 'light.front', { x: 101 });
+  state.surfaces['light.front'].base = state.surfaces['dark.front'].base;
+
+  const checks = runIndicativeChecks(state);
+
+  assert.equal(checks.find(check => check.code === 'UNVALIDATED_BASKETBALL_FONT').item, 'Numbers');
+  assert.equal(checks.find(check => check.code === 'EMPTY_TEXT').item, 'Text');
+  assert.equal(checks.find(check => check.code === 'BBA_ALTERNATIVE_COLOUR').item, 'Jersey colours');
+  assert.equal(checks.find(check => check.code === 'UNRESOLVED_DEPENDENCIES').item, 'Pivot review');
+});
+
+test('repeated checks are summarised once with their affected views', () => {
+  const summary = summariseIndicativeChecks(runIndicativeChecks(createInitialStudioState()));
+  const fontCheck = summary.find(check => check.code === 'UNVALIDATED_BASKETBALL_FONT');
+
+  assert.equal(summary.filter(check => check.code === 'UNVALIDATED_BASKETBALL_FONT').length, 1);
+  assert.equal(fontCheck.count, 4);
+  assert.deepEqual(fontCheck.surfaces, ['dark.front', 'dark.back', 'light.front', 'light.back']);
+  assert.equal(summary.find(check => check.code === 'BBA_PHYSICAL_MEASUREMENTS').count, 1);
+});
+
+test('clean basketball placeholder records adopted BBA checks without treating approved library art as an upload', () => {
   const checks = runIndicativeChecks(createInitialStudioState());
+  assert.equal(checks.some(check => check.code === 'UNSUPPORTED_UPLOAD'), false);
   assert.equal(checks.some(check => check.code === 'UNVALIDATED_BASKETBALL_FONT' && check.severity === 'error' && check.blocking), true);
+  assert.equal(checks.some(check => check.code === 'BBA_PHYSICAL_MEASUREMENTS' && check.severity === 'error' && check.blocking), true);
   assert.equal(checks.some(check => check.code === 'UNRESOLVED_DEPENDENCIES'), true);
   assert.equal(checks.some(check => check.code === 'INDICATIVE_ONLY'), true);
 });

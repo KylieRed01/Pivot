@@ -2,7 +2,7 @@
 
 ## 1. System boundary
 
-Pivot is a small Node.js modular monolith serving four experiences. It uses one runtime dependency, Nodemailer, to keep authenticated Fastmail SMTP/TLS handling out of application code:
+Pivot is a small Node.js modular monolith serving four experiences, with one Cloudflare Pages Function prepared locally for the Main Website club-interest endpoint. Club-interest delivery uses native HTTPS `fetch` for Fastmail JMAP; the one runtime dependency, Nodemailer, remains limited to Studio-feedback SMTP/TLS delivery:
 
 1. The public Pivot website.
 2. The browser-local Pivot Design Studio trial with in-house tester feedback delivery.
@@ -15,7 +15,7 @@ It is not the production platform. Production identity, durable storage, supplie
 
 | Capability | Current repository coverage | Current owner |
 |---|---|---|
-| Main Website | Server-rendered initial markup, browser enhancement and an in-house club-interest endpoint with Fastmail SMTP delivery | `public/website/*`, `src/club-interest.js`, `src/fastmail.js`, composed by `src/server.js` |
+| Main Website | Server-rendered initial markup, browser enhancement and an in-house club-interest endpoint with Cloudflare Pages and Fastmail JMAP boundaries | `public/website/*`, `src/club-interest.js`, `src/fastmail-jmap.js`, `functions/api/club-interest.js`, composed locally by `src/server.js` |
 | Design Studio | Browser-local four-surface trial with direct template selection, preview, history, checks and an in-house tester-feedback endpoint with Fastmail delivery | `public/studio/*`, `src/studio-feedback.js`, `src/studio-feedback-delivery.js`, composed by `public/app.js` and `src/server.js` |
 | Workflow simulation | Fixture identities, design transitions and simulated administration | `public/app.js`, `src/domain.js`, `src/server.js`, `data/state.json` |
 | Uniform rules | Adopted BBA basketball-jersey baseline and server profile | `docs/BBA Basketball Jersey Guidelines.md`, `src/uniform-rules.js`, with browser checks in `public/studio/studio-state.js` |
@@ -35,7 +35,8 @@ flowchart TD
   HomePage[public/website/home-page.js\nmarkup and enhancement boundary]
   Interest[public/website/club-interest-form.js]
   InterestPolicy[src/club-interest.js\nvalidation and bounded intake]
-  Fastmail[src/fastmail.js\nclub-interest SMTP delivery]
+  PagesFunction[functions/api/club-interest.js\nPages HTTP boundary]
+  Fastmail[src/fastmail-jmap.js\nclub-interest JMAP delivery]
   StudioFeedback[public/studio/studio-feedback-form.js\nminimal browser submission]
   FeedbackPolicy[src/studio-feedback.js\nbounded feedback validation]
   FeedbackDelivery[src/studio-feedback-delivery.js\nFastmail feedback delivery]
@@ -54,7 +55,9 @@ flowchart TD
   Server --> Fixture
   Index --> HomeEntry
   HomeEntry --> HomePage --> Interest
-  Interest -->|POST /api/club-interest| Server
+  Interest -->|POST /api/club-interest| PagesFunction
+  PagesFunction --> InterestPolicy
+  PagesFunction --> Fastmail
   Server --> InterestPolicy
   Server --> Fastmail
   HomeEntry -->|lazy import on Studio route| StudioApp
@@ -93,8 +96,9 @@ The public Studio and workflow simulation still use different design representat
 
 ## 6. Delivery and styling
 
-- `src/server.js` serves static assets, injects initial homepage markup, applies security/cache headers and compression, exposes the fixture API, and composes the club-interest and Studio-feedback endpoints with injected delivery functions.
-- `src/club-interest.js` owns bounded club-interest field validation. `src/fastmail.js` owns its exact Fastmail SMTP configuration and message translation behind one injected send function.
+- `src/server.js` serves static assets, injects initial homepage markup, applies security/cache headers and compression, exposes the fixture API, and retains local composition of the club-interest and Studio-feedback endpoints with injected delivery functions.
+- `functions/api/club-interest.js` owns the Cloudflare Pages HTTP boundary: content type, same-origin enforcement, 16 KiB body limit, honeypot, safe responses and JMAP composition. Cloudflare edge rate limiting is a separately configured release gate because isolate-local memory is not authoritative.
+- `src/club-interest.js` owns bounded club-interest field validation. `src/fastmail-jmap.js` owns Fastmail session/identity/mailbox discovery and message submission behind one injected send function.
 - `public/studio/studio-feedback-form.js` limits the browser payload and owns safe form-delivery errors. `src/studio-feedback.js` owns the accepted bounded feedback shape, while `src/studio-feedback-delivery.js` owns Fastmail message translation for the separately approved tester-feedback workflow.
 - `public/website/home.css` owns the website shell and homepage styling and is reused by the Club Store landing page.
 - `public/style.css` contains Studio/workflow presentation and is loaded only when a Studio route is selected.
@@ -104,4 +108,4 @@ Shared website-shell CSS does not yet justify another directory or stylesheet. E
 
 ## 7. Verification boundary
 
-The Node test suite covers domain policy, HTTP behaviour, website rendering and enhancement, club-interest and Studio-feedback form behaviour, Studio state/preview and direct entry, Club Store pages and repository guardrails. Browser/device behaviour remains a documented manual-verification responsibility. Playwright and axe-core Playwright remain prohibited.
+The Node test suite covers domain policy, Node and Pages HTTP behaviour, website rendering and enhancement, club-interest JMAP delivery, Studio-feedback form behaviour, Studio state/preview and direct entry, Club Store pages and repository guardrails. Browser/device, deployed-provider and Cloudflare edge-rate-limit behaviour remains a documented manual-verification responsibility. Playwright and axe-core Playwright remain prohibited.

@@ -17,7 +17,7 @@ This guide records when structural change would reduce complexity and when it wo
 | `localStorage` references | 13 |
 | Public Studio storage boundary | One `sessionStorage`-compatible adapter |
 | Automated tests | More than 70 passing Node tests |
-| External runtime dependencies | One (`nodemailer`, for authenticated Fastmail SMTP/TLS delivery) |
+| External runtime dependencies | One (`nodemailer`, limited to Studio-feedback SMTP/TLS delivery); club-interest JMAP uses native `fetch` |
 
 Counts are navigation aids, not quality targets.
 
@@ -60,7 +60,7 @@ Preserve `public/studio/studio-state.js` as the accepted state-change boundary f
 
 ### Website feature
 
-Keep website markup, enhancement, form behaviour and styles under `public/website/`. The server may consume the pure markup interface; browser-only work should execute only through explicit enhancement functions.
+Keep website markup, enhancement, form behaviour and styles under `public/website/`. Keep the framework-required Pages route in `functions/api/` and reuse the Main Website's validation and JMAP delivery owners rather than duplicating their decisions. The server may consume the pure markup interface; browser-only work should execute only through explicit enhancement functions.
 
 ### Capability directories
 

@@ -118,22 +118,18 @@ Production identity, persistence and hosting/provider decisions require explicit
 
 The club-interest experience is an in-house Pivot website form with server-side delivery through Fastmail. **`mailto:` is not an approved release approach and must be removed. This decision is closed and must not be asked again.**
 
-The current `mailto:hello@pivotteamwear.com` action is only an unconnected placeholder. The approved connection is Fastmail SMTP with these exact requirements:
+Cloudflare account review established that the existing Pages project is static and cannot run the Node/Nodemailer endpoint unchanged. On 7 August 2026 the Director approved local implementation—not deployment—of the proportionate compatible direction:
 
-- create a dedicated app password named **Pivot website contact form** under **Fastmail Settings → Privacy & Security → Connected apps & API tokens**;
-- store the generated app password in Pivot’s password manager, not in project files or a plain-text note;
-- never use the normal Fastmail account password;
-- SMTP host: `smtp.fastmail.com`;
-- SMTP port: `465`;
-- transport security: SSL/TLS;
-- SMTP username: the full Fastmail login address;
-- SMTP password: the generated dedicated app password;
-- recipient: `hello@pivotteamwear.com`; and
-- add the SMTP username and app password only through the approved deployment platform's secret manager.
+- one same-origin Cloudflare Pages Function at `POST /api/club-interest`;
+- Fastmail JMAP over HTTPS rather than SMTP/TCP for this workflow;
+- a dedicated least-privilege Fastmail API token stored in Pivot’s password manager and only as the encrypted `FASTMAIL_JMAP_TOKEN` Cloudflare secret;
+- the approved Fastmail sending identity configured as `FASTMAIL_JMAP_SENDER`;
+- recipient `hello@pivotteamwear.com`; and
+- a path-specific Cloudflare edge rate limit before release, rather than unreliable isolate-local in-memory state.
 
-The in-house form requires a same-origin server endpoint with server-side field validation, request and submission limits, anti-spam protection, safe delivery-error handling and clear success or recoverable failure states. Credentials must never enter browser code, source control or logs. Sensitive submitted values must not be unnecessarily logged.
+The normal Fastmail account password must never be used. The in-house form requires server-side field validation, bounded requests, a honeypot, same-origin checks, safe delivery-error handling and clear success or recoverable failure states. Credentials, submitted values and provider responses must not enter browser code, source control or logs.
 
-Before release, verify external delivery, failure handling and the reply path. Fastmail access is enough to create the app password; separate access is required to configure the approved deployment secret manager.
+Preview deployment, provider configuration, secret creation, edge-rate-limit configuration and production release remain separately gated. Before release, verify external delivery, failure handling, Reply-To, abuse controls, secret handling and the approved privacy disclosure.
 
 ## Recorded Director decisions
 
@@ -142,4 +138,4 @@ Before release, verify external delivery, failure handling and the reply path. F
 3. The agreed inactivity/failure alerts and privacy-minimised analytics are not deferred.
 4. Club-interest delivery is an in-house form connected server-side to Fastmail. `mailto:` is prohibited for release.
 5. Fastmail is Pivot's approved mail server across Pivot; approval of each email workflow's purpose, recipients, content, personal-data handling and release remains separate.
-6. Cloudflare is Pivot's approved web host and currently serves `pivotteamwear.com` until the Director approves a change. This does not approve additional Cloudflare products or services; unsupported or unknown hosting capabilities must be raised for decision rather than used to allocate another host.
+6. Cloudflare is Pivot's approved web host and currently serves `pivotteamwear.com` until the Director approves a change. Local Pages Function implementation for club-interest delivery was approved on 7 August 2026; deployment, configuration and release remain separate decisions.

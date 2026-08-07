@@ -38,16 +38,40 @@ test('jersey preview renders the selected surface without exposing text as HTML'
   assert.doesNotMatch(html, /A&B <Club>/);
   assert.match(html, /font-family:&quot;Pivot Graduate&quot;,Arial,sans-serif;font-weight:400/);
   assert.match(html, /font-size:24pt/);
-  assert.match(html, /Preview only · placeholder template/);
+  assert.doesNotMatch(html, /Preview only · placeholder template|placeholder-badge/);
 });
 
-test('basketball numbers render in an optically centred number box', () => {
+test('canvas text layers, including basketball numbers, expose direct in-place editing', () => {
   const html = renderJerseyPreview(palette, {
     ...design,
-    layers: [{ ...design.layers[0], id: 'number', role: 'number', text: '24', x: 50 }]
+    layers: [
+      design.layers[0],
+      { ...design.layers[0], id: 'number', role: 'number', text: '24', x: 50 },
+      design.layers[1]
+    ]
   }, null);
 
-  assert.match(html, /class="art-layer number-layer /);
+  assert.match(html, /class="art-layer number-layer [^"]*" data-layer-id="number"/);
+  assert.match(html, /data-layer-id="wordmark"/);
+  assert.match(html, /aria-label="Basketball number 24\. Press Enter to edit on the garment"/);
+  assert.match(html, /data-inline-text="true"/);
+  assert.match(html, /class="art-layer-text">24<\/span>/);
+  assert.match(html, /--text-box-limit:100%/);
+  assert.doesNotMatch(html, /data-canvas-text-edit|placeholder-badge/);
+});
+
+test('approved Pivot logos render without cropping or altering the wordmark', () => {
+  const html = renderJerseyPreview(palette, {
+    ...design,
+    layers: [{
+      id: 'pivot-logo', type: 'image', role: 'artwork', libraryAssetId: 'pivot-logo',
+      name: 'Pivot Teamwear logo', src: '/brand/Pivot_Logo_Transparent.svg',
+      x: 50, y: 28, scale: 1.35, rotation: 0
+    }]
+  }, null);
+
+  assert.match(html, /class="art-layer\s+image-layer pivot-logo-layer\s+"/);
+  assert.match(html, /src="\/brand\/Pivot_Logo_Transparent\.svg"/);
 });
 
 test('text alignment anchors content inside its selected position', () => {

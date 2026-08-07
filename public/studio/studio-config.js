@@ -1,7 +1,4 @@
-import {
-  DEFAULT_BASKETBALL_NUMBER_FONT_ID,
-  DEFAULT_TEXT_FONT_ID
-} from './font-catalog.js';
+import { DEFAULT_BASKETBALL_NUMBER_FONT_ID } from './font-catalog.js';
 
 export const SURFACE_KEYS = Object.freeze([
   'dark.front',
@@ -12,43 +9,47 @@ export const SURFACE_KEYS = Object.freeze([
 
 export const PUBLIC_STUDIO_STORAGE_KEY = 'pivot-public-studio-session-v1';
 
-// Indicative 2:1 visual ratio for the BBA 20 cm back / 10 cm front baseline.
-// Point sizes control trial typography only; exact physical dimensions remain
-// blocked until supplier-template measurement.
-const BBA_TRIAL_NUMBER_FONT_SIZE = Object.freeze({ front: 21, back: 42 });
+// The preview maps the adopted 10 cm front and 20 cm back minimums to an
+// indicative 2:1 size on the jersey. Supplier-template measurement remains required.
+const BBA_TRIAL_NUMBER_FONT_SIZE = Object.freeze({ front: 42, back: 84 });
 
-const surface = (key, background, foreground, { basketball = true } = {}) => ({
-  key,
-  base: background,
-  accent: key.startsWith('dark') ? '#F4951D' : '#0096D6',
-  third: '#092C71',
-  fourth: '#FFFFFF',
-  pattern: 'velocity',
-  scale: 48,
-  angle: -28,
-  density: 100,
-  gradient: false,
-  gradientColour: key.startsWith('dark') ? '#F4951D' : '#0096D6',
-  gradientAngle: 135,
-  neck: '#092C71',
-  armTrim: '#092C71',
-  layers: basketball ? [{
-      id: `${key}-wordmark`,
-      type: 'text',
-      role: 'wordmark',
-      controlLevel: 'flexible',
-      text: 'PIVOT',
-      colour: foreground,
-      x: 50,
-      y: 38,
-      scale: 1,
-      fontSize: 14,
-      rotation: 0,
-      alignment: 'center',
-      letterSpacing: 0,
-      lineSpacing: 1,
-      fontId: DEFAULT_TEXT_FONT_ID
-    }, {
+const pivotLogoLayer = (key, garment) => ({
+  id: `${key}-pivot-logo`,
+  type: 'image',
+  role: 'artwork',
+  controlLevel: 'flexible',
+  libraryAssetId: 'pivot-logo',
+  name: 'Pivot Teamwear logo',
+  mime: 'image/svg+xml',
+  size: 0,
+  src: '/brand/Pivot_Logo_Transparent.svg',
+  x: 50,
+  y: garment === 'basketball-jersey' ? (key.endsWith('back') ? 14 : 20) : (key.endsWith('back') ? 24 : 40),
+  scale: garment === 'basketball-jersey' ? 1.1 : 1,
+  rotation: 0,
+  cropZoom: 1,
+  cropX: 50,
+  cropY: 50,
+  opacity: 1,
+  flipX: false,
+  flipY: false
+});
+
+const surface = (key, background, foreground, garment) => {
+  const basketball = garment === 'basketball-jersey';
+  return {
+    key,
+    base: background,
+    accent: '#0096D6',
+    third: '#F4951D',
+    fourth: '#FFFFFF',
+    pattern: 'clean',
+    scale: 48,
+    angle: -28,
+    density: 100,
+    neck: '#092C71',
+    armTrim: '#092C71',
+    layers: [pivotLogoLayer(key, garment), ...(basketball ? [{
       id: `${key}-number`,
       type: 'text',
       role: 'number',
@@ -65,13 +66,13 @@ const surface = (key, background, foreground, { basketball = true } = {}) => ({
       letterSpacing: 0,
       lineSpacing: 1,
       fontId: DEFAULT_BASKETBALL_NUMBER_FONT_ID
-    }].filter(layer => !key.endsWith('back') || layer.role === 'number') : []
-});
+    }] : [])]
+  };
+};
 
 export function createPlaceholderStudioConfig(garment = 'basketball-jersey') {
-  const basketball = garment === 'basketball-jersey';
   return {
-    version: 2,
+    version: 10,
     designName: 'Untitled browser design',
     setup: {
       sport: 'basketball',
@@ -88,16 +89,16 @@ export function createPlaceholderStudioConfig(garment = 'basketball-jersey') {
       panY: 0
     },
     palette: {
-      primary: '#0096D6',
+      primary: '#092C71',
       secondary: '#F4951D',
       accent: '#092C71',
       light: '#FFFFFF'
     },
     surfaces: {
-      'dark.front': surface('dark.front', '#0096D6', '#FFFFFF', { basketball }),
-      'dark.back': surface('dark.back', '#0096D6', '#FFFFFF', { basketball }),
-      'light.front': surface('light.front', '#F4951D', '#092C71', { basketball }),
-      'light.back': surface('light.back', '#F4951D', '#092C71', { basketball })
+      'dark.front': surface('dark.front', '#092C71', '#FFFFFF', garment),
+      'dark.back': surface('dark.back', '#092C71', '#FFFFFF', garment),
+      'light.front': surface('light.front', '#FFFFFF', '#092C71', garment),
+      'light.back': surface('light.back', '#FFFFFF', '#092C71', garment)
     },
     meta: {
       persistence: 'browser-session-only',

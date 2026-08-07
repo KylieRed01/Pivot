@@ -11,7 +11,7 @@ import {
 } from './font-catalog.js';
 
 const FONT_IDS = new Set(listFontChoices().map(choice => choice.id));
-const SURFACE_STYLE_KEYS = Object.freeze(['base', 'accent', 'third', 'fourth', 'pattern', 'scale', 'angle', 'density', 'neck', 'armTrim', 'gradient', 'gradientColour', 'gradientAngle']);
+const SURFACE_STYLE_KEYS = Object.freeze(['base', 'accent', 'third', 'fourth', 'pattern', 'scale', 'angle', 'density', 'neck', 'armTrim']);
 const counterpartSurface = surfaceKey => surfaceKey?.endsWith('.front')
   ? surfaceKey.replace(/\.front$/, '.back')
   : surfaceKey?.endsWith('.back') ? surfaceKey.replace(/\.back$/, '.front') : null;
@@ -19,6 +19,13 @@ const counterpartSurface = surfaceKey => surfaceKey?.endsWith('.front')
 export const TRIAL_TEXT_SIZE = Object.freeze({ min: 5, max: 96, step: 1 });
 
 const clampTrialTextSize = value => Math.max(TRIAL_TEXT_SIZE.min, Math.min(TRIAL_TEXT_SIZE.max, value));
+const isAllowedBbaNumber = value => /^(?:0|00|[1-9]\d?)$/.test(String(value).trim());
+const isVisuallyLightColour = value => {
+  const match = /^#([0-9a-f]{6})$/i.exec(String(value));
+  if (!match) return null;
+  const channels = [0, 2, 4].map(offset => Number.parseInt(match[1].slice(offset, offset + 2), 16));
+  return (channels[0] * 299 + channels[1] * 587 + channels[2] * 114) / 1000 >= 128;
+};
 const clone = value => structuredClone(value);
 
 export function createInitialStudioState(garment = 'basketball-jersey') {
@@ -43,9 +50,13 @@ function safeLayer(layer) {
     safe.name = String(layer.name ?? 'Browser-local artwork');
     safe.mime = String(layer.mime ?? '');
     safe.size = Number.isFinite(layer.size) ? layer.size : 0;
-    if (layer.libraryAssetId === 'pivot-penguin' && layer.src === '/brand/Pivot_Icon.svg') {
-      safe.libraryAssetId = 'pivot-penguin';
-      safe.src = '/brand/Pivot_Icon.svg';
+    const approvedLibraryAssets = {
+      'pivot-penguin': '/brand/Pivot_Icon.svg',
+      'pivot-logo': '/brand/Pivot_Logo_Transparent.svg'
+    };
+    if (approvedLibraryAssets[layer.libraryAssetId] === layer.src) {
+      safe.libraryAssetId = layer.libraryAssetId;
+      safe.src = layer.src;
     } else if (typeof layer.src === 'string' && /^data:image\/(?:png|jpeg|webp);base64,/i.test(layer.src)) safe.src = layer.src;
     safe.cropZoom = Number.isFinite(layer.cropZoom) ? layer.cropZoom : 1;
     safe.cropX = Number.isFinite(layer.cropX) ? layer.cropX : 50;
@@ -111,9 +122,6 @@ function normalize(candidate) {
       density: Number.isFinite(source.density) ? source.density : initial.surfaces[key].density,
       neck: String(source.neck ?? initial.surfaces[key].neck),
       armTrim: String(source.armTrim ?? initial.surfaces[key].armTrim),
-      gradient: Boolean(source.gradient),
-      gradientColour: String(source.gradientColour ?? initial.surfaces[key].accent),
-      gradientAngle: Number.isFinite(source.gradientAngle) ? source.gradientAngle : 135,
       layers: Array.isArray(source.layers) ? source.layers.map(safeLayer) : initial.surfaces[key].layers
     };
   }
@@ -125,9 +133,56 @@ function normalize(candidate) {
       for (const key of SURFACE_STYLE_KEYS) back[key] = front[key];
     }
   }
-  if (Number(candidate.version ?? 1) < 2) {
-    for (const colourway of ['dark', 'light']) {
-      state.surfaces[`${colourway}.back`].layers = state.surfaces[`${colourway}.back`].layers.filter(layer => !(layer.role === 'wordmark' && layer.text === 'PIVOT'));
+  if (Number(candidate.version ?? 1) < 3) {
+    for (const key of SURFACE_KEYS) {
+      const layers = state.surfaces[key].layers.filter(layer => !(layer.role === 'wordmark' && layer.text === 'PIVOT'));
+      if (!layers.some(layer => layer.libraryAssetId === 'pivot-logo')) {
+        const logo = initial.surfaces[key].layers.find(layer => layer.libraryAssetId === 'pivot-logo');
+        if (logo) layers.unshift(clone(logo));
+      }
+      state.surfaces[key].layers = layers;
+    }
+  }
+  if (Number(candidate.version ?? 1) < 7) {
+    for (const key of SURFACE_KEYS) {
+      const correctedSurface = initial.surfaces[key];
+      for (const styleKey of SURFACE_STYLE_KEYS) state.surfaces[key][styleKey] = correctedSurface[styleKey];
+      const logo = state.surfaces[key].layers.find(layer => layer.libraryAssetId === 'pivot-logo');
+      const correctedLogo = initial.surfaces[key].layers.find(layer => layer.libraryAssetId === 'pivot-logo');
+      if (logo && correctedLogo) Object.assign(logo, clone(correctedLogo), { id: logo.id });
+      const number = state.surfaces[key].layers.find(layer => layer.role === 'number' && layer.required);
+      const correctedNumber = initial.surfaces[key].layers.find(layer => layer.role === 'number' && layer.required);
+      if (number && correctedNumber) Object.assign(number, {
+        x: correctedNumber.x,
+        y: correctedNumber.y,
+        scale: correctedNumber.scale,
+        fontSize: correctedNumber.fontSize,
+        rotation: correctedNumber.rotation,
+        alignment: correctedNumber.alignment,
+        colour: correctedNumber.colour,
+        fontId: correctedNumber.fontId
+      });
+    }
+  }
+  if (Number(candidate.version ?? 1) < 8) {
+    for (const key of SURFACE_KEYS) {
+      const number = state.surfaces[key].layers.find(layer => layer.role === 'number' && layer.required);
+      const correctedNumber = initial.surfaces[key].layers.find(layer => layer.role === 'number' && layer.required);
+      if (number && correctedNumber) number.fontSize = correctedNumber.fontSize;
+    }
+  }
+  if (Number(candidate.version ?? 1) < 9) {
+    for (const surface of Object.values(state.surfaces)) {
+      for (const layer of surface.layers) {
+        if (layer.libraryAssetId === 'pivot-penguin' && layer.scale === 1.6 && layer.cropZoom === 2.15) layer.scale = 0.8;
+      }
+    }
+  }
+  if (Number(candidate.version ?? 1) < 10) {
+    for (const surface of Object.values(state.surfaces)) {
+      for (const layer of surface.layers) {
+        if (layer.libraryAssetId === 'pivot-penguin' && layer.scale === 0.8 && layer.cropZoom === 2.15) layer.scale = 1.8;
+      }
     }
   }
 
@@ -171,38 +226,76 @@ const publicArtworkBytes = state => Object.values(state.surfaces).reduce(
   0
 );
 
+export function summariseIndicativeChecks(checks = []) {
+  const grouped = new Map();
+  for (const check of checks) {
+    const key = `${check.code}\u0000${check.severity}\u0000${check.message}`;
+    const existing = grouped.get(key);
+    if (existing) {
+      existing.count += 1;
+      if (check.surface && !existing.surfaces.includes(check.surface)) existing.surfaces.push(check.surface);
+      continue;
+    }
+    grouped.set(key, {
+      ...check,
+      count: 1,
+      surfaces: check.surface ? [check.surface] : []
+    });
+  }
+  return [...grouped.values()];
+}
+
 export function runIndicativeChecks(candidate) {
   const state = normalize(candidate);
   const checks = [];
+  if (state.setup.garment === 'basketball-jersey' && state.surfaces['dark.front'].base.toLowerCase() === state.surfaces['light.front'].base.toLowerCase()) {
+    const lightColour = isVisuallyLightColour(state.surfaces['dark.front'].base);
+    const action = lightColour === true
+      ? 'Keep it on the light side and choose a different, darker main colour for the dark side.'
+      : lightColour === false
+        ? 'Keep it on the dark side and choose a different, lighter main colour for the light side.'
+        : 'Choose a different main colour for one side so the two sides are easy to tell apart.';
+    checks.push({ code: 'BBA_ALTERNATIVE_COLOUR', item: 'Jersey colours', customerActionable: true, severity: 'error', blocking: true, message: `Both reversible sides use the same main colour. ${action}` });
+  }
   for (const [surfaceKey, surface] of Object.entries(state.surfaces)) {
+    const [colourway] = surfaceKey.split('.');
+    const faceLabel = colourway === 'dark' ? 'Dark side' : 'Light side';
     if (state.setup.garment === 'basketball-jersey') {
       const requiredNumber = surface.layers.find(layer => layer.role === 'number' && layer.required);
-      if (!requiredNumber || !/^\d{1,2}$/.test(requiredNumber.text.trim())) {
-        checks.push({ code: 'REQUIRED_NUMBER', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber?.id, message: `A required one- or two-digit basketball number is needed on ${surfaceKey}.` });
+      if (!requiredNumber || !isAllowedBbaNumber(requiredNumber.text)) {
+        checks.push({ code: 'REQUIRED_NUMBER', item: 'Numbers', customerActionable: true, severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber?.id, message: `${faceLabel}: add a basketball number (0, 00 or 1–99).` });
       }
       if (requiredNumber) {
+        if (requiredNumber.colour.toLowerCase() === surface.base.toLowerCase()) checks.push({ code: 'BBA_NUMBER_CONTRAST', item: 'Numbers', customerActionable: true, severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber.id, message: `The number uses the same colour as the ${faceLabel.toLowerCase()} of the jersey, so it blends into the background. Choose a different number colour.` });
         const font = getFontChoice(requiredNumber.fontId);
         if (!font.productionApproved) {
-          checks.push({ code: 'UNVALIDATED_BASKETBALL_FONT', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber.id, message: `${font.familyLabel} ${font.label} is available for development preview only. Basketball production validation is still required before release.` });
+          checks.push({ code: 'UNVALIDATED_BASKETBALL_FONT', item: 'Numbers', severity: 'error', blocking: true, surface: surfaceKey, layerId: requiredNumber.id, message: `${font.familyLabel} ${font.label} is for development preview only. Pivot still needs to confirm it for production.` });
         }
       }
     }
     for (const layer of surface.layers) {
       if (layer.type === 'text' && layer.role !== 'number' && !layer.text.trim()) {
-        checks.push({ code: 'EMPTY_TEXT', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'A text layer is empty. Add wording or remove the optional layer.' });
+        checks.push({ code: 'EMPTY_TEXT', item: 'Text', customerActionable: true, severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'A text layer is empty. Add wording or remove the optional layer.' });
       }
       if (layer.x < 5 || layer.x > 95 || layer.y < 10 || layer.y > 92) {
-        checks.push({ code: 'INDICATIVE_BOUNDARY', severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'An element sits outside the Design Studio trial boundary. Supplier geometry is still unresolved.' });
+        checks.push({ code: 'INDICATIVE_BOUNDARY', item: layer.type === 'image' ? 'Images and logos' : 'Text', customerActionable: true, severity: 'warning', blocking: false, surface: surfaceKey, layerId: layer.id, message: 'Move this item further inside the editable area.' });
       }
-      if (layer.type === 'image' && layer.libraryAssetId !== 'pivot-penguin') {
+      if (layer.type === 'image' && !layer.libraryAssetId) {
         const validation = validatePublicArtwork({ type: layer.mime, size: layer.size });
-        if (!validation.ok) checks.push({ code: validation.error.code, severity: 'error', blocking: true, surface: surfaceKey, layerId: layer.id, message: validation.error.message });
+        if (!validation.ok) checks.push({ code: validation.error.code, item: 'Images and logos', customerActionable: true, severity: 'error', blocking: true, surface: surfaceKey, layerId: layer.id, message: validation.error.message });
       }
     }
   }
-  checks.push({ code: 'UNRESOLVED_DEPENDENCIES', severity: 'guidance', blocking: false, message: 'Supplier, final Phoenix artwork, production infrastructure, accurate 3D and manufacturing integration remain unresolved.' });
-  checks.push({ code: 'INDICATIVE_ONLY', severity: 'guidance', blocking: false, message: 'These checks use placeholder geometry and do not establish manufacturing readiness.' });
+  if (state.setup.garment === 'basketball-jersey') checks.push({ code: 'BBA_PHYSICAL_MEASUREMENTS', item: 'Numbers', severity: 'error', blocking: true, message: 'Pivot still needs to confirm the number size and spacing on the final garment template.' });
+  checks.push({ code: 'UNRESOLVED_DEPENDENCIES', item: 'Pivot review', severity: 'guidance', blocking: false, message: 'Pivot is still confirming final production details.' });
+  checks.push({ code: 'INDICATIVE_ONLY', item: 'Pivot review', severity: 'guidance', blocking: false, message: 'These trial checks cannot confirm that a design is ready to make.' });
   return checks;
+}
+
+export function getCustomerDesignChecks(candidate) {
+  return summariseIndicativeChecks(
+    runIndicativeChecks(candidate).filter(check => check.customerActionable)
+  );
 }
 
 export function validatePublicArtwork(file, existingArtworkBytes = 0) {
@@ -330,8 +423,8 @@ export function reduceStudioState(current, action) {
     const layer = next.surfaces[surfaceKey]?.layers.find(candidate => candidate.id === action.layerId);
     if (!layer) return failed(state, 'LAYER_NOT_FOUND', 'The selected layer is no longer available.');
     const patch = action.patch ?? {};
-    if (layer.role === 'number' && Object.hasOwn(patch, 'text') && !/^\d{1,2}$/.test(String(patch.text))) {
-      return failed(state, 'INVALID_REQUIRED_NUMBER', 'Enter a required basketball number using one or two digits.');
+    if (layer.role === 'number' && Object.hasOwn(patch, 'text') && !isAllowedBbaNumber(patch.text)) {
+      return failed(state, 'INVALID_REQUIRED_NUMBER', 'Enter a BBA number: 0, 00 or 1–99.');
     }
     const protectedKeys = new Set(['id', 'required', 'controlLevel', 'role', 'type']);
     for (const [key, value] of Object.entries(patch)) {

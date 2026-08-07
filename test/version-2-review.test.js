@@ -175,7 +175,7 @@ test('explains public Design Studio limits without internal technical language',
   const source = await readFile('public/app.js', 'utf8');
 
   assert.match(source, /Use the front and back views as the clearest record of your design\./);
-  assert.match(source, /Pivot must review and approve a final 2D design showing exactly what will be made\./);
-  assert.match(source, /These checks are a guide only\. Pivot must review any final design before it can be made\./);
+  assert.match(source, /These checks flag issues you can fix in this trial\. They do not confirm that the design is ready to make\./);
+  assert.doesNotMatch(source, /aria-haspopup="dialog"|design-check-dialog/);
   assert.doesNotMatch(source, /Partial profile:|production infrastructure|manufacturing integration|immutable 2D proof/);
 });

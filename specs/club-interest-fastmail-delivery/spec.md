@@ -1,6 +1,6 @@
 # Club-interest Fastmail delivery
 
-**Status:** Approved decisions captured; implementation credential-gated  
+**Status:** Local Cloudflare-compatible implementation complete; deployment and credential gated
 **Work type:** Development  
 **Owner:** Main Website
 
@@ -10,18 +10,19 @@ The release homepage currently uses a `mailto:` form action. That is not an appr
 
 ## Required outcome
 
-The existing in-house club-interest form submits to a same-origin Pivot server endpoint. The server validates and limits the submission, applies proportionate anti-spam controls, delivers it through Fastmail SMTP to `hello@pivotteamwear.com`, and returns a safe result that the form presents accessibly.
+The existing in-house club-interest form submits to a same-origin Cloudflare Pages Function. The function validates and limits the submission, applies proportionate anti-spam controls, delivers it through Fastmail JMAP over HTTPS to `hello@pivotteamwear.com`, and returns a safe result that the form presents accessibly.
 
-## Authoritative Fastmail configuration
+The Director approved local implementation of Cloudflare Pages Functions and Fastmail JMAP for this form on 7 August 2026. This does not approve a preview or production deployment, Cloudflare/Fastmail configuration, secret creation or release.
 
-- Host: `smtp.fastmail.com`
-- Port: `465`
-- Security: SSL/TLS
-- Username: full Fastmail login address
-- Password: dedicated app password named **Pivot website contact form**
+## Authoritative provider configuration
+
+- Runtime: the existing Cloudflare Pages project with a same-origin Pages Function at `/api/club-interest`
+- Fastmail protocol: JMAP over HTTPS
+- Credential: dedicated Fastmail API token with only the permissions required to discover the sending identity and drafts mailbox, create the message and submit it
+- Sending identity: approved full Fastmail address
 - Recipient: `hello@pivotteamwear.com`
 - Never use the normal Fastmail account password.
-- Store credentials only through the approved deployment platform's secret manager.
+- Store the token only as an encrypted Cloudflare secret and keep preview and production configuration separate.
 
 ## Requirements
 
@@ -44,19 +45,23 @@ The existing in-house club-interest form submits to a same-origin Pivot server e
 - Apply a small request-body limit specific to this endpoint.
 - Reject cross-origin browser submissions when an Origin header is present.
 - Include a hidden honeypot field; a completed honeypot receives a neutral response without sending mail.
-- Apply an in-memory per-client rate limit suitable for the current single-process application. Treat distributed rate limiting as a deployment review item if the app scales to multiple processes or Machines.
+- Apply a path-specific Cloudflare edge rate limit before function execution. The exact rule and current-plan availability are release gates.
+- Do not rely on in-memory function state because Cloudflare isolates do not share it.
+- Retain the hidden honeypot, bounded intake and same-origin checks as defence in depth. CAPTCHA or durable state remains out of scope unless observed abuse justifies separate approval.
 
 ### FR-4 — Fastmail delivery
 
-- Use authenticated SMTP over TLS.
+- Use authenticated Fastmail JMAP requests over HTTPS.
+- Discover and require the configured approved Fastmail identity and drafts mailbox rather than selecting an arbitrary identity.
 - Send to `hello@pivotteamwear.com`.
 - Set Reply-To to the validated submitter email.
-- Do not place user input in SMTP envelope addresses other than validated Reply-To.
-- Keep SMTP details behind a small mail-transport interface so tests send no real email.
+- Do not place user input in address fields other than validated Reply-To or in provider URLs and credentials.
+- Keep JMAP session discovery, message creation and submission behind a small delivery interface so tests send no real email.
+- Use bounded request timeouts and treat missing or rejected JMAP results as delivery failure.
 
 ### FR-5 — Safe handling
 
-- Never log SMTP credentials or submitted field values.
+- Never log JMAP credentials, submitted field values or provider response bodies.
 - Log only a non-personal delivery outcome code.
 - Return generic validation, rate-limit and delivery-failure responses.
 - Do not claim success unless the mail transport accepts the message.
@@ -70,11 +75,11 @@ The existing in-house club-interest form submits to a same-origin Pivot server e
 
 ## Environment
 
-- `FASTMAIL_SMTP_USER` — full Fastmail login address
-- `FASTMAIL_SMTP_APP_PASSWORD` — dedicated generated app password
+- `FASTMAIL_JMAP_TOKEN` — encrypted secret containing the dedicated Fastmail API token
+- `FASTMAIL_JMAP_SENDER` — approved Fastmail sending identity
 - `CLUB_INTEREST_RECIPIENT` — optional override; defaults to `hello@pivotteamwear.com`
 
-The server must fail closed for submissions when required SMTP configuration is absent while continuing to serve the website.
+The function must fail closed for submissions when required JMAP configuration is absent while static website delivery continues.
 
 ## Out of scope
 
@@ -87,6 +92,7 @@ The server must fail closed for submissions when required SMTP configuration is 
 
 ## Verification
 
-- Node tests cover validation, conditional fields, honeypot, same-origin enforcement, rate limiting, transport success/failure, absent configuration and browser form behaviour.
+- Node tests cover validation, conditional fields, Pages Function body limits, honeypot, same-origin enforcement, JMAP discovery and submission, provider failure, absent configuration and browser form behaviour.
+- Cloudflare edge-rate-limit behaviour is verified manually because no Cloudflare deployment or browser automation is authorised in the local implementation.
 - `npm run check`, `npm test` and `git diff --check` pass outside concurrent Design Studio edits.
-- Manual verification covers keyboard submission, pending state, visible success/failure, external Fastmail delivery and Reply-To after deployment secrets are configured.
+- Before release, manually verify keyboard submission, pending state, visible success/failure, external Fastmail delivery, Reply-To, edge rate limiting, secret handling and the approved privacy disclosure.

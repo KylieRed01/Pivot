@@ -20,7 +20,7 @@ File length alone is not a reason to extract a module.
 | M05 | Studio configuration | `public/studio/studio-config.js` | Developing | One placeholder factory appropriately keeps defaults together |
 | M06 | Studio state engine | `public/studio/studio-state.js` | Deep | Hides normalisation, commands, history, persistence and checks |
 | M07 | Studio/workflow browser application | `public/app.js` | Watch point | Large composition module with two design representations; delegates tester-feedback submission |
-| M08 | Main Website | `public/website/*`, `src/club-interest.js`, `src/fastmail.js` | Developing | Cohesive rendering, enhancement, bounded intake and Fastmail delivery modules |
+| M08 | Main Website | `public/website/*`, `src/club-interest.js`, `src/fastmail-jmap.js`, `functions/api/club-interest.js` | Developing | Cohesive rendering, enhancement, bounded Pages intake and Fastmail JMAP delivery modules |
 | M09 | Club Store presentation | `public/club-store/*` | Developing | Landing, customer-store preview and administration preview have distinct routes and responsibilities |
 | M10 | Presentation styles | `public/website/home.css`, `public/style.css` | Adequate at current scale | Homepage and Studio bundles are separated |
 | M11 | Temporary landing page | `public/temporary-landing.*` | Isolated | Correctly separate from release-page work |
@@ -43,7 +43,7 @@ File length alone is not a reason to extract a module.
 
 `src/server.js` owns the HTTP entry point, static delivery, security/cache headers, compression, fixture API, club-interest and Studio-feedback endpoints, and homepage markup injection. These are multiple responsibilities, but the implementation remains small and directly testable through `createApp()`. Live Fastmail delivery is injected, so endpoint tests do not require network access or credentials.
 
-Splitting HTTP transport, static delivery and application operations now would create more interfaces than the repository needs. Fastmail protocol handling is the exception: it is isolated behind `createFastmailSender()` because SMTP/TLS and credentials are a provider-specific security boundary.
+Splitting HTTP transport, static delivery and application operations now would create more interfaces than the repository needs. Provider protocol handling is the exception: club-interest JMAP is isolated behind `createFastmailJmapSender()`, while Studio-feedback SMTP remains behind its existing sender, because credentials and provider responses are security boundaries.
 
 **Extraction triggers:** route growth makes the handler hard to navigate; fixture operations need independent tests or atomicity; production adapters are approved; or static delivery changes independently enough to obscure API behaviour.
 
@@ -79,10 +79,11 @@ The file is a complexity hotspot, but arbitrary component extraction would not s
 - `home-page.js` provides reusable initial markup and browser enhancement.
 - `club-interest-form.js` owns form interaction, same-origin submission and its controlled reference options.
 - `home.css` owns the website shell and homepage presentation.
-- `src/club-interest.js` owns the accepted field shape, bounds and conditional validation without knowing HTTP or SMTP.
-- `src/fastmail.js` translates one validated submission into the approved Fastmail SMTP configuration and message. Its injected send function keeps live delivery out of endpoint tests.
+- `src/club-interest.js` owns the accepted field shape, bounds and conditional validation without knowing HTTP or JMAP.
+- `functions/api/club-interest.js` owns the Cloudflare Pages request boundary and delegates accepted submissions. Its framework-required route location is a real provider boundary rather than a speculative infrastructure layer.
+- `src/fastmail-jmap.js` translates one validated submission into Fastmail JMAP discovery, message creation and submission. Its injected `fetch` function keeps live delivery out of tests.
 
-These boundaries are proportionate. The server's use of pure markup from `home-page.js` avoids duplicating customer-facing content, while the two small server-side modules each hide a security or provider decision that should have one owner.
+These boundaries are proportionate. The server's use of pure markup from `home-page.js` avoids duplicating customer-facing content, while the focused request, validation and delivery modules each own a security or provider decision.
 
 ## M09 — Club Store presentation
 

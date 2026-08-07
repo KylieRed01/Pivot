@@ -1,6 +1,6 @@
 # Pivot Website and Design Studio Trial
 
-Small Node.js application for the public Pivot website, browser-local Pivot Design Studio trial and isolated Phoenix workflow simulation. Nodemailer provides the server-side Fastmail SMTP/TLS boundary for the in-house club-interest form.
+Small Node.js application for the public Pivot website, browser-local Pivot Design Studio trial and isolated Phoenix workflow simulation. A Cloudflare Pages Function provides the production-compatible club-interest boundary and sends through Fastmail JMAP over HTTPS. Nodemailer remains limited to the separately approved Studio-feedback SMTP workflow.
 
 ## Run locally
 
@@ -35,13 +35,13 @@ Browser and device behaviour requires manual verification.
 
 ## Club-interest delivery
 
-The in-house form sends through Fastmail only when these server secrets are configured:
+The in-house form sends through Fastmail only when these server-side bindings are configured:
 
-- `FASTMAIL_SMTP_USER`
-- `FASTMAIL_SMTP_APP_PASSWORD`
-- `CLUB_INTEREST_RECIPIENT` (optional; defaults to `hello@pivotteamwear.com`)
+- `FASTMAIL_JMAP_TOKEN` — encrypted secret containing the dedicated Fastmail API token
+- `FASTMAIL_JMAP_SENDER` — approved Fastmail sending identity
+- `CLUB_INTEREST_RECIPIENT` — optional; defaults to `hello@pivotteamwear.com`
 
-Use the dedicated **Pivot website contact form** Fastmail app password. Never use the normal account password or commit credentials to this repository.
+Never use the normal Fastmail account password or commit credentials to this repository. Cloudflare preview or production deployment, secret configuration and edge rate limiting remain separate release actions and are not performed by the local implementation.
 
 ## Unresolved
 

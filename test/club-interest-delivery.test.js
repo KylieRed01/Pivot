@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createApp } from '../src/server.js';
-import { createFastmailSender } from '../src/fastmail.js';
 
 const validSubmission = {
   contactName: 'Alex Smith',
@@ -19,35 +18,6 @@ async function start(options = {}) {
   const base = `http://127.0.0.1:${app.address().port}`;
   return { app, base };
 }
-
-test('Fastmail sender uses the approved TLS configuration and bounded message fields', async () => {
-  const transports = [];
-  const messages = [];
-  const send = createFastmailSender({
-    env: {
-      FASTMAIL_SMTP_USER: 'website@pivotteamwear.com',
-      FASTMAIL_SMTP_APP_PASSWORD: 'app-password',
-      CLUB_INTEREST_RECIPIENT: 'hello@pivotteamwear.com'
-    },
-    createTransport: options => {
-      transports.push(options);
-      return { sendMail: async message => messages.push(message) };
-    }
-  });
-
-  await send(validSubmission);
-
-  assert.deepEqual(transports, [{
-    host: 'smtp.fastmail.com', port: 465, secure: true,
-    auth: { user: 'website@pivotteamwear.com', pass: 'app-password' },
-    disableFileAccess: true, disableUrlAccess: true
-  }]);
-  assert.equal(messages[0].to, 'hello@pivotteamwear.com');
-  assert.equal(messages[0].replyTo, 'alex@example.com');
-  assert.equal(messages[0].subject, 'Club interest — Bendigo Community Club');
-  assert.match(messages[0].text, /Contact name: Alex Smith/);
-  assert.doesNotMatch(messages[0].text, /app-password/);
-});
 
 test('valid club-interest details are delivered through the injected mail transport', async t => {
   const delivered = [];
@@ -156,7 +126,7 @@ test('club-interest submissions are rate limited per client', async t => {
 
 test('mail transport failures return a safe error without exposing provider details', async t => {
   const { app, base } = await start({
-    sendClubInterest: async () => { throw new Error('SMTP authentication failed for secret-value'); }
+    sendClubInterest: async () => { throw new Error('JMAP authentication failed for secret-value'); }
   });
   t.after(() => app.close());
 
@@ -169,5 +139,5 @@ test('mail transport failures return a safe error without exposing provider deta
 
   assert.equal(response.status, 502);
   assert.deepEqual(result, { error: 'We could not send your details', code: 'DELIVERY_FAILED' });
-  assert.doesNotMatch(JSON.stringify(result), /SMTP|secret-value/);
+  assert.doesNotMatch(JSON.stringify(result), /JMAP|secret-value/);
 });
